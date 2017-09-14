@@ -120,10 +120,12 @@ public class AppCenterCore.Package : Object {
     public bool is_native {
         get {
             switch (component.get_origin ()) {
+                /*
                 case APPCENTER_PACKAGE_ORIGIN:
                 case ELEMENTARY_STABLE_PACKAGE_ORIGIN:
                 case ELEMENTARY_DAILY_PACKAGE_ORIGIN:
                     return true;
+                */
                 default:
                     return false;
             }
@@ -467,7 +469,7 @@ public class AppCenterCore.Package : Object {
         });
 
         string installed_version = get_version ();
-        
+
         int start_index = 0;
         int end_index = min_releases;
 

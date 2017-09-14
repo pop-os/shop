@@ -111,6 +111,7 @@ namespace AppCenter.Views {
         }
 
         private void mark_row_non_curated (Widgets.AppListRow row) {
+            /*
             var header = new Gtk.Label (_("Non-Curated Apps"));
             header.margin = 12;
             header.margin_top = 18;
@@ -118,6 +119,7 @@ namespace AppCenter.Views {
             header.hexpand = true;
             header.xalign = 0;
             row.set_header (header);
+            */
         }
     }
 }

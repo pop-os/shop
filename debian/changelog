@@ -1,3 +1,15 @@
+appcenter (0.2.5+pop1) artful; urgency=medium
+
+  * Remove curated section and banner
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 14 Sep 2017 12:00:27 -0600
+
+appcenter (0.2.5+pop0) artful; urgency=medium
+
+  * Remove appstream-data-pantheon from recommends
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 14 Sep 2017 11:58:14 -0600
+
 appcenter (0.2.5) xenial; urgency=medium
 
   * New upstream release.
