@@ -40,6 +40,9 @@ public class AppCenter.App : Granite.Application {
 
     private uint registration_id = 0;
 
+    private SearchProvider search_provider;
+    private uint search_provider_id = 0;
+
     construct {
         application_id = "io.elementary.appcenter";
         flags |= ApplicationFlags.HANDLES_OPEN;
@@ -64,7 +67,7 @@ public class AppCenter.App : Granite.Application {
                 main_window.destroy ();
             }
         });
-        
+
         var show_updates_action = new SimpleAction ("show-updates", null);
         show_updates_action.activate.connect(() => {
             silent = false;
@@ -87,6 +90,8 @@ public class AppCenter.App : Granite.Application {
         add_action (quit_action);
         add_action (show_updates_action);
         add_accelerator ("<Control>q", "app.quit", null);
+
+        search_provider = new SearchProvider ();
     }
 
     public override void open (File[] files, string hint) {
@@ -153,7 +158,7 @@ public class AppCenter.App : Granite.Application {
             main_window.homepage_loaded.connect (() => {
                 client.update_cache.begin ();
             });
-            
+
             main_window.destroy.connect (() => {
                 main_window = null;
             });
@@ -179,7 +184,13 @@ public class AppCenter.App : Granite.Application {
         if (silent) {
             DBusServer.init ();
             try {
-                registration_id = connection.register_object ("/io/elementary/appcenter", DBusServer.get_default ());    
+                registration_id = connection.register_object ("/io/elementary/appcenter", DBusServer.get_default ());
+            } catch (Error e) {
+                warning (e.message);
+            }
+
+            try {
+                search_provider_id = connection.register_object ("/io/elementary/appcenter/SearchProvider", search_provider);
             } catch (Error e) {
                 warning (e.message);
             }
@@ -191,6 +202,12 @@ public class AppCenter.App : Granite.Application {
     public override void dbus_unregister (DBusConnection connection, string object_path) {
         if (registration_id != 0) {
             connection.unregister_object (registration_id);
+            registration_id = 0;
+        }
+
+        if (search_provider_id != 0) {
+            connection.unregister_object (search_provider_id);
+            search_provider_id = 0;
         }
 
         base.dbus_unregister (connection, object_path);
@@ -234,7 +251,7 @@ public class AppCenter.App : Granite.Application {
                     notification.set_icon (new ThemedIcon ("system-software-install"));
                     notification.set_default_action ("app.open-application");
 
-                    send_notification ("installed", notification);                 
+                    send_notification ("installed", notification);
                 } else {
                     // Check if permission was denied or the operation was cancelled
                     if (error.matches (IOError.quark (), 19) || error.matches (Pk.ClientError.quark (), 303)) {
@@ -259,7 +276,7 @@ public class AppCenter.App : Granite.Application {
             default:
                 break;
         }
-    }    
+    }
 }
 
 public static int main (string[] args) {

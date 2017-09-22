@@ -1,3 +1,9 @@
+appcenter (0.2.6~0pop2) artful; urgency=medium
+
+  * Add GNOME search provider
+
+ -- Jeremy Soller <jeremy@system76.com>  Fri, 22 Sep 2017 16:15:31 -0600
+
 appcenter (0.2.6~0pop1) artful; urgency=medium
 
   * Disable restart notification until fixed
