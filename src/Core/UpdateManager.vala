@@ -68,7 +68,7 @@ public class AppCenterCore.UpdateManager : Object {
                     update_results.add_details (details);
                 });
             }
-            
+
             return update_results;
         } catch (Error e) {
             throw e;
@@ -85,10 +85,10 @@ public class AppCenterCore.UpdateManager : Object {
                 notification.set_icon (new ThemedIcon ("system-software-install"));
                 notification.set_priority (NotificationPriority.URGENT);
                 notification.set_default_action ("app.open-application");
-                Application.get_default ().send_notification ("restart", notification);
+                //Application.get_default ().send_notification ("restart", notification);
             }
 
-            restart_required = true;     
+            restart_required = true;
         } else if (restart_required) {
             restart_required = false;
         }
@@ -97,5 +97,5 @@ public class AppCenterCore.UpdateManager : Object {
     private static GLib.Once<UpdateManager> instance;
     public static unowned UpdateManager get_default () {
         return instance.once (() => { return new UpdateManager (); });
-    }    
+    }
 }
