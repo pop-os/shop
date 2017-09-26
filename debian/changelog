@@ -1,3 +1,10 @@
+pop-shop (0.2.6-1~alpha) artful; urgency=medium
+
+  * Alpha build
+  * Add blacklist file
+
+ -- Jeremy Soller <jeremy@system76.com>  Tue, 26 Sep 2017 10:27:12 -0600
+
 pop-shop (0.2.6-0) artful; urgency=medium
 
   * Rename to Pop Shop where visible
