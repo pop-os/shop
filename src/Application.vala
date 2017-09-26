@@ -179,7 +179,6 @@ public class AppCenter.App : Granite.Application {
     }
 
     public override bool dbus_register (DBusConnection connection, string object_path) throws Error {
-        stdout.printf("%s\n", object_path);
         base.dbus_register (connection, object_path);
 
         if (silent) {
