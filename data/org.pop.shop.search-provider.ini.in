@@ -1,5 +1,5 @@
 [Shell Search Provider]
 DesktopId=@EXEC_NAME@.desktop
 BusName=@EXEC_NAME@
-ObjectPath=@DBUS_PATH@/SearchProvider
+ObjectPath=/org/pop/shop/SearchProvider
 Version=2

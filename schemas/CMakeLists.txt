@@ -1,3 +1,3 @@
 
 include (GSettings)
-add_schema (org.pop-os.shop.gschema.xml)
+add_schema (org.pop.shop.gschema.xml)

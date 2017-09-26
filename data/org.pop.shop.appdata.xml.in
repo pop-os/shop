@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2015 elementary, LLC <contact@elementary.io> -->
 <component type="desktop-application">
-    <id>org.pop-os.shop.desktop</id>
+    <id>org.pop.shop.desktop</id>
     <metadata_license>CC0-1.0</metadata_license>
-    <project_group>pop-os</project_group>
+    <project_group>pop</project_group>
     <project_license>GPL-3.0+</project_license>
     <_name>Pop!_Shop</_name>
     <_summary>Browse and manage apps</_summary>
@@ -117,8 +117,8 @@
         <release version="0.1.0" date="2016-08-15"/>
     </releases>
     <provides>
-        <binary>org.pop-os.shop</binary>
-        <dbus type="user">org.pop-os.shop</dbus>
+        <binary>org.pop.shop</binary>
+        <dbus type="user">org.pop.shop</dbus>
     </provides>
     <screenshots>
         <screenshot type="default">

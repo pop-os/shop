@@ -33,16 +33,16 @@ Run `cmake` to configure the build environment and then `make all test` to build
     cmake -DCMAKE_INSTALL_PREFIX=/usr ..
     make all test
 
-To install, use `make install`, then execute with `org.pop-os.shop`
+To install, use `make install`, then execute with `org.pop.shop`
 
     sudo make install
-    org.pop-os.shop
+    org.pop.shop
 
 ## Debugging
 
 See debug messages:
 
-    org.pop-os.shop -d
+    org.pop.shop -d
 
 Show restart required messaging:
 
@@ -54,8 +54,8 @@ Hide restart required messaging:
 
 Fake updates with the `-f` flag followed by PackageKit package name, **not** appstream id:
 
-    org.pop-os.shop -f inkscape
+    org.pop.shop -f inkscape
 
 Load and preview a local AppStream XML metadata file, your local metadata will show up in the featured banner and will also be searchable. Metadata loaded this way will have a `(local)` suffix in it's name.
 
-    org.pop-os.shop --load-local /path/to/file.appdata.xml
+    org.pop.shop --load-local /path/to/file.appdata.xml

@@ -44,7 +44,7 @@ public class AppCenter.App : Granite.Application {
     private uint search_provider_id = 0;
 
     construct {
-        application_id = "org.pop-os.shop";
+        application_id = "org.pop.shop";
         flags |= ApplicationFlags.HANDLES_OPEN;
         Intl.setlocale (LocaleCategory.ALL, "");
         Intl.textdomain (Build.GETTEXT_PACKAGE);
@@ -58,7 +58,7 @@ public class AppCenter.App : Granite.Application {
         build_version = Build.VERSION;
         build_version_info = Build.VERSION_INFO;
 
-        app_launcher = "org.pop-os.shop.desktop";
+        app_launcher = "org.pop.shop.desktop";
         add_main_option_entries (APPCENTER_OPTIONS);
 
         var quit_action = new SimpleAction ("quit", null);
@@ -179,18 +179,19 @@ public class AppCenter.App : Granite.Application {
     }
 
     public override bool dbus_register (DBusConnection connection, string object_path) throws Error {
+        stdout.printf("%s\n", object_path);
         base.dbus_register (connection, object_path);
 
         if (silent) {
             DBusServer.init ();
             try {
-                registration_id = connection.register_object ("/org/pop-os/shop", DBusServer.get_default ());
+                registration_id = connection.register_object ("/org/pop/shop", DBusServer.get_default ());
             } catch (Error e) {
                 warning (e.message);
             }
 
             try {
-                search_provider_id = connection.register_object ("/org/pop-os/shop/SearchProvider", search_provider);
+                search_provider_id = connection.register_object ("/org/pop/shop/SearchProvider", search_provider);
             } catch (Error e) {
                 warning (e.message);
             }

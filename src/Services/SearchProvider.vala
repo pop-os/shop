@@ -70,7 +70,7 @@ public class SearchProvider : Object {
 
     public void activate_result(string result, string[] terms, uint32 timestamp) {
         string[] args = {
-          "org.pop-os.shop", "appstream://" + result
+          "org.pop.shop", "appstream://" + result
         };
         Process.spawn_async (
             null,
@@ -86,7 +86,7 @@ public class SearchProvider : Object {
         string query = string.joinv(" ", terms);
 
         string[] args = {
-          "org.pop-os.shop", "appstream://" + query
+          "org.pop.shop", "appstream://" + query
         };
         Process.spawn_async (
             null,

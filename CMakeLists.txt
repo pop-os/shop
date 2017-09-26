@@ -1,4 +1,4 @@
-project (org.pop-os.shop C)
+project (org.pop.shop C)
 
 cmake_minimum_required (VERSION 2.8)
 
@@ -9,7 +9,6 @@ set (PKGDATADIR "${DATADIR}/${CMAKE_PROJECT_NAME}")
 set (CONFIGDIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/${CMAKE_PROJECT_NAME}")
 set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (EXEC_NAME ${CMAKE_PROJECT_NAME})
-set (DBUS_PATH "/org/pop-os/shop")
 set (APP_NAME "Pop!_Shop")
 set (RELEASE_NAME "Browse and manage apps")
 set (DESKTOP_ICON "system-software-install")
