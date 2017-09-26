@@ -1,4 +1,4 @@
-# Pop Shop
+# Pop\!\_Shop
 [![Translation status](https://l10n.elementary.io/widgets/appcenter/-/svg-badge.svg)](https://l10n.elementary.io/projects/appcenter/?utm_source=widget)
 
 An open, pay-what-you-want app store for indie developers.
