@@ -4,7 +4,7 @@ add_translations_catalog (${GETTEXT_PACKAGE}
     ../src
     ../daemon
     DESKTOP_FILES
-        ${CMAKE_BINARY_DIR}/data/io.elementary.appcenter.desktop.in
+        ${CMAKE_BINARY_DIR}/data/org.pop-os.shop.desktop.in
     APPDATA_FILES
-        ../data/io.elementary.appcenter.appdata.xml.in
+        ../data/org.pop-os.shop.appdata.xml.in
 )
