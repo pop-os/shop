@@ -10,11 +10,10 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@ 
+	dh $@
 
 override_dh_install:
-	dh_install --fail-missing --exclude=appcenter.blacklist
+	dh_install --fail-missing --exclude=pop-shop.blacklist
 
 override_dh_strip:
-	dh_strip --dbg-package=appcenter-dbg
-
+	dh_strip --dbg-package=pop-shop-dbg

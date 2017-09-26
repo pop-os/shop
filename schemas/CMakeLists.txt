@@ -1,3 +1,3 @@
 
 include (GSettings)
-add_schema (io.elementary.appcenter.gschema.xml)
+add_schema (org.pop-os.shop.gschema.xml)

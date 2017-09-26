@@ -1,5 +1,5 @@
 # This file is a list of AppStream component ID's that
-# AppCenter will not load at it's initialization.
+# Pop Shop will not load at it's initialization.
 #
 # Each line of this file corresponds to a single AppStream component ID,
 # see the <id> tag here: https://www.freedesktop.org/software/appstream/docs/chap-CollectionData.html for more information.

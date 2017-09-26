@@ -6,12 +6,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -39,7 +39,7 @@ const string CATEGORIES_STYLE_CSS = """
         font-weight: 300;
     }
     .category.audio {
-        background-image: -gtk-scaled(url("resource:///io/elementary/appcenter/backgrounds/audio.svg"), url("resource:///io/elementary/appcenter/backgrounds/audio@2x.svg")),
+        background-image: -gtk-scaled(url("resource:///org/pop-os/shop/backgrounds/audio.svg"), url("resource:///org/pop-os/shop/backgrounds/audio@2x.svg")),
                           linear-gradient(to bottom,
                                   #FC8F36,
                                   #EF6522
@@ -125,12 +125,12 @@ const string CATEGORIES_STYLE_CSS = """
     }
     .category.graphics label,
     .category.graphics .label {
-        border-image: -gtk-scaled(url("resource:///io/elementary/appcenter/backgrounds/graphics.svg"),url("resource:///io/elementary/appcenter/backgrounds/graphics@2x.svg")) 10 10 10 10 / 10px 10px 10px 10px repeat;
+        border-image: -gtk-scaled(url("resource:///org/pop-os/shop/backgrounds/graphics.svg"),url("resource:///org/pop-os/shop/backgrounds/graphics@2x.svg")) 10 10 10 10 / 10px 10px 10px 10px repeat;
         padding: 12px;
     }
     .category.graphics label:dir(rtl),
     .category.graphics .label:dir(rtl) {
-        border-image: -gtk-scaled(url("resource:///io/elementary/appcenter/backgrounds/graphics-rtl.svg"),url("resource:///io/elementary/appcenter/backgrounds/graphics-rtl@2x.svg")) 10 10 10 10 / 10px 10px 10px 10px repeat;
+        border-image: -gtk-scaled(url("resource:///org/pop-os/shop/backgrounds/graphics-rtl.svg"),url("resource:///org/pop-os/shop/backgrounds/graphics-rtl@2x.svg")) 10 10 10 10 / 10px 10px 10px 10px repeat;
     }
     .category.games {
         background-image: linear-gradient(to bottom,
@@ -182,7 +182,7 @@ const string CATEGORIES_STYLE_CSS = """
         color: #fff;
     }
     .category.science {
-        background-image: url("resource:///io/elementary/appcenter/backgrounds/science.svg"),
+        background-image: url("resource:///org/pop-os/shop/backgrounds/science.svg"),
                           linear-gradient(to bottom,
                                   #374044,
                                   #374044

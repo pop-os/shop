@@ -1,7 +1,7 @@
-debian/60appcenter /etc/apt/apt.conf.d/
+debian/60pop-shop /etc/apt/apt.conf.d/
 usr/bin/
 usr/share/applications/
-usr/share/dbus-1/services/io.elementary.appcenter.service
+usr/share/dbus-1/services/org.pop-os.shop.service
 usr/share/glib-2.0/
 usr/share/gnome-shell/search-providers/
 usr/share/locale/

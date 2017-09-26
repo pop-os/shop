@@ -40,6 +40,6 @@ public class AppCenter.Settings : Granite.Services.Settings {
     }
 
     private Settings ()  {
-        base ("io.elementary.appcenter.settings");
+        base ("org.pop-os.shop.settings");
     }
 }

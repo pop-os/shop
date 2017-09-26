@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/io/elementary/appcenter/icons">
+  <gresource prefix="/org/pop-os/shop/icons">
     <file alias="applications-accessibility-symbolic.svg" compressed="true" preprocess="xml-stripblanks">applications-accessibility-symbolic.svg</file>
     <file alias="applications-audio-symbolic.svg" compressed="true" preprocess="xml-stripblanks">applications-audio-symbolic.svg</file>
     <file alias="applications-games-symbolic.svg" compressed="true" preprocess="xml-stripblanks">applications-games-symbolic.svg</file>
@@ -16,7 +16,7 @@
     <file alias="online-account-telegram.svg" compressed="true" preprocess="xml-stripblanks">online-account-telegram.svg</file>
     <file alias="text-x-copying-symbolic.svg" compressed="true" preprocess="xml-stripblanks">text-x-copying-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/io/elementary/appcenter/backgrounds">
+  <gresource prefix="/org/pop-os/shop/backgrounds">
     <file alias="audio.svg" compressed="true" preprocess="xml-stripblanks">audio.svg</file>
     <file alias="audio@2x.svg" compressed="true" preprocess="xml-stripblanks">audio@2x.svg</file>
     <file alias="graphics.svg" compressed="true" preprocess="xml-stripblanks">graphics.svg</file>

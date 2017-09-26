@@ -1,4 +1,4 @@
-project (io.elementary.appcenter C)
+project (org.pop-os.shop C)
 
 cmake_minimum_required (VERSION 2.8)
 
@@ -6,10 +6,11 @@ include (GNUInstallDirs)
 
 set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 set (PKGDATADIR "${DATADIR}/${CMAKE_PROJECT_NAME}")
-set (CONFIGDIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/io.elementary.appcenter")
+set (CONFIGDIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/${CMAKE_PROJECT_NAME}")
 set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (EXEC_NAME ${CMAKE_PROJECT_NAME})
-set (APP_NAME "AppCenter")
+set (DBUS_PATH "/org/pop-os/shop")
+set (APP_NAME "Pop!_Shop")
 set (RELEASE_NAME "Browse and manage apps")
 set (DESKTOP_ICON "system-software-install")
 set (VERSION "0.2.6")
@@ -19,9 +20,9 @@ set (DOLLAR "$")
 # CTest
 include (CTest)
 if (BUILD_TESTING)
-    add_test (NAME validate-desktop-file COMMAND desktop-file-validate ${CMAKE_BINARY_DIR}/data/io.elementary.appcenter.desktop)
-    add_test (NAME validate-daemon-desktop-file COMMAND desktop-file-validate ${CMAKE_BINARY_DIR}/data/io.elementary.appcenter-daemon.desktop)
-    add_test (NAME validate-appdata COMMAND appstreamcli validate ${CMAKE_BINARY_DIR}/data/io.elementary.appcenter.appdata.xml)
+    add_test (NAME validate-desktop-file COMMAND desktop-file-validate ${CMAKE_BINARY_DIR}/data/${CMAKE_PROJECT_NAME}.desktop)
+    add_test (NAME validate-daemon-desktop-file COMMAND desktop-file-validate ${CMAKE_BINARY_DIR}/data/${CMAKE_PROJECT_NAME}-daemon.desktop)
+    add_test (NAME validate-appdata COMMAND appstreamcli validate ${CMAKE_BINARY_DIR}/data/${CMAKE_PROJECT_NAME}.appdata.xml)
 endif ()
 
 configure_file (${CMAKE_SOURCE_DIR}/config.vala.cmake ${CMAKE_BINARY_DIR}/src/config.vala)

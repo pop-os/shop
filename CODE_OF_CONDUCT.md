@@ -1,1 +1,1 @@
-Contributors to this repo agree to be bound by the [Code of Conduct](https://elementary.io/code-of-conduct) as made available on our website.
+Contributors to this repo agree to be bound by the [Pop OS Code of Conduct](https://github.com/system76/pop-code-of-conduct).

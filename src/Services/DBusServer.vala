@@ -18,7 +18,7 @@
  * Authored by: Adam Bieńkowski <donadigos159@gmail.com>
  */
 
-[DBus (name="io.elementary.appcenter")]
+[DBus (name="org.pop-os.shop")]
 public class DBusServer : Object {
     private static GLib.Once<DBusServer> instance;
     public static unowned DBusServer get_default () {

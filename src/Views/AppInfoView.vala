@@ -215,7 +215,7 @@ namespace AppCenter.Views {
             if (!package.is_local) {
                 header_grid.attach (action_stack, 3, 0, 1, 1);
             }
-            
+
             header_box.add (header_grid);
 
             var footer_grid = new Gtk.Grid ();
@@ -274,37 +274,6 @@ namespace AppCenter.Views {
             add (overlay);
 
             open_button.get_style_context ().add_class ("h3");
-
-            if (package.is_shareable) {
-                var body = _("Check out %s on AppCenter:").printf (package.get_name ());
-                var uri = "https://appcenter.elementary.io/%s".printf (package.component.get_id ());
-                var share_popover = new SharePopover (body, uri);
-
-                var share_icon = new Gtk.Image.from_icon_name ("send-to-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-                share_icon.valign = Gtk.Align.CENTER;
-
-                var share_label = new Gtk.Label (_("Share"));
-
-                var share_grid = new Gtk.Grid ();
-                share_grid.column_spacing = 6;
-                share_grid.add (share_icon);
-                share_grid.add (share_label);
-
-                var share_button = new Gtk.MenuButton ();
-                share_button.direction = Gtk.ArrowType.UP;
-                share_button.popover = share_popover;
-                share_button.add (share_grid);
-
-                var share_button_context = share_button.get_style_context ();
-                share_button_context.add_class (Gtk.STYLE_CLASS_DIM_LABEL);
-                share_button_context.add_class (Gtk.STYLE_CLASS_FLAT);
-
-                share_popover.link_copied.connect (() => {
-                    toast.send_notification ();
-                });
-
-                links_grid.add (share_button);
-            }
 
             reload_css ();
             set_up_package (128);
@@ -374,7 +343,7 @@ namespace AppCenter.Views {
 
                     return false;
                 });
-                
+
                 if (screenshots.length == 0) {
                     return null;
                 }
@@ -416,12 +385,12 @@ namespace AppCenter.Views {
 
         // We need to first download the screenshot locally so that it doesn't freeze the interface.
         private void load_screenshot (string url) {
-            var ret = GLib.DirUtils.create_with_parents (GLib.Environment.get_tmp_dir () + Path.DIR_SEPARATOR_S + ".appcenter", 0755);
+            var ret = GLib.DirUtils.create_with_parents (GLib.Environment.get_tmp_dir () + Path.DIR_SEPARATOR_S + ".pop-shop", 0755);
             if (ret == -1) {
                 critical ("Error creating the temporary folder: GFileError #%d", GLib.FileUtils.error_from_errno (GLib.errno));
             }
 
-            string path = Path.build_path (Path.DIR_SEPARATOR_S, GLib.Environment.get_tmp_dir (), ".appcenter", "XXXXXX");
+            string path = Path.build_path (Path.DIR_SEPARATOR_S, GLib.Environment.get_tmp_dir (), ".pop-shop", "XXXXXX");
             File fileimage;
             var fd = GLib.FileUtils.mkstemp (path);
             if (fd != -1) {

@@ -1,10 +1,9 @@
-# AppCenter
+# Pop Shop
 [![Translation status](https://l10n.elementary.io/widgets/appcenter/-/svg-badge.svg)](https://l10n.elementary.io/projects/appcenter/?utm_source=widget)
-[![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=57667267)](https://www.bountysource.com/teams/elementary/issues?tracker_ids=57667267)
 
 An open, pay-what-you-want app store for indie developers.
 
-![AppCenter Screenshot](data/screenshot.png?raw=true)
+![Pop Shop Screenshot](data/screenshot.png?raw=true)
 
 ## Building, Testing, and Installation
 
@@ -34,16 +33,16 @@ Run `cmake` to configure the build environment and then `make all test` to build
     cmake -DCMAKE_INSTALL_PREFIX=/usr ..
     make all test
 
-To install, use `make install`, then execute with `io.elementary.appcenter`
+To install, use `make install`, then execute with `org.pop-os.shop`
 
     sudo make install
-    io.elementary.appcenter
+    org.pop-os.shop
 
 ## Debugging
 
 See debug messages:
 
-    io.elementary.appcenter -d
+    org.pop-os.shop -d
 
 Show restart required messaging:
 
@@ -55,8 +54,8 @@ Hide restart required messaging:
 
 Fake updates with the `-f` flag followed by PackageKit package name, **not** appstream id:
 
-    io.elementary.appcenter -f inkscape
+    org.pop-os.shop -f inkscape
 
 Load and preview a local AppStream XML metadata file, your local metadata will show up in the featured banner and will also be searchable. Metadata loaded this way will have a `(local)` suffix in it's name.
 
-    io.elementary.appcenter --load-local /path/to/file.appdata.xml
+    org.pop-os.shop --load-local /path/to/file.appdata.xml

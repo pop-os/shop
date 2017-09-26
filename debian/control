@@ -1,6 +1,6 @@
-Source: appcenter
+Source: pop-shop
 Section: utils
-Maintainer: Corentin Noël <corentin@elementary.io>
+Maintainer: Jeremy Soller <jeremy@system76.com>
 Build-Depends: appstream,
                cmake,
                cmake-elementary,
@@ -19,26 +19,24 @@ Build-Depends: appstream,
                libxml2-utils,
                valac (>= 0.26)
 Standards-Version: 3.9.6
-Homepage: https://launchpad.net/appcenter
+Homepage: https://github.com/system76/pop-shop
 
-Package: appcenter
+Package: pop-shop
 Architecture: any
 Priority: extra
-Conflicts: appcenter-daemon
-Replaces: appcenter-daemon
 Depends: appstream, packagekit, ${misc:Depends}, ${shlibs:Depends}
 Description: Fast application store
  Install, update and remove apps with ease.
  Helps independent developers.
 
-Package: appcenter-dbg
+Package: pop-shop-dbg
 Architecture: any
 Section: debug
 Priority: extra
-Depends: appcenter (= ${binary:Version}), ${misc:Depends}
-Enhances: appcenter
+Depends: pop-shop (= ${binary:Version}), ${misc:Depends}
+Enhances: pop-shop
 Description: Fast application store (debugging symbols)
  Install, update and remove apps with ease.
  Helps independent developers.
  .
- This package contains debugging symbols for appcenter.
+ This package contains debugging symbols for pop-shop.

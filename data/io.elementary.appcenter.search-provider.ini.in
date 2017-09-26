@@ -1,5 +1,0 @@
-[Shell Search Provider]
-DesktopId=io.elementary.appcenter.desktop
-BusName=io.elementary.appcenter
-ObjectPath=/io/elementary/appcenter/SearchProvider
-Version=2
