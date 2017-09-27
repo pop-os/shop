@@ -28,7 +28,7 @@ const string BANNER_STYLE_CSS = """
                                   shade (@banner_bg_color, 1.05),
                                   shade (@banner_bg_color, 0.95)
                                   );
-        color: @banner_fg_color;    
+        color: @banner_fg_color;
         transition: all %ums ease-in-out;
     }
 
@@ -105,7 +105,7 @@ namespace AppCenter.Widgets {
 
                 bool has_package = package != null;
 
-                var name_label = new Gtk.Label (has_package ? package.get_name () : _("AppCenter"));
+                var name_label = new Gtk.Label (has_package ? package.get_name () : _("Pop!_Shop"));
                 name_label.get_style_context ().add_class ("h1");
                 name_label.xalign = 0;
                 name_label.use_markup = true;
