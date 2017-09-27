@@ -479,6 +479,8 @@ public class AppCenterCore.Client : Object {
                 os_updates.change_information.details.clear ();
             });
 
+            os_updates.component.description = "<ul>\n";
+
             results.get_details_array ().foreach ((pk_detail) => {
                 var pk_package = new Pk.Package ();
                 try {
@@ -492,6 +494,8 @@ public class AppCenterCore.Client : Object {
                         var pkgnames = os_updates.component.pkgnames;
                         pkgnames += pkg_name;
                         os_updates.component.pkgnames = pkgnames;
+
+                        os_updates.component.description += "  <li>" + pkg_name + "</li>\n";
                     }
 
                     package.change_information.changes.add (pk_package);
@@ -501,6 +505,8 @@ public class AppCenterCore.Client : Object {
                     critical (e.message);
                 }
             });
+
+            os_updates.component.description += "</ul>\n";
         } catch (Error e) {
             critical (e.message);
         }
