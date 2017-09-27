@@ -1,3 +1,9 @@
+pop-shop (0.2.6-5) artful; urgency=medium
+
+  * Fix navigation bugs
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 27 Sep 2017 12:39:49 -0600
+
 pop-shop (0.2.6-4) artful; urgency=medium
 
   * Update default window height
