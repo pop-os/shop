@@ -1,3 +1,9 @@
+pop-shop (0.2.6-6) artful; urgency=medium
+
+  * Increase details about os updates
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 27 Sep 2017 15:11:18 -0600
+
 pop-shop (0.2.6-5) artful; urgency=medium
 
   * Fix navigation bugs
