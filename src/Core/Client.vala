@@ -469,6 +469,7 @@ public class AppCenterCore.Client : Object {
 
             os_updates.change_information.changes.clear ();
             os_updates.change_information.details.clear ();
+            os_updates.update_state();
 
             int os_count = 0;
             string os_ver = "";
