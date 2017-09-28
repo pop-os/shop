@@ -1,3 +1,9 @@
+pop-shop (0.2.6-7) artful; urgency=medium
+
+  * Update os_updates state
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 28 Sep 2017 16:18:50 -0600
+
 pop-shop (0.2.6-6) artful; urgency=medium
 
   * Increase details about os updates
