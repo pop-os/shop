@@ -24,10 +24,7 @@ const string BANNER_STYLE_CSS = """
 
     .banner {
         background-color: @banner_bg_color;
-        background-image: linear-gradient(to bottom right,
-                                  shade (@banner_bg_color, 1.05),
-                                  shade (@banner_bg_color, 0.95)
-                                  );
+        background-image: linear-gradient(@banner_bg_color, @banner_bg_color);
         color: @banner_fg_color;
         transition: all %ums ease-in-out;
     }
@@ -85,9 +82,13 @@ const string BANNER_STYLE_CSS = """
         color: @banner_bg_color;
         text-shadow: 0 1px 1px alpha (@banner_fg_color, 0.1);
     }
+    
+    .banner progressbar { 
+        color: @banner_fg_color;
+    }
 """;
 
-const string DEFAULT_BANNER_COLOR_PRIMARY = "#68758e";
+const string DEFAULT_BANNER_COLOR_PRIMARY = "#454241";
 const string DEFAULT_BANNER_COLOR_PRIMARY_TEXT = "white";
 const int MILLISECONDS_BETWEEN_BANNER_ITEMS = 5000;
 
