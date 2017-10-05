@@ -1,3 +1,9 @@
+pop-shop (0.2.6-8) artful; urgency=medium
+
+  * Update styling and colors to theme the banners
+
+ -- Jeremy Soller <jeremy@system76.com>  Thu, 05 Oct 2017 11:49:33 -0600
+
 pop-shop (0.2.6-7) artful; urgency=medium
 
   * Update os_updates state
