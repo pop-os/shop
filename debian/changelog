@@ -1,3 +1,11 @@
+pop-shop (0.2.6-9) artful; urgency=medium
+
+  * Refresh changelog if OS updates are installed
+  * Prevent the creation of duplicate OS updates
+  * Clean up logic setting OS updates information
+
+ -- Jeremy Soller <jeremy@system76.com>  Wed, 18 Oct 2017 09:21:18 -0600
+
 pop-shop (0.2.6-8) artful; urgency=medium
 
   * Update styling and colors to theme the banners

@@ -133,7 +133,7 @@ public class AppCenterCore.Package : Object {
     }
 
     private string? name = null;
-    private string? description = null;
+    public string? description = null;
     private string? summary = null;
     private string? color_primary = null;
     private string? color_primary_text = null;

@@ -467,10 +467,6 @@ public class AppCenterCore.Client : Object {
             launcher_entry.count_visible = updates_number != 0U;
 #endif
 
-            os_updates.change_information.changes.clear ();
-            os_updates.change_information.details.clear ();
-            os_updates.update_state();
-
             int os_count = 0;
             string os_ver = "";
             string os_desc = "";
@@ -506,7 +502,11 @@ public class AppCenterCore.Client : Object {
             }
 
             os_updates.latest_version = os_ver;
-            os_updates.component.description = os_desc;
+            os_updates.description = os_desc;
+
+            os_updates.component.set_pkgnames({});
+            os_updates.change_information.changes.clear ();
+            os_updates.change_information.details.clear ();
 
             results.get_details_array ().foreach ((pk_detail) => {
                 var pk_package = new Pk.Package ();
@@ -516,20 +516,23 @@ public class AppCenterCore.Client : Object {
                     unowned string pkg_name = pk_package.get_name ();
                     var package = package_list[pkg_name];
                     if (package == null) {
-                        package = os_updates;
-
                         var pkgnames = os_updates.component.pkgnames;
                         pkgnames += pkg_name;
                         os_updates.component.pkgnames = pkgnames;
-                    }
 
-                    package.change_information.changes.add (pk_package);
-                    package.change_information.details.add (pk_detail);
-                    package.update_state ();
+                        os_updates.change_information.changes.add (pk_package);
+                        os_updates.change_information.details.add (pk_detail);
+                    } else {
+                        package.change_information.changes.add (pk_package);
+                        package.change_information.details.add (pk_detail);
+                        package.update_state ();
+                    }
                 } catch (Error e) {
                     critical (e.message);
                 }
             });
+
+            os_updates.update_state();
         } catch (Error e) {
             critical (e.message);
         }
