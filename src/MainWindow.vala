@@ -36,6 +36,7 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
     private Homepage homepage;
     private Views.SearchView search_view;
     private Gtk.Button return_button;
+    private Gtk.Button repos_button;
     private ulong task_finished_connection = 0U;
     private Gee.LinkedList<string> return_button_history;
     private Granite.Widgets.AlertView network_alert_view;
@@ -169,11 +170,33 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
 
         spinner = new Gtk.Spinner ();
 
+        repos_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        repos_button.tooltip_text = _("Edit Software Sources…");
+        repos_button.clicked.connect (() => {
+            try {
+                string[] args = {
+                  "/usr/lib/repoman/repoman.pkexec"
+                };
+                Process.spawn_async (
+                    null,
+                    args,
+                    null,
+                    SpawnFlags.SEARCH_PATH,
+                    null,
+                    null
+                );
+            } catch (Error e) {
+                warning (e.message);
+            }
+        });
+
+
         /* HeaderBar */
         headerbar = new Gtk.HeaderBar ();
         headerbar.show_close_button = true;
         headerbar.set_custom_title (custom_title_stack);
         headerbar.pack_start (return_button);
+        headerbar.pack_end (repos_button);
         headerbar.pack_end (search_entry);
         headerbar.pack_end (spinner);
 
