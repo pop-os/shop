@@ -51,6 +51,14 @@ public class AppCenterCore.Client : Object {
     private GLib.DateTime last_action = null;
 
     private uint updates_number = 0U;
+    public uint number_updates {
+        public get {
+            return updates_number;
+        }
+        private set {
+            updates_number = value;
+        }
+    }
     private uint update_cache_timeout_id = 0;
     private bool refresh_in_progress = false;
 

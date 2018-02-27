@@ -309,3 +309,8 @@
     background-color: #93a1a1;
     color: #252e32;
 }
+
+.update-available {
+    /*color: #3f975e;*/
+    color: #faa41a;
+}
