@@ -98,7 +98,7 @@ public class AppCenter.App : Granite.Application {
         search_provider = new SearchProvider ();
     }
 
-    public override void open (File[] files, string hint) {d
+    public override void open (File[] files, string hint) {
         activate ();
 
         var file = files[0];
