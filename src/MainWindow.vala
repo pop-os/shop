@@ -25,17 +25,30 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
         }
     }
 
+    public bool updates {
+        set {
+            if (value) {
+                set_widget_visibility (update_indicator, true);
+            } else {
+                set_widget_visibility (update_indicator, false);
+            }
+        }
+    }
+
     private Gtk.Revealer view_mode_revealer;
     private Gtk.Stack custom_title_stack;
+    private Gtk.Grid custom_title_full;
     private Gtk.Label homepage_header;
     private Granite.Widgets.ModeButton view_mode;
     private Gtk.HeaderBar headerbar;
     private Gtk.Stack stack;
+    private Gtk.Image update_indicator;
     private Gtk.SearchEntry search_entry;
     private Gtk.Spinner spinner;
     private Homepage homepage;
     private Views.SearchView search_view;
     private Gtk.Button return_button;
+    private Gtk.Button repos_button;
     private ulong task_finished_connection = 0U;
     private Gee.LinkedList<string> return_button_history;
     private Granite.Widgets.AlertView network_alert_view;
@@ -132,6 +145,11 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
             working = client.task_count > 0;
         });
 
+        //has_updates = client.updates_available;
+        client.notify["number_updates"].connect (() => {
+            updates = client.number_updates > 0;
+        });
+
         show.connect (on_view_mode_changed);
     }
 
@@ -149,7 +167,7 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
         view_mode = new Granite.Widgets.ModeButton ();
         view_mode.margin = 1;
         homepage_view_id = view_mode.append_text (_("Home"));
-        installed_view_id = view_mode.append_text (C_("view", "Updates"));
+        installed_view_id = view_mode.append_text (C_("view", "Installed"));
 
         view_mode_revealer = new Gtk.Revealer ();
         view_mode_revealer.reveal_child = true;
@@ -164,16 +182,49 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
         custom_title_stack.add (homepage_header);
         custom_title_stack.set_visible_child (view_mode_revealer);
 
+        update_indicator = new Gtk.Image.from_icon_name ("software-update-available-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        update_indicator.pixel_size = 8;
+        //update_indicator.get_style_context ().add_class ("update-available");
+        update_indicator.margin_left = 3;
+        update_indicator.margin_right= 6;
+
+        custom_title_full = new Gtk.Grid ();
+        custom_title_full.attach (custom_title_stack, 0, 0, 1, 1);
+        custom_title_full.attach (update_indicator, 1, 0, 1, 1);
+
         search_entry = new Gtk.SearchEntry ();
         search_entry.placeholder_text = _("Search Apps");
 
         spinner = new Gtk.Spinner ();
 
+        repos_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        repos_button.tooltip_text = _("Edit Software Sources…");
+        repos_button.clicked.connect (() => {
+            try {
+                string[] args = {
+                  "/usr/lib/repoman/repoman.pkexec"
+                };
+                Process.spawn_async (
+                    null,
+                    args,
+                    null,
+                    SpawnFlags.SEARCH_PATH,
+                    null,
+                    null
+                );
+            } catch (Error e) {
+                warning (e.message);
+            }
+        });
+
+        set_widget_visibility (update_indicator, false);
+
         /* HeaderBar */
         headerbar = new Gtk.HeaderBar ();
         headerbar.show_close_button = true;
-        headerbar.set_custom_title (custom_title_stack);
+        headerbar.set_custom_title (custom_title_full);
         headerbar.pack_start (return_button);
+        headerbar.pack_end (repos_button);
         headerbar.pack_end (search_entry);
         headerbar.pack_end (spinner);
 
