@@ -15,6 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+.pop-banner {
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image:
+        -gtk-scaled(url("resource:///io/elementary/appcenter/pop-banner.png")),
+        linear-gradient(#003e6c 6%, #f4d3d6 52%, #abdcdc);
+    color: #fff;
+}
+
+.pop-banner label:first-child {
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.15em;
+}
+
+.pop-banner label:last-child {
+    font-size: 32px;
+    font-weight: 200;
+    font-style: italic;
+    letter-spacing: 0.15em;
+}
+
 .badge {
     background-image:
         linear-gradient(

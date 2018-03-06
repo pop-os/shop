@@ -52,15 +52,34 @@ namespace AppCenter {
             switcher_revealer.set_transition_duration (Widgets.Banner.TRANSITION_DURATION_MILLISECONDS);
             switcher_revealer.add (switcher);
 
-            newest_banner = new Widgets.Banner (switcher);
-            newest_banner.get_style_context ().add_class ("home");
-            newest_banner.margin = 12;
-            newest_banner.clicked.connect (() => {
-                var package = newest_banner.get_package ();
-                if (package != null) {
-                    show_package (package);
-                }
-            });
+            var pop_banner_copy_1 = new Gtk.Label (_("EXPLORE YOUR HORIZONS AND"));
+            pop_banner_copy_1.expand = false;
+            pop_banner_copy_1.halign = Gtk.Align.START;
+            pop_banner_copy_1.margin_start = 48;
+            pop_banner_copy_1.margin_top = 38;
+            pop_banner_copy_1.yalign = 0;
+
+            // FIXME: For some reason this isn't working right. Toggling it in
+            // the inspector fixes the alignment.
+            pop_banner_copy_1.vexpand = false;
+
+            var pop_banner_copy_2 = new Gtk.Label (_("UNLEASH YOUR POTENTIAL"));
+            pop_banner_copy_2.halign = Gtk.Align.START;
+            pop_banner_copy_2.margin_start = 48;
+            pop_banner_copy_2.yalign = 0;
+
+            var pop_banner_copy_area = new Gtk.Grid ();
+            pop_banner_copy_area.halign = Gtk.Align.CENTER;
+            pop_banner_copy_area.hexpand = true;
+            pop_banner_copy_area.width_request = 750;
+            pop_banner_copy_area.attach (pop_banner_copy_1, 0, 0, 1, 1);
+            pop_banner_copy_area.attach (pop_banner_copy_2, 0, 1, 1, 1);
+
+            var pop_banner = new Gtk.Grid ();
+            pop_banner.height_request = 300;
+            pop_banner.hexpand = true;
+            pop_banner.get_style_context ().add_class ("pop-banner");
+            pop_banner.attach (pop_banner_copy_area, 0, 0, 1, 1);
 
             var recently_updated_label = new Gtk.Label (_("Recently Updated"));
             recently_updated_label.get_style_context ().add_class ("h4");
@@ -94,25 +113,27 @@ namespace AppCenter {
             var trending_revealer = new Gtk.Revealer ();
             trending_revealer.add (trending_grid );
 
-            var categories_label = new Gtk.Label (_("Categories"));
-            categories_label.get_style_context ().add_class ("h4");
-            categories_label.xalign = 0;
-            categories_label.margin_start = 12;
-            categories_label.margin_top = 24;
+            // var categories_label = new Gtk.Label (_("Categories"));
+            // categories_label.get_style_context ().add_class ("h4");
+            // categories_label.xalign = 0;
+            // categories_label.margin_start = 12;
+            // categories_label.margin_top = 24;
 
             category_flow = new Widgets.CategoryFlowBox ();
+            category_flow.margin = 12;
             category_flow.valign = Gtk.Align.START;
 
+            // NOTE: The Categories label is not being attached for now, since
+            // we don't utilize the Trending or Recently Updated sections in 
+            // Pop! However, we expect to bring them back in the form of
+            // Pop!_Picks or something, so I haven't removed the code just yet.
+
             var grid = new Gtk.Grid ();
-            grid.margin = 12;
-            /*
-            grid.attach (newest_banner, 0, 0, 1, 1);
-            grid.attach (switcher_revealer, 0, 1, 1, 1);
+            grid.attach (pop_banner, 0, 0, 1, 1);
             grid.attach (trending_revealer, 0, 2, 1, 1);
             grid.attach (recently_updated_revealer, 0, 3, 1, 1);
-            grid.attach (categories_label, 0, 4, 1, 1);
-            */
-            grid.attach (category_flow, 0, 0, 1, 1);
+            // grid.attach (categories_label, 0, 4, 1, 1);
+            grid.attach (category_flow, 0, 5, 1, 1);
 
             category_scrolled = new Gtk.ScrolledWindow (null, null);
             category_scrolled.add (grid);
