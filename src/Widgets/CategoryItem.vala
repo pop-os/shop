@@ -60,6 +60,8 @@ public class AppCenter.Widgets.CategoryItem : Gtk.FlowBoxChild {
         themed_grid.margin = 6;
 
         child = themed_grid;
+        can_focus = true;
+        add_events(Gdk.EventMask.FOCUS_CHANGE_MASK);
 
         tooltip_text = app_category.summary ?? "";
 

@@ -270,7 +270,7 @@ namespace AppCenter {
             package.action_cancellable.cancel ();
         }
 
-        private void launch_package_app () {
+        public void launch_package_app () {
             try {
                 package.launch ();
             } catch (Error e) {
@@ -278,18 +278,20 @@ namespace AppCenter {
             }
         }
 
-        private async void action_clicked () {
-             if (package.update_available) {
-                 yield package.update ();
+        public async void action_clicked () {
+            if (package.update_available) {
+                yield package.update ();
+            } else if (package.installed) {
+                yield uninstall_clicked ();
             } else if (yield package.install ()) {
-                 // Add this app to the Installed Apps View
-                 MainWindow.installed_view.add_app.begin (package);
+                package.was_uninstalled = false;
+                MainWindow.installed_view.add_app.begin (package);
             }
         }
 
         private async void uninstall_clicked () {
             if (yield package.uninstall ()) {
-                // Remove this app from the Installed Apps View
+                package.was_uninstalled = true;
                 MainWindow.installed_view.remove_app.begin (package);
             }
         }

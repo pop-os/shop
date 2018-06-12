@@ -88,6 +88,13 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
             return false;
         });
 
+        key_press_event.connect ((event) => {
+            if (stack.visible_child == homepage) {
+                homepage.key_press_event (event);
+            }
+            return true;
+        });
+
         search_entry.search_changed.connect (() => trigger_search ());
 
         view_mode.notify["selected"].connect (on_view_mode_changed);

@@ -37,6 +37,7 @@ namespace AppCenter.Views {
         private Gtk.Stack screenshot_stack;
         private Gtk.TextView app_description;
         private Widgets.Switcher screenshot_switcher;
+        private Gtk.ScrolledWindow scrolled;
 
         public AppInfoView (AppCenterCore.Package package) {
             Object (package: package);
@@ -323,7 +324,7 @@ namespace AppCenter.Views {
                 }
             }
 
-            var scrolled = new Gtk.ScrolledWindow (null, null);
+            scrolled = new Gtk.ScrolledWindow (null, null);
             scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;
             scrolled.expand = true;
             scrolled.add (grid);
@@ -381,6 +382,10 @@ namespace AppCenter.Views {
                     });
                 });
             }
+        }
+
+        public void scroll (Gtk.ScrollType scroll_type) {
+            scrolled.scroll_child (scroll_type, false);
         }
 
         protected override void update_state (bool first_update = false) {
@@ -625,4 +630,3 @@ namespace AppCenter.Views {
         }
     }
 }
-
