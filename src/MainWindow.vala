@@ -71,7 +71,6 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
         }
 
         view_mode.selected = homepage_view_id;
-        search_entry.grab_focus_without_selecting ();
 
         var go_back = new SimpleAction ("go-back", null);
         go_back.activate.connect (view_return);
@@ -88,18 +87,24 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
             return false;
         });
 
+        key_press_event.connect ((event) => {
+            if (search_entry.has_focus) {
+                if (event.keyval == Gdk.Key.Escape) {
+                    search_entry.text = "";
+                } else if (event.keyval == Gdk.Key.Tab) {
+                    search_entry.has_focus = false;
+                }
+            } else if (event.state == Gdk.ModifierType.CONTROL_MASK && event.keyval == 'f') {
+                search_entry.has_focus = true;
+            } else if (stack.visible_child == homepage) {
+                return homepage.key_press_event (event);
+            }
+            return false;
+        });
+
         search_entry.search_changed.connect (() => trigger_search ());
 
         view_mode.notify["selected"].connect (on_view_mode_changed);
-
-        search_entry.key_press_event.connect ((event) => {
-            if (event.keyval == Gdk.Key.Escape) {
-                search_entry.text = "";
-                return true;
-            }
-
-            return false;
-        });
 
         return_button.clicked.connect (view_return);
 
@@ -348,7 +353,6 @@ public class AppCenter.MainWindow : Gtk.ApplicationWindow {
         }
 
         search_entry.sensitive = allow_search;
-        search_entry.grab_focus_without_selecting ();
     }
 
     private void view_return () {

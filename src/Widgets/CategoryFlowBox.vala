@@ -54,4 +54,18 @@ public class AppCenter.Widgets.CategoryFlowBox : Gtk.FlowBox {
 
         return item;
     }
+
+    public Widgets.CategoryItem? get_focused (out int children, out int position) {
+        position = 0;
+        var total_children = get_children ();
+        children = (int) total_children.length ();
+        foreach (var widget in total_children) {
+            if (widget.has_focus) {
+                return (Widgets.CategoryItem) widget;
+            }
+            position += 1;
+        }
+
+        return null;
+    }
 }

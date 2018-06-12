@@ -29,9 +29,10 @@ namespace AppCenter {
         private const int HOMEPAGE_MARGIN = 12;
         private const int LABEL_MARGIN = 10;
 
-        private Gtk.FlowBox category_flow;
+        private Widgets.CategoryFlowBox category_flow;
         private Gtk.ScrolledWindow category_scrolled;
         private string current_category;
+        private weak Widgets.PackageRow? active_child;
 
         public bool viewing_package { get; private set; default = false; }
 
@@ -165,6 +166,128 @@ namespace AppCenter {
             });
 
             featured_carousel.package_activated.connect (show_package);
+
+            key_press_event.connect((event) => {
+                if (visible_child != category_scrolled) {
+                    if (viewing_package) {
+                        return navigate_app_info (event.keyval);
+                    }
+
+                    return navigate_application_list (event.keyval);
+                }
+
+                switch (event.keyval) {
+                    case Gdk.Key.Return:
+                        int children = 0;;
+                        int position = 0;
+                        Widgets.CategoryItem? item = category_flow.get_focused (out children, out position);
+                        if (item != null) {
+                            currently_viewed_category = item.app_category;
+                            show_app_list_for_category (item.app_category);
+                        }
+
+                        return true;
+                }
+
+                return false;
+            });
+        }
+
+        private bool navigate_application_list (uint keyval) {
+            weak Views.AppListView? child = (Views.AppListView?) get_child_by_name (current_category);
+            if (child == null) {
+                return false;
+            }
+
+            // -1 means unset, 0 or above means that item has focus.
+            int selected = -1;
+
+            active_child = (Widgets.PackageRow?) child.list_box.get_selected_row ();
+            if (active_child != null) {
+                selected = active_child.get_index ();
+            }
+
+            switch (keyval) {
+                case Gdk.Key.Up:
+                case Gdk.Key.Down:
+                case Gdk.Key.Left:
+                case Gdk.Key.Right:
+                    if (selected == -1) {
+                        active_child = (Widgets.PackageRow?) child.list_box.get_row_at_index (0);
+                        child.list_box.select_row (active_child);
+                        active_child.grab_focus ();
+                        return true;
+                    }
+
+                    break;
+                case Gdk.Key.Return:
+                    if (selected != -1) {
+                        var package = active_child.get_package ();
+                        if (package != null) {
+                            child.show_app (package);
+                        }
+                    }
+
+                    break;
+                case Gdk.Key.BackSpace:
+                    return_clicked ();
+
+                    return true;
+                case Gdk.Key.space:
+                    if (selected == -1) {
+                        active_child = (Widgets.PackageRow?) child.list_box.get_row_at_index (0);
+                    } else {
+                        var tmp = (Widgets.PackageRow?) child.list_box.get_row_at_index (selected);
+                        if (tmp != null) {
+                            active_child = tmp;
+                        }
+                    }
+
+                    if (active_child != null) {
+                        active_child.action_clicked ();
+                    }
+
+                    break;
+            }
+
+            return false;
+        }
+
+        private bool navigate_app_info (uint keyval) {
+            switch (keyval) {
+                case Gdk.Key.BackSpace:
+                    return_clicked ();
+
+                    break;
+                case Gdk.Key.space:
+                    if (active_child != null) {
+                        active_child.action_clicked ();
+                    }
+
+                    break;
+                case Gdk.Key.Down:
+                    var view = (Views.AppInfoView) visible_child;
+                    view.scroll (Gtk.ScrollType.STEP_DOWN);
+
+                    break;
+                case Gdk.Key.Up:
+                    var view = (Views.AppInfoView) visible_child;
+                    view.scroll (Gtk.ScrollType.STEP_UP);
+
+                    break;
+                case Gdk.Key.Page_Down:
+                    var view = (Views.AppInfoView) visible_child;
+                    view.scroll (Gtk.ScrollType.PAGE_DOWN);
+
+                    break;
+                case Gdk.Key.Page_Up:
+                    var view = (Views.AppInfoView) visible_child;
+                    view.scroll (Gtk.ScrollType.PAGE_UP);
+
+                    break;
+            }
+
+            return true;
         }
 
         public void shuffle_featured_apps () {
@@ -191,6 +314,7 @@ namespace AppCenter {
         }
 
         public override void return_clicked () {
+            active_child = null;
             if (previous_package != null) {
                 show_package (previous_package);
                 if (current_category != null) {

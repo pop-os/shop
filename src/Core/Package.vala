@@ -56,8 +56,14 @@ public class AppCenterCore.Package : Object {
         }
     }
 
+    public bool was_uninstalled = false;
+
     public bool installed {
         get {
+            if (was_uninstalled) {
+                return false;
+            }
+            
             if (!installed_packages.is_empty) {
                 return true;
             }

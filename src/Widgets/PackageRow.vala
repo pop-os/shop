@@ -69,5 +69,13 @@ namespace AppCenter.Widgets {
         public bool has_package () {
             return true;
         }
+
+        public void action_clicked () {
+            grid.action_clicked ();
+        }
+
+        public void launch_package_app () {
+            grid.launch_package_app ();
+        }
     }
 }

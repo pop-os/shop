@@ -22,7 +22,7 @@ namespace AppCenter {
     public abstract class AbstractAppList : Gtk.Box {
         public signal void show_app (AppCenterCore.Package package);
         protected Gtk.ScrolledWindow scrolled;
-        protected Gtk.ListBox list_box;
+        public Gtk.ListBox list_box;
         protected Gtk.SizeGroup action_button_group;
         protected Gtk.SizeGroup info_grid_group;
         protected uint packages_changing = 0;
@@ -39,7 +39,7 @@ namespace AppCenter {
             list_box.expand = true;
             list_box.activate_on_single_click = true;
             list_box.set_placeholder (alert_view);
-            list_box.set_selection_mode (Gtk.SelectionMode.NONE);
+            list_box.set_selection_mode (Gtk.SelectionMode.SINGLE);
             list_box.set_sort_func ((Gtk.ListBoxSortFunc) package_row_compare);
             list_box.row_activated.connect ((r) => {
                 var row = (Widgets.AppListRow)r;
