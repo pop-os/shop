@@ -170,8 +170,7 @@ namespace AppCenter {
             key_press_event.connect((event) => {
                 if (visible_child != category_scrolled) {
                     if (viewing_package) {
-                        navigate_app_info (event.keyval);
-                        return false;
+                        return navigate_app_info (event.keyval);
                     }
 
                     return navigate_application_list (event.keyval);
@@ -187,7 +186,7 @@ namespace AppCenter {
                             show_app_list_for_category (item.app_category);
                         }
 
-                        break;
+                        return true;
                 }
 
                 return false;
@@ -233,7 +232,7 @@ namespace AppCenter {
                 case Gdk.Key.BackSpace:
                     return_clicked ();
 
-                    break;
+                    return true;
                 case Gdk.Key.space:
                     if (selected == -1) {
                         active_child = (Widgets.PackageRow?) child.list_box.get_row_at_index (0);
@@ -254,7 +253,7 @@ namespace AppCenter {
             return false;
         }
 
-        private void navigate_app_info (uint keyval) {
+        private bool navigate_app_info (uint keyval) {
             switch (keyval) {
                 case Gdk.Key.BackSpace:
                     return_clicked ();
@@ -287,6 +286,8 @@ namespace AppCenter {
 
                     break;
             }
+
+            return true;
         }
 
         public void shuffle_featured_apps () {
