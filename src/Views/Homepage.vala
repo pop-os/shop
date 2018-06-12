@@ -174,42 +174,14 @@ namespace AppCenter {
                         return false;
                     }
 
-                    navigate_application_list (event.keyval);
-                    return false;
+                    return navigate_application_list (event.keyval);
                 }
 
-                int children = 0;;
-                int position = 0;
-                int children_per_line = (int) category_flow.get_max_children_per_line ();
-                Widgets.CategoryItem? item = category_flow.get_focused (out children, out position);
                 switch (event.keyval) {
-                    case Gdk.Key.Down:
-                    case Gdk.Key.Right:
-                        if (item == null) {
-                            item = (Widgets.CategoryItem?) category_flow.get_child_at_index (0);
-                        } else if (position < children) {
-                            item = (Widgets.CategoryItem?) category_flow.get_child_at_index (position + 1);
-                        }
-
-                        if (item != null) {
-                            item.has_focus = true;
-                        }
-
-                        break;
-                    case Gdk.Key.Left:
-                    case Gdk.Key.Up:
-                        if (item == null) {
-                            item = (Widgets.CategoryItem?) category_flow.get_child_at_index (0);
-                        } else if (position > 0) {
-                            item = (Widgets.CategoryItem?) category_flow.get_child_at_index (position - 1);
-                        }
-
-                        if (item != null) {
-                            item.has_focus = true;
-                        }
-
-                        break;
                     case Gdk.Key.Return:
+                        int children = 0;;
+                        int position = 0;
+                        Widgets.CategoryItem? item = category_flow.get_focused (out children, out position);
                         if (item != null) {
                             currently_viewed_category = item.app_category;
                             show_app_list_for_category (item.app_category);
@@ -222,10 +194,10 @@ namespace AppCenter {
             });
         }
 
-        private void navigate_application_list (uint keyval) {
+        private bool navigate_application_list (uint keyval) {
             weak Views.AppListView? child = (Views.AppListView?) get_child_by_name (current_category);
             if (child == null) {
-                return;
+                return false;
             }
 
             // -1 means unset, 0 or above means that item has focus.
@@ -237,34 +209,16 @@ namespace AppCenter {
             }
 
             switch (keyval) {
+                case Gdk.Key.Up:
                 case Gdk.Key.Down:
+                case Gdk.Key.Left:
                 case Gdk.Key.Right:
                     if (selected == -1) {
                         active_child = (Widgets.PackageRow?) child.list_box.get_row_at_index (0);
-                    } else {
-                        var tmp = (Widgets.PackageRow?) child.list_box.get_row_at_index (selected + 1);
-                        if (tmp != null) {
-                            active_child = tmp;
-                        }
+                        child.list_box.select_row (active_child);
+                        active_child.grab_focus ();
+                        return true;
                     }
-
-                    child.list_box.select_row (active_child);
-                    active_child.grab_focus ();
-
-                    break;
-                case Gdk.Key.Left:
-                case Gdk.Key.Up:
-                    if (selected == -1) {
-                        active_child = (Widgets.PackageRow?) child.list_box.get_row_at_index (0);
-                    } else {
-                        var tmp = (Widgets.PackageRow?) child.list_box.get_row_at_index (selected - 1);
-                        if (tmp != null) {
-                            active_child = tmp;
-                        }
-                    }
-
-                    child.list_box.select_row (active_child);
-                    active_child.grab_focus ();
 
                     break;
                 case Gdk.Key.Return:
@@ -296,6 +250,8 @@ namespace AppCenter {
 
                     break;
             }
+
+            return false;
         }
 
         private void navigate_app_info (uint keyval) {
@@ -307,17 +263,6 @@ namespace AppCenter {
                 case Gdk.Key.space:
                     if (active_child != null) {
                         active_child.action_clicked ();
-                    }
-
-                    break;
-                case Gdk.Key.o:
-                    if (active_child != null) {
-                        var package = active_child.get_package ();
-                        if (package != null) {
-                            if (package.installed) {
-                                active_child.launch_package_app ();
-                            }
-                        }
                     }
 
                     break;
