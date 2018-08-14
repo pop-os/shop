@@ -14,7 +14,7 @@
 * with this program. If not, see http://www.gnu.org/licenses/.
 */
 
-public class AppCenter.App : Granite.Application {
+public class AppCenter.App : Gtk.Application {
     public const OptionEntry[] APPCENTER_OPTIONS =  {
         { "show-updates", 'u', 0, OptionArg.NONE, out show_updates,
         "Display the Installed Panel", null},
@@ -53,15 +53,6 @@ public class AppCenter.App : Granite.Application {
         Intl.setlocale (LocaleCategory.ALL, "");
         Intl.textdomain (Build.GETTEXT_PACKAGE);
 
-        program_name = _(Build.APP_NAME);
-
-        build_data_dir = Build.DATADIR;
-        build_pkg_data_dir = Build.PKGDATADIR;
-        build_release_name = Build.RELEASE_NAME;
-        build_version = Build.VERSION;
-        build_version_info = Build.VERSION_INFO;
-
-        app_launcher = Build.DESKTOP_FILE;
         add_main_option_entries (APPCENTER_OPTIONS);
 
         var quit_action = new SimpleAction ("quit", null);
@@ -72,7 +63,7 @@ public class AppCenter.App : Granite.Application {
         });
 
         var show_updates_action = new SimpleAction ("show-updates", null);
-        show_updates_action.activate.connect(() => {
+        show_updates_action.activate.connect (() => {
             silent = false;
             show_updates = true;
             activate ();
@@ -84,7 +75,7 @@ public class AppCenter.App : Granite.Application {
         client.updates_available.connect (on_updates_available);
 
         if (AppInfo.get_default_for_uri_scheme ("appstream") == null) {
-            var appinfo = new DesktopAppInfo (app_launcher);
+            var appinfo = new DesktopAppInfo (application_id + ".desktop");
             try {
                 appinfo.set_as_default_for_type ("x-scheme-handler/appstream");
             } catch (Error e) {
@@ -94,7 +85,7 @@ public class AppCenter.App : Granite.Application {
 
         add_action (quit_action);
         add_action (show_updates_action);
-        add_accelerator ("<Control>q", "app.quit", null);
+        set_accels_for_action ("app.quit", {"<Control>q"});
 
         search_provider = new SearchProvider ();
     }
@@ -104,6 +95,17 @@ public class AppCenter.App : Granite.Application {
 
         var file = files[0];
         if (file == null) {
+            return;
+        }
+
+        if (file.has_uri_scheme ("type")) {
+            string? mimetype = mimetype_from_file (file);
+            if (mimetype != null) {
+                main_window.search (mimetype, true);
+            } else {
+                info (_("Could not parse mimetype %s").printf (mimetype));
+            }
+
             return;
         }
 
@@ -286,7 +288,9 @@ public class AppCenter.App : Granite.Application {
 
     public void on_updates_available () {
         var client = AppCenterCore.Client.get_default ();
-        main_window.show_update_badge (client.updates_number);
+        if (main_window != null) {
+            main_window.show_update_badge (client.updates_number);
+        }
     }
 
     private void on_cache_update_failed (Error error) {
@@ -313,6 +317,16 @@ public class AppCenter.App : Granite.Application {
         }
 
         return msg;
+    }
+
+    private static string? mimetype_from_file (File file) {
+        string uri = file.get_uri ();
+        string[] tokens = uri.split (Path.DIR_SEPARATOR_S);
+        if (tokens.length < 2) {
+            return null;
+        }
+
+        return "%s/%s".printf (tokens[tokens.length - 2], tokens[tokens.length - 1]);
     }
 }
 

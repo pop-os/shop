@@ -11,6 +11,7 @@ vala_precompile(VALA_C ${EXEC_NAME}
     MainWindow.vala
     Settings.vala
     SuspendControl.vala
+    Utils.vala
     Dialogs/RestartDialog.vala
     Dialogs/StripeDialog.vala
     Dialogs/UpdateFailDialog.vala

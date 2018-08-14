@@ -407,6 +407,18 @@ public class AppCenterCore.Client : Object {
         return apps;
     }
 
+    public Gee.Collection<AppCenterCore.Package> search_applications_mime (string query) {
+        var apps = new Gee.TreeSet<AppCenterCore.Package> ();
+        foreach (var package in package_list.values) {
+            weak AppStream.Provided? provided = package.component.get_provided_for_kind (AppStream.ProvidedKind.MIMETYPE);
+            if (provided != null && provided.has_item (query)) {
+                apps.add (package);
+            }
+        }
+
+        return apps;
+    }
+
     public Pk.Package? get_app_package (string application, Pk.Bitfield additional_filters = 0) throws GLib.Error {
         task_count++;
 
@@ -465,7 +477,7 @@ public class AppCenterCore.Client : Object {
             }
 
 #if HAVE_UNITY
-            var launcher_entry = Unity.LauncherEntry.get_for_desktop_file (Build.DESKTOP_FILE);
+            var launcher_entry = Unity.LauncherEntry.get_for_desktop_file (GLib.Application.get_default ().application_id + ".desktop");
             launcher_entry.count = updates_number;
             launcher_entry.count_visible = updates_number != 0U;
 #endif
@@ -488,7 +500,7 @@ public class AppCenterCore.Client : Object {
                 }
             });
 
-            if (os_count == 0){
+            if (os_count == 0) {
                 var latest_version = _("No components with updates");
                 os_updates.latest_version = latest_version;
                 os_updates.description = GLib.Markup.printf_escaped ("<p>%s</p>\n", latest_version);

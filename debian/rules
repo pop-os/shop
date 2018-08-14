@@ -9,11 +9,13 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+export CCACHE_DISABLE=1
+
 %:
 	dh $@
 
 override_dh_install:
-	dh_install --fail-missing
+	dh_install --fail-missing --exclude=appcenter.blacklist --exclude=io.elementary.appcenter.service
 
 override_dh_strip:
-	dh_strip --dbg-package=pop-shop-dbg
+	dh_strip --dbgsym-migration='pop-shop-dbg (<< 0.2.9)'

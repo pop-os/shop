@@ -2,7 +2,7 @@ Format: http://dep.debian.net/deps/dep5
 Upstream-Name: pop-shop
 Source: https://github.com/pop/shop
 
-Files: src/* debian/*
+Files: *
 Copyright: 2015 Corentin Noël <corentin@elementary.io>
 License: GPL-3.0+
 

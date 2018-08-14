@@ -38,7 +38,7 @@ public class AppCenter.Widgets.Carousel : Gtk.FlowBox {
         add (carousel_item);
         show_all ();
     }
-    
+
     private void on_child_activated (Gtk.FlowBoxChild child) {
         if (child is Widgets.CarouselItem) {
             var package = ((Widgets.CarouselItem)child).package;
@@ -46,3 +46,4 @@ public class AppCenter.Widgets.Carousel : Gtk.FlowBox {
         }
     }
 }
+

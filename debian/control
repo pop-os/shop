@@ -2,11 +2,9 @@ Source: pop-shop
 Section: utils
 Maintainer: Jeremy Soller <jeremy@system76.com>
 Build-Depends: appstream,
-               cmake,
-               cmake-elementary,
-               debhelper (>= 9),
+               debhelper (>= 10.5.1),
                desktop-file-utils,
-               intltool,
+               gettext,
                libappstream-dev (>= 0.10),
                libgee-0.8-dev,
                libgranite-dev,
@@ -17,30 +15,27 @@ Build-Depends: appstream,
                libunity-dev,
                libxml2-dev,
                libxml2-utils,
+               meson,
                valac (>= 0.26)
-Standards-Version: 3.9.6
+Standards-Version: 4.1.4
 Homepage: https://github.com/pop/shop
 
 Package: pop-shop
 Architecture: any
 Priority: extra
-Depends: appstream, packagekit, repoman, ${misc:Depends}, ${shlibs:Depends}
+Depends: appstream (>= 0.12),
+         apt-config-icons,
+         apt-config-icons-hidpi,
+         apt-config-icons-large,
+         apt-config-icons-large-hidpi,
+         packagekit,
+         repoman,
+         ${misc:Depends},
+         ${shlibs:Depends}
 Recommends: appstream-data-pop
 Description: Fast application store
  Install, update and remove apps with ease.
  Helps independent developers.
-
-Package: pop-shop-dbg
-Architecture: any
-Section: debug
-Priority: extra
-Depends: pop-shop (= ${binary:Version}), ${misc:Depends}
-Enhances: pop-shop
-Description: Fast application store (debugging symbols)
- Install, update and remove apps with ease.
- Helps independent developers.
- .
- This package contains debugging symbols for pop-shop.
 
 Package: pop-shop-casper
 Architecture: any

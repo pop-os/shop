@@ -38,6 +38,9 @@ namespace AppCenter {
         public AppStream.Category currently_viewed_category;
         public MainWindow main_window { get; construct; }
         public Gtk.Revealer switcher_revealer;
+        private Gtk.Revealer featured_revealer;
+        public Widgets.Carousel featured_carousel;
+        private AppCenterCore.Package[] featured_apps;
 
         public Homepage (MainWindow main_window) {
             Object (main_window: main_window);
@@ -88,7 +91,7 @@ namespace AppCenter {
             featured_label.xalign = 0;
             featured_label.margin_start = LABEL_MARGIN;
 
-            var featured_carousel = new Widgets.Carousel ();
+            featured_carousel = new Widgets.Carousel ();
 
             var featured_grid = new Gtk.Grid ();
             featured_grid.margin = HOMEPAGE_MARGIN;
@@ -96,11 +99,11 @@ namespace AppCenter {
             featured_grid.attach (featured_label, 0, 0, 1, 1);
             featured_grid.attach (featured_carousel, 0, 1, 1, 1);
 
-            var featured_revealer = new Gtk.Revealer ();
+            featured_revealer = new Gtk.Revealer ();
             featured_revealer.add (featured_grid );
 
             var categories_label = new Gtk.Label (_("Categories"));
-            categories_label.get_style_context ().add_class ("h4");
+            categories_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
             categories_label.xalign = 0;
             categories_label.margin_start = HOMEPAGE_MARGIN + LABEL_MARGIN;
             categories_label.margin_top = HOMEPAGE_MARGIN;
@@ -123,33 +126,27 @@ namespace AppCenter {
 
             houston.get_app_ids.begin ("/newest/project", (obj, res) => {
                 var featured_ids = houston.get_app_ids.end (res);
+                Utils.shuffle_array (featured_ids);
                 new Thread<void*> ("update-featured-carousel", () => {
-                    var packages_for_carousel = new Gee.LinkedList<AppCenterCore.Package> ();
-                    foreach (var package in featured_ids) {
-                        if (packages_for_carousel.size >= NUM_PACKAGES_IN_CAROUSEL) {
-                            break;
-                        }
+                    Idle.add (() => {
+                        main_window.homepage_loaded ();
+                        return false;
+                    });
 
+                    featured_apps = {};
+                    foreach (var package in featured_ids) {
                         var candidate = package + ".desktop";
                         var candidate_package = AppCenterCore.Client.get_default ().get_package_for_component_id (candidate);
 
                         if (candidate_package != null) {
                             candidate_package.update_state ();
                             if (candidate_package.state == AppCenterCore.Package.State.NOT_INSTALLED) {
-                                packages_for_carousel.add (candidate_package);
+                                featured_apps += candidate_package;
                             }
                         }
                     }
 
-                    if (!packages_for_carousel.is_empty) {
-                        Idle.add (() => {
-                            foreach (var featured_package in packages_for_carousel) {
-                                featured_carousel.add_package (featured_package);
-                            }
-                            featured_revealer.reveal_child = true;
-                            return false;
-                        });
-                    }
+                    shuffle_featured_apps ();
                     return null;
                 });
             });
@@ -173,6 +170,21 @@ namespace AppCenter {
             });
 
             featured_carousel.package_activated.connect (show_package);
+        }
+
+        public void shuffle_featured_apps () {
+            featured_carousel.get_children ().foreach ((c) => c.destroy ());
+            Utils.shuffle_array (featured_apps);
+
+            if (featured_apps.length != 0) {
+                Idle.add (() => {
+                    for (int i = 0; i < NUM_PACKAGES_IN_CAROUSEL && i < featured_apps.length; i++) {
+                        featured_carousel.add_package (featured_apps[i]);
+                    }
+                    featured_revealer.reveal_child = true;
+                    return false;
+                });
+            }
         }
 
         public override void show_package (AppCenterCore.Package package) {
