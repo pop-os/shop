@@ -58,8 +58,8 @@ if get_option('curated')
     args += '--define=CURATED'
 endif
 
-if get_option('pop')
-    args += '--define=POP_OS'
+if get_option('sharing')
+    args += '--define=SHARING'
 endif
 
 executable(

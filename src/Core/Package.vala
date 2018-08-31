@@ -1,6 +1,6 @@
 // -*- Mode: vala; indent-tabs-mode: nil; tab-width: 4 -*-
 /*-
- * Copyright (c) 2014-2016 elementary LLC. (https://elementary.io)
+ * Copyright (c) 2014–2018 elementary, Inc. (https://elementary.io)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,7 +142,7 @@ public class AppCenterCore.Package : Object {
 
     public bool is_shareable {
         get {
-            return !is_driver && !is_os_updates;
+            return is_native && !is_driver && !is_os_updates;
         }
     }
 
@@ -325,7 +325,14 @@ public class AppCenterCore.Package : Object {
             case State.INSTALLING:
                 return yield client.install_package (this, cb, action_cancellable);
             case State.REMOVING:
-                return yield client.remove_package (this, cb, action_cancellable);
+                var status = yield client.remove_package (this, cb, action_cancellable);
+
+                // Clear the installed packages set on success, else we cannot reinstall.
+                if (Pk.Exit.SUCCESS == status) {
+                    installed_packages.clear ();
+                }
+
+                return status;
             default:
                 return Pk.Exit.UNKNOWN;
         }
@@ -539,6 +546,12 @@ public class AppCenterCore.Package : Object {
         var releases = component.get_releases ();
         if (releases.length < min_releases) {
             return list;
+        }
+
+        for (uint i = 0; i < releases.length; i++) {
+            if (releases[i].get_version () == null) {
+                releases.remove_index (i);
+            }
         }
 
         releases.sort_with_data ((a, b) => {

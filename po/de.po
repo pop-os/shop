@@ -1,10 +1,11 @@
+# Jörg Arnold <j.ar@mailbox.org>, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-15 15:47+0900\n"
-"PO-Revision-Date: 2018-05-16 22:02+0000\n"
-"Last-Translator: Güren Tan Dinga <freakeh@gmx.net>\n"
+"PO-Revision-Date: 2018-08-31 00:04+0000\n"
+"Last-Translator: Jörg Arnold <j.ar@mailbox.org>\n"
 "Language-Team: German <https://weblate.elementary.io/projects/appcenter/"
 "appcenter/de/>\n"
 "Language: de\n"
@@ -12,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.18\n"
+"X-Generator: Weblate 3.0.1\n"
 "X-Launchpad-Export-Date: 2017-03-15 06:27+0000\n"
 
 #. Add "AppCenter" to the translation catalog
@@ -23,7 +24,7 @@ msgstr "AppCenter"
 #: src/Application.vala:106
 #, c-format
 msgid "Could not parse mimetype %s"
-msgstr ""
+msgstr "Konnte MIME-Typ %s nicht analysieren"
 
 #: src/Application.vala:126
 #, c-format
@@ -61,7 +62,7 @@ msgstr "Installiert"
 #: src/MainWindow.vala:177 src/MainWindow.vala:328 src/Views/SearchView.vala:54
 #: src/Views/SearchView.vala:81
 msgid "Search Apps"
-msgstr "Anwendungen suchen"
+msgstr "Suche Apps"
 
 #: src/MainWindow.vala:195
 msgid "Network Is Not Available"
@@ -75,7 +76,7 @@ msgstr ""
 
 #: src/MainWindow.vala:199
 msgid "Network Settings…"
-msgstr "Netzwerkeinstellungen …"
+msgstr "Netzwerkeinstellungen…"
 
 #: src/Core/ChangeInformation.vala:54
 msgid "Starting"
@@ -103,7 +104,7 @@ msgstr "Pakete werden entfernt"
 
 #: src/Core/ChangeInformation.vala:66
 msgid "Downloading"
-msgstr "Herunterladen läuft"
+msgstr "Herunterladen"
 
 #: src/Core/ChangeInformation.vala:68
 msgid "Installing"
@@ -706,7 +707,6 @@ msgid "Twitter"
 msgstr "Twitter"
 
 #: src/Widgets/SharePopover.vala:51
-#, fuzzy
 msgid "Reddit"
 msgstr "Reddit"
 
