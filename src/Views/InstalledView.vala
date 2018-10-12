@@ -44,6 +44,8 @@ public class AppCenter.Views.InstalledView : View {
     }
 
     public override void return_clicked () {
+        remove_visible_package ();
+
         if (previous_package != null) {
             show_package (previous_package);
             subview_entered (C_("view", "Installed"), false, null);
