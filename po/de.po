@@ -726,7 +726,7 @@ msgstr "Kostenlos"
 #: src/Widgets/HumbleButton.vala:108
 #: src/Widgets/AppContainers/AbstractAppContainer.vala:303
 msgid "Install"
-msgstr "Installiert"
+msgstr "Installieren"
 
 #. / This amount will be US Dollars. Some languages might need a "$%dUSD"
 #: src/Widgets/HumbleButton.vala:142
