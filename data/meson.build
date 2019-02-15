@@ -1,7 +1,7 @@
 # Daemon Desktop file (for GNOME Session autostart)
 configure_file(
     input: meson.project_name() + '-daemon.desktop.in',
-    output: '@BASENAME@',
+    output: meson.project_name() + '-daemon.desktop',
     configuration: conf_data,
     install_dir: join_paths(get_option('datadir'), 'applications')
 )
@@ -17,7 +17,7 @@ configure_file(
 # GNOME Shell Search Provider
 configure_file(
     input: meson.project_name() + '.search-provider.ini.in',
-    output: '@BASENAME@',
+    output: meson.project_name() + '.search-provider.ini',
     configuration: conf_data,
     install_dir: join_paths(get_option('datadir'), 'gnome-shell', 'search-providers')
 )
@@ -35,7 +35,7 @@ i18n.merge_file(
 # Desktop File
 desktop_in = configure_file(
     input: meson.project_name() + '.desktop.in.in',
-    output: '@BASENAME@',
+    output: meson.project_name() + '.desktop.in',
     configuration: conf_data
 )
 

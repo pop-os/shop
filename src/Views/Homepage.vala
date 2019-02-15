@@ -38,17 +38,14 @@ namespace AppCenter {
         public bool viewing_package { get; private set; default = false; }
 
         public AppStream.Category currently_viewed_category;
-        public MainWindow main_window { get; construct; }
+#if HOMEPAGE
+        public Widgets.Banner newest_banner;
         public Gtk.Revealer switcher_revealer;
         private Gtk.Revealer featured_revealer;
         public Widgets.Carousel featured_carousel;
         private AppCenterCore.Package[] featured_apps;
 
         private Widgets.Switcher switcher;
-        private Widgets.Carousel recently_updated_carousel;
-        private Widgets.Carousel trending_carousel;
-        private Gtk.Revealer recently_updated_revealer;
-        private Gtk.Revealer trending_revealer;
 
         construct {
             switcher = new Widgets.Switcher ();
@@ -107,26 +104,33 @@ namespace AppCenter {
             var categories_label = new Gtk.Label (_("Categories"));
             categories_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
             categories_label.xalign = 0;
-            categories_label.margin_start = HOMEPAGE_MARGIN + LABEL_MARGIN;
-            categories_label.margin_top = HOMEPAGE_MARGIN;
-
+            categories_label.margin_start = 12;
+            categories_label.margin_top = 24;
+#else
+        construct {
+#endif
             category_flow = new Widgets.CategoryFlowBox ();
             category_flow.margin = HOMEPAGE_MARGIN;
             category_flow.margin_top = 0;
             category_flow.valign = Gtk.Align.START;
 
             var grid = new Gtk.Grid ();
+#if HOMEPAGE
             grid.attach (pop_banner,        0, 0, 1, 1);
             grid.attach (featured_revealer, 0, 1, 1, 1);
             grid.attach (categories_label,  0, 2, 1, 1);
             grid.attach (category_flow,     0, 3, 1, 1);
+#endif
+            grid.attach (category_flow, 0, 5, 1, 1);
 
             category_scrolled = new Gtk.ScrolledWindow (null, null);
             category_scrolled.add (grid);
 
             add (category_scrolled);
 
+#if HOMEPAGE
             refresh_banners ();
+#endif
 
             category_flow.child_activated.connect ((child) => {
                 var item = child as Widgets.CategoryItem;
@@ -163,6 +167,7 @@ namespace AppCenter {
                     }
                 }
 
+#if HOMEPAGE
                 // If the banners weren't populated, try again to populate them
                 if (!featured_revealer.reveal_child) {
                     refresh_banners ();
@@ -180,10 +185,9 @@ namespace AppCenter {
                 Utils.shuffle_array (featured_ids);
                 new Thread<void*> ("update-featured-carousel", () => {
                     Idle.add (() => {
-                        main_window.homepage_loaded ();
+                        page_loaded ();
                         return false;
                     });
-
                     featured_apps = {};
                     foreach (var package in featured_ids) {
                         var candidate = package + ".desktop";
@@ -237,6 +241,10 @@ namespace AppCenter {
                 });
             }
         }
+#else
+            });
+        }
+#endif
 
         public override void show_package (AppCenterCore.Package package) {
             base.show_package (package);
