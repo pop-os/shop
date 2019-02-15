@@ -47,6 +47,8 @@ namespace AppCenter {
 
         private Widgets.Switcher switcher;
 
+        private bool refreshing = false;
+
         construct {
             switcher = new Widgets.Switcher ();
             switcher.halign = Gtk.Align.CENTER;
@@ -178,6 +180,12 @@ namespace AppCenter {
         }
 
         private void refresh_banners () {
+            if (refreshing) {
+                return;
+            }
+
+            refreshing = true;
+
             var houston = AppCenterCore.Houston.get_default ();
 
             houston.get_app_ids.begin ("/newest/project", (obj, res) => {
@@ -202,6 +210,7 @@ namespace AppCenter {
                     }
 
                     shuffle_featured_apps ();
+                    refreshing = false;
                     return null;
                 });
             });
