@@ -164,3 +164,7 @@
     color: #252e32;
 }
 
+flowboxchild grid image,
+row grid image {
+  -gtk-icon-shadow: 0 2px 3px alpha(black, 0.3);
+}
