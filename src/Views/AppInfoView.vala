@@ -266,17 +266,41 @@ namespace AppCenter.Views {
 
             var project_license = package.component.project_license;
             if (project_license != null) {
-                string? license_copy;
-                string? license_url;
+                string? license_copy = null;
+                string? license_url = null;
+
+                // NOTE: Ideally this would be handled in AppStream: https://github.com/ximion/appstream/issues/107
                 if (project_license.has_prefix ("LicenseRef")) {
                     // i.e. `LicenseRef-proprietary=https://example.com`
-                    var split_license = project_license.split_set ("=", 2);
+                    string[] split_license = project_license.split_set ("=", 2);
+                    if (split_license[1] != null) {
+                        license_url = split_license[1];
+                    }
 
-                    var license_type = split_license[0].split_set ("-", 2)[1];
-                    var pretty_license_type = license_type.substring (0, 1).up () + license_type.substring (1);
-
-                    license_copy = _("%s License").printf (pretty_license_type);
-                    license_url = split_license[1];
+                    string license_type = split_license[0].split_set ("-", 2)[1].down ();
+                    switch (license_type) {
+                        case "public-domain":
+                            // TRANSLATORS: See the Wikipedia page
+                            license_copy = _("Public Domain");
+                            if (license_url == null) {
+                                // TRANSLATORS: Replace the link with the version for your language
+                                license_url = _("https://en.wikipedia.org/wiki/Public_domain");
+                            }
+                            break;
+                        case "free":
+                            // TRANSLATORS: Freedom, not price. See the GNU page.
+                            license_copy = _("Free Software");
+                            if (license_url == null) {
+                                // TRANSLATORS: Replace the link with the version for your language
+                                license_url = _("https://www.gnu.org/philosophy/free-sw");
+                            }
+                            break;
+                        case "proprietary":
+                            license_copy = _("Proprietary");
+                            break;
+                        default:
+                            license_copy = _("Unknown License");
+                    }
                 } else {
                     license_copy = project_license;
                     license_url = "https://choosealicense.com/licenses/";
@@ -670,3 +694,4 @@ namespace AppCenter.Views {
         }
     }
 }
+

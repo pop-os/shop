@@ -239,7 +239,8 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         if (components.length == 0) {
             var category_array = new GLib.GenericArray<AppStream.Category> ();
             category_array.add (category);
-            AppStream.utils_sort_components_into_categories (appstream_pool.get_components (), category_array, true);
+            GLib.GenericArray<AppStream.Component> pool_components = appstream_pool.get_components ();
+            AppStream.utils_sort_components_into_categories (pool_components, category_array, true);
             components = category.get_components ();
         }
 
