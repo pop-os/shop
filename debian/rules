@@ -15,7 +15,7 @@ export CCACHE_DISABLE=1
 	dh $@
 
 override_dh_install:
-	dh_install --fail-missing --exclude=appcenter.blacklist --exclude=io.elementary.appcenter.service
+	dh_install --fail-missing
 
 override_dh_strip:
 	dh_strip --dbgsym-migration='pop-shop-dbg (<< 0.2.9)'
