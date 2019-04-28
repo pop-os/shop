@@ -21,8 +21,8 @@
 
 using AppCenterCore;
 
-const int NUM_PACKAGES_IN_BANNER = 5;
-const int NUM_PACKAGES_IN_CAROUSEL = 5;
+const int NUM_PACKAGES_IN_BANNER = 15;
+const int NUM_PACKAGES_IN_CAROUSEL = 15;
 
 namespace AppCenter {
     public class Homepage : View {
