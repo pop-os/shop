@@ -224,13 +224,13 @@
         <content_attribute id="money-purchasing">intense</content_attribute>
         <content_attribute id="money-gambling">none</content_attribute>
     </content_rating>
+    <compulsory_for_desktop>Pop</compulsory_for_desktop>
     <developer_name>System76</developer_name>
     <url type="homepage">https://github.com/pop-os/shop</url>
     <url type="bugtracker">https://github.com/pop-os/shop/issues</url>
     <url type="help">https://elementaryos.stackexchange.com/questions/tagged/appcenter</url>
     <url type="translate">https://l10n.elementary.io/projects/desktop/appcenter</url>
     <update_contact>contact_at_elementary.io</update_contact>
-
     <custom>
         <value key="x-appcenter-color-primary">#665888</value>
     </custom>
