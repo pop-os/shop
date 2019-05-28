@@ -317,15 +317,17 @@ public class AppCenterCore.Package : Object {
                 } else if (component.get_origin () == ELEMENTARY_STABLE_PACKAGE_ORIGIN || component.get_origin () == ELEMENTARY_DAILY_PACKAGE_ORIGIN) {
                     return _("elementary Updates");
                 } else if (component.get_origin ().has_prefix ("ubuntu-")) {
-                    return _("Ubuntu (non-curated)");
+                    return _("Ubuntu (deb)");
+                } else if (component.get_origin () == "pop-artful-extra") {
+                    return _("Pop!_OS (deb)");
                 }
             } else if (backend is FlatpakBackend) {
-                return _("%s (non-curated)").printf (component.get_origin ());
+                return _("%s (flatpak").printf (component.get_origin ());
             } else if (backend is UbuntuDriversBackend) {
                 return _("Ubuntu Drivers");
             }
 
-            return _("Unknown Origin (non-curated)");
+            return _("Other (deb)");
         }
     }
 
