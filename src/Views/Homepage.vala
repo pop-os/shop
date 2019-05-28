@@ -178,7 +178,7 @@ namespace AppCenter {
                 });
             });
 
-            featured_carousel.package_activated.connect (show_package);
+            featured_carousel.package_activated.connect ((package) => show_package (package));
         }
 
         private async void load_banners () {
@@ -231,16 +231,22 @@ namespace AppCenter {
             }
         }
 
-        public override void show_package (AppCenterCore.Package package) {
-            base.show_package (package);
+        public override void show_package (
+            AppCenterCore.Package package,
+            bool remember_history = true,
+            Gtk.StackTransitionType transition = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
+        ) {
+            base.show_package (package, remember_history, transition);
             viewing_package = true;
-            current_category = null;
-            currently_viewed_category = null;
-            subview_entered (_("Home"), false, "");
+            if (remember_history) {
+                current_category = null;
+                currently_viewed_category = null;
+                subview_entered (_("Home"), false, "");
+            }
         }
 
         public override void return_clicked () {
-            remove_visible_package ();
+            transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
 
             if (previous_package != null) {
                 show_package (previous_package);
