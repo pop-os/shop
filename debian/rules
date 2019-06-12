@@ -14,8 +14,8 @@ export CCACHE_DISABLE=1
 %:
 	dh $@
 
-override_dh_configure:
-	meson build \
+override_dh_auto_configure:
+	dh_auto_configure -- \
 		-Dname="Pop!_Shop" \
 		-Dpayments=false \
 		-Dsharing=false \
