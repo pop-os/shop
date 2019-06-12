@@ -1,4 +1,3 @@
-debian/60pop-shop /etc/apt/apt.conf.d/
 etc/
 usr/bin/
 usr/share/applications/
