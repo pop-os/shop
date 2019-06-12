@@ -21,8 +21,13 @@
 
 using AppCenterCore;
 
+#if POP_OS
+const int NUM_PACKAGES_IN_BANNER = 15;
+const int NUM_PACKAGES_IN_CAROUSEL = 15;
+#else
 const int NUM_PACKAGES_IN_BANNER = 5;
 const int NUM_PACKAGES_IN_CAROUSEL = 5;
+#endif
 
 namespace AppCenter {
     public class Homepage : View {
@@ -36,6 +41,15 @@ namespace AppCenter {
 
         public AppStream.Category currently_viewed_category;
 #if HOMEPAGE
+#if POP_OS
+        // Keep things lined up whether certain revealers are shown or not
+        private const int HOMEPAGE_MARGIN = 12;
+        private const int LABEL_MARGIN = 10;
+
+        private Gtk.Revealer featured_revealer;
+        public Widgets.Carousel featured_carousel;
+        private AppCenterCore.Package[] featured_apps;
+#endif
         public Widgets.Banner newest_banner;
         public Gtk.Revealer switcher_revealer;
 
@@ -54,6 +68,52 @@ namespace AppCenter {
             switcher_revealer.set_transition_duration (Widgets.Banner.TRANSITION_DURATION_MILLISECONDS);
             switcher_revealer.add (switcher);
 
+#if POP_OS
+            var pop_banner_copy_1 = new Gtk.Label (_("EXPLORE YOUR HORIZONS AND"));
+            pop_banner_copy_1.expand = false;
+            pop_banner_copy_1.halign = Gtk.Align.START;
+            pop_banner_copy_1.margin_start = 48;
+            pop_banner_copy_1.margin_top = 38;
+            pop_banner_copy_1.yalign = 0;
+
+            // FIXME: For some reason this isn't working right. Toggling it in
+            // the inspector fixes the alignment.
+            pop_banner_copy_1.vexpand = false;
+
+            var pop_banner_copy_2 = new Gtk.Label (_("UNLEASH YOUR POTENTIAL"));
+            pop_banner_copy_2.halign = Gtk.Align.START;
+            pop_banner_copy_2.margin_start = 48;
+            pop_banner_copy_2.yalign = 0;
+
+            var pop_banner_copy_area = new Gtk.Grid ();
+            pop_banner_copy_area.halign = Gtk.Align.CENTER;
+            pop_banner_copy_area.hexpand = true;
+            pop_banner_copy_area.width_request = 750;
+            pop_banner_copy_area.attach (pop_banner_copy_1, 0, 0, 1, 1);
+            pop_banner_copy_area.attach (pop_banner_copy_2, 0, 1, 1, 1);
+
+            var pop_banner = new Gtk.Grid ();
+            pop_banner.height_request = 300;
+            pop_banner.hexpand = true;
+            pop_banner.get_style_context ().add_class ("pop-banner");
+            pop_banner.attach (pop_banner_copy_area, 0, 0, 1, 1);
+            
+            var featured_label = new Gtk.Label (_("Pop!_Picks"));
+            featured_label.get_style_context ().add_class ("h4");
+            featured_label.xalign = 0;
+            featured_label.margin_start = LABEL_MARGIN;
+
+            featured_carousel = new Widgets.Carousel ();
+
+            var featured_grid = new Gtk.Grid ();
+            featured_grid.margin = HOMEPAGE_MARGIN;
+            featured_grid.margin_bottom = 0;
+            featured_grid.attach (featured_label, 0, 0, 1, 1);
+            featured_grid.attach (featured_carousel, 0, 1, 1, 1);
+
+            featured_revealer = new Gtk.Revealer ();
+            featured_revealer.add (featured_grid );
+#endif
             newest_banner = new Widgets.Banner (switcher);
             newest_banner.get_style_context ().add_class ("home");
             newest_banner.margin = 12;
@@ -110,10 +170,15 @@ namespace AppCenter {
             var grid = new Gtk.Grid ();
             grid.margin = 12;
 #if HOMEPAGE
+#if POP_OS
+            grid.attach (pop_banner,        0, 0, 1, 1);
+            grid.attach (featured_revealer, 0, 1, 1, 1);
+#else
             grid.attach (newest_banner, 0, 0, 1, 1);
             grid.attach (switcher_revealer, 0, 1, 1, 1);
             grid.attach (trending_revealer, 0, 2, 1, 1);
             grid.attach (recently_updated_revealer, 0, 3, 1, 1);
+#endif
             grid.attach (categories_label, 0, 4, 1, 1);
 #endif
             grid.attach (category_flow, 0, 5, 1, 1);
@@ -169,6 +234,63 @@ namespace AppCenter {
                     }
 
 #if HOMEPAGE
+#if POP_OS
+                    // If the banners weren't populated, try again to populate them
+                    if (!featured_revealer.reveal_child) {
+                        load_banners.begin ();
+                    }
+
+                    return GLib.Source.REMOVE;
+                });
+            });
+
+            featured_carousel.package_activated.connect ((package) => show_package (package));
+        }
+
+        private async void load_banners () {
+            var houston = AppCenterCore.Houston.get_default ();
+            var packages_for_banner = new Gee.LinkedList<AppCenterCore.Package> ();
+
+            var newest_ids = yield houston.get_app_ids ("/newest/project");
+            featured_apps = {};
+            foreach (var package in newest_ids) {
+                if (packages_for_banner.size >= NUM_PACKAGES_IN_BANNER) {
+                    break;
+                }
+
+
+                var candidate_package = AppCenterCore.Client.get_default ().get_package_for_component_id (package);
+                if (candidate_package != null) {
+                    candidate_package.update_state ();
+                    if (candidate_package.state == AppCenterCore.Package.State.NOT_INSTALLED) {
+                        featured_apps += candidate_package;
+                    }
+                }
+            }
+
+            shuffle_featured_apps ();
+
+            switcher.show_all ();
+            switcher_revealer.set_reveal_child (true);
+
+            page_loaded ();
+        }
+
+        public void shuffle_featured_apps () {
+            featured_carousel.get_children ().foreach ((c) => c.destroy ());
+            Utils.shuffle_array (featured_apps);
+
+            if (featured_apps.length != 0) {
+                Idle.add (() => {
+                    for (int i = 0; i < NUM_PACKAGES_IN_CAROUSEL && i < featured_apps.length; i++) {
+                        featured_carousel.add_package (featured_apps[i]);
+                    }
+                    featured_revealer.reveal_child = true;
+                    return false;
+                });
+            }
+        }
+#else
                     // If the banners weren't populated, try again to populate them
                     if (!recently_updated_revealer.reveal_child && !trending_revealer.reveal_child && !switcher_revealer.reveal_child) {
                         load_banners.begin ();
@@ -263,6 +385,7 @@ namespace AppCenter {
 
             page_loaded ();
         }
+#endif
 #else
                 });
             });

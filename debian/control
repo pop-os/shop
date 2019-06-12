@@ -1,0 +1,45 @@
+Source: pop-shop
+Section: utils
+Maintainer: Jeremy Soller <jeremy@system76.com>
+Build-Depends: appstream,
+               debhelper (>= 10.5.1),
+               desktop-file-utils,
+               gettext,
+               libappstream-dev (>= 0.10),
+               libgee-0.8-dev,
+               libgranite-dev,
+               libgtk-3-dev,
+               libjson-glib-dev,
+               libpackagekit-glib2-dev,
+               libsoup2.4-dev,
+               libunity-dev,
+               libxml2-dev,
+               libxml2-utils,
+               meson,
+               valac (>= 0.26)
+Standards-Version: 4.1.4
+Homepage: https://github.com/pop/shop
+
+Package: pop-shop
+Architecture: any
+Priority: extra
+Depends: appstream (>= 0.12),
+         apt-config-icons,
+         apt-config-icons-hidpi,
+         apt-config-icons-large,
+         apt-config-icons-large-hidpi,
+         packagekit,
+         repoman,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: appstream-data-pop
+Description: Fast application store
+ Install, update and remove apps with ease.
+ Helps independent developers.
+
+Package: pop-shop-casper
+Architecture: any
+Priority: extra
+Depends: casper
+Description: Disable pop-shop in casper
+ Disable pop-shop when running in a live system with casper
