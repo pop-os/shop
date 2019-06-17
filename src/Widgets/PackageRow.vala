@@ -23,6 +23,7 @@ namespace AppCenter.Widgets {
         AbstractPackageRowGrid grid;
 
         public PackageRow.installed (AppCenterCore.Package package, Gtk.SizeGroup? info_size_group, Gtk.SizeGroup? action_size_group, bool show_uninstall = true) {
+            selectable = false;
             grid = new InstalledPackageRowGrid (package, info_size_group, action_size_group, show_uninstall);
             add (grid);
             grid.changed.connect (() => {
@@ -31,6 +32,7 @@ namespace AppCenter.Widgets {
         }
 
         public PackageRow.list (AppCenterCore.Package package, Gtk.SizeGroup? info_size_group, Gtk.SizeGroup? action_size_group, bool show_uninstall = true) {
+            selectable = false;
             grid = new ListPackageRowGrid (package, info_size_group, action_size_group, show_uninstall);
             add (grid);
             grid.changed.connect (() => {
