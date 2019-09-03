@@ -324,30 +324,37 @@ public class AppCenterCore.Client : Object {
 
         new Thread<void*> ("parse-drivers-output", () => {
             string[] tokens = output.split ("\n");
-            for (int i = 0; i < tokens.length; i++) {
-                string package_name = tokens[i];
+
+            unowned string? latest_nvidia_package = null;
+            unowned string? latest_nvidia_version = null;
+
+            foreach (unowned string package_name in tokens) {
                 if (package_name.strip () == "") {
                     continue;
                 }
 
-                var driver_component = new AppStream.Component ();
-                driver_component.set_kind (AppStream.ComponentKind.DRIVER);
-                driver_component.set_pkgnames ({ package_name });
-                driver_component.set_id (package_name);
+                unowned string? nvidia_version = null;
 
-                var icon = new AppStream.Icon ();
-                icon.set_name ("application-x-firmware");
-                icon.set_kind (AppStream.IconKind.STOCK);
-                driver_component.add_icon (icon);
-
-                var package = new Package (driver_component);
-                var pk_package = package.find_package ();
-                if (pk_package != null && pk_package.get_info () == Pk.Info.INSTALLED) {
-                    package.installed_packages.add (pk_package);
-                    package.update_state ();
+                if (package_name.has_prefix ("nvidia-driver-")) {
+                    nvidia_version = package_name.offset (14);
+                } else if (package_name.has_prefix ("nvidia-")) {
+                    nvidia_version = package_name.offset (7);
                 }
 
-                driver_list.add (package);
+                if (null != nvidia_version) {
+                    if (-1 == GLib.strcmp (latest_nvidia_version, nvidia_version)) {
+                        latest_nvidia_package = package_name;
+                        latest_nvidia_version = nvidia_version;
+                    }
+
+                    continue;
+                }
+
+                add_driver (package_name);
+            }
+
+            if (null != latest_nvidia_package) {
+                add_driver (latest_nvidia_package);
             }
 
             Idle.add (() => {
@@ -386,6 +393,27 @@ public class AppCenterCore.Client : Object {
         }
 
         return packages;
+    }
+
+    private void add_driver (string driver) {
+        var driver_component = new AppStream.Component ();
+        driver_component.set_kind (AppStream.ComponentKind.DRIVER);
+        driver_component.set_pkgnames ({ driver });
+        driver_component.set_id (driver);
+
+        var icon = new AppStream.Icon ();
+        icon.set_name ("application-x-firmware");
+        icon.set_kind (AppStream.IconKind.STOCK);
+        driver_component.add_icon (icon);
+
+        var package = new Package (driver_component);
+        var pk_package = package.find_package ();
+        if (pk_package != null && pk_package.get_info () == Pk.Info.INSTALLED) {
+            package.installed_packages.add (pk_package);
+            package.update_state ();
+        }
+
+        driver_list.add (package);
     }
 
     private static void populate_package (AppCenterCore.Package package, Pk.Package pk_package) {
