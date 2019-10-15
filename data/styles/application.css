@@ -159,6 +159,10 @@
     opacity: 1;
 }
 
+stack {
+    background-color: transparent;
+}
+
 .terminal {
     background-color: #252e32;
     padding: 12px;
