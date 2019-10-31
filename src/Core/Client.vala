@@ -333,6 +333,11 @@ public class AppCenterCore.Client : Object {
                     continue;
                 }
 
+                // This driver is causing a lot of problems
+                if ("backport-iwlwifi-dkms" == package_name) {
+                    continue;
+                }
+
                 unowned string? nvidia_version = null;
 
                 if (package_name.has_prefix ("nvidia-driver-")) {
