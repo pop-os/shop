@@ -432,8 +432,8 @@ public class AppCenterCore.Client : Object {
         if (components.length == 0) {
             var category_array = new GLib.GenericArray<AppStream.Category> ();
             category_array.add (category);
-            GLib.GenericArray<weak AppStream.Component> pool_components = appstream_pool.get_components ();
-            AppStream.utils_sort_components_into_categories ((GLib.GenericArray<AppStream.Component>)pool_components, category_array, true);
+            GLib.GenericArray<AppStream.Component> pool_components = (GLib.GenericArray<AppStream.Component>)appstream_pool.get_components ();
+            AppStream.utils_sort_components_into_categories (pool_components, category_array, true);
             components = category.get_components ();
         }
 
