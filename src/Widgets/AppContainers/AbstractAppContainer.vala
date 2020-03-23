@@ -175,6 +175,7 @@ namespace AppCenter {
 
             progress_bar = new Gtk.ProgressBar ();
             progress_bar.show_text = true;
+            progress_bar.margin_bottom = 6;
             /* Request a width large enough for the longest text to stop width of
              * progress bar jumping around, but allow space for long package names */
             progress_bar.width_request = 222;
