@@ -141,6 +141,10 @@
     color: @banner_fg_color;
 }
 
+.banner flowboxchild:selected button.text-button label {
+    color: @banner_bg_color;
+}
+
 .banner progressbar text {
     padding: 3px;
     background-color: transparent;
