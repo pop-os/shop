@@ -75,7 +75,7 @@ namespace AppCenter {
             pop_banner_copy_2.xalign = 0;
             pop_banner_copy_2.hexpand = true;
             pop_banner_copy_2.wrap = true;
-            
+
             var pop_banner = new Gtk.Grid ();
             pop_banner.height_request = 300;
             pop_banner.expand = true;
@@ -237,16 +237,33 @@ namespace AppCenter {
         }
 
         private async void load_banners () {
-            var houston = AppCenterCore.Houston.get_default ();
             var packages_for_banner = new Gee.LinkedList<AppCenterCore.Package> ();
 
-            var newest_ids = yield houston.get_app_ids ("/newest/project");
+            string[] newest_ids = {
+                "io.atom.Atom",
+                "com.slack.Slack",
+                "org.telegram",
+                "org.gnome.meld",
+                "com.steampowered.steam",
+                "net.lutris.Lutris",
+                "com.mattermost.Desktop",
+                "com.visualstudio.code",
+                "com.spotify.Client",
+                "com.gexperts.Tilix",
+                "alacritty",
+                "com.uploadedlobster.peek",
+                "virt-manager",
+                "org.signal.Signal",
+                "flameshot",
+                "com.getpostman.Postman",
+                "io.dbeaver.DBeaverCommunity",
+                "chromium" // TODO: Chrome
+            };
             featured_apps = {};
             foreach (var package in newest_ids) {
                 if (packages_for_banner.size >= NUM_PACKAGES_IN_BANNER) {
                     break;
                 }
-
 
                 var candidate_package = AppCenterCore.Client.get_default ().get_package_for_component_id (package);
                 if (candidate_package != null) {
