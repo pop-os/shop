@@ -22,8 +22,8 @@
 using AppCenterCore;
 
 #if POP_OS
-const int NUM_PACKAGES_IN_BANNER = 15;
-const int NUM_PACKAGES_IN_CAROUSEL = 15;
+const int NUM_PACKAGES_IN_BANNER = 20;
+const int NUM_PACKAGES_IN_CAROUSEL = 20;
 #else
 const int NUM_PACKAGES_IN_BANNER = 5;
 const int NUM_PACKAGES_IN_CAROUSEL = 5;
@@ -281,17 +281,7 @@ namespace AppCenter {
                 }
             }
 
-            shuffle_featured_apps ();
-
-            switcher.show_all ();
-            switcher_revealer.set_reveal_child (true);
-
-            page_loaded ();
-        }
-
-        public void shuffle_featured_apps () {
             featured_carousel.get_children ().foreach ((c) => c.destroy ());
-            Utils.shuffle_array (featured_apps);
 
             if (featured_apps.length != 0) {
                 Idle.add (() => {
@@ -302,6 +292,11 @@ namespace AppCenter {
                     return false;
                 });
             }
+
+            switcher.show_all ();
+            switcher_revealer.set_reveal_child (true);
+
+            page_loaded ();
         }
 #else
                     // If the banners weren't populated, try again to populate them
