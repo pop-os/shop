@@ -239,6 +239,13 @@ namespace AppCenter {
         private async void load_banners () {
             var packages_for_banner = new Gee.LinkedList<AppCenterCore.Package> ();
 
+            //TODO: remove this timer which allows GUI to show first
+            GLib.Timeout.add (100, () => {
+              load_banners.callback ();
+              return false;
+            }, GLib.Priority.DEFAULT);
+            yield;
+
             string[] newest_ids = {
                 "io.atom.Atom",
                 "com.slack.Slack",
