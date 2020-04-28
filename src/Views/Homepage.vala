@@ -22,8 +22,8 @@
 using AppCenterCore;
 
 #if POP_OS
-const int NUM_PACKAGES_IN_BANNER = 15;
-const int NUM_PACKAGES_IN_CAROUSEL = 15;
+const int NUM_PACKAGES_IN_BANNER = 20;
+const int NUM_PACKAGES_IN_CAROUSEL = 20;
 #else
 const int NUM_PACKAGES_IN_BANNER = 5;
 const int NUM_PACKAGES_IN_CAROUSEL = 5;
@@ -75,7 +75,7 @@ namespace AppCenter {
             pop_banner_copy_2.xalign = 0;
             pop_banner_copy_2.hexpand = true;
             pop_banner_copy_2.wrap = true;
-            
+
             var pop_banner = new Gtk.Grid ();
             pop_banner.height_request = 300;
             pop_banner.expand = true;
@@ -237,16 +237,40 @@ namespace AppCenter {
         }
 
         private async void load_banners () {
-            var houston = AppCenterCore.Houston.get_default ();
             var packages_for_banner = new Gee.LinkedList<AppCenterCore.Package> ();
 
-            var newest_ids = yield houston.get_app_ids ("/newest/project");
+            //TODO: remove this timer which allows GUI to show first
+            GLib.Timeout.add (100, () => {
+              load_banners.callback ();
+              return false;
+            }, GLib.Priority.DEFAULT);
+            yield;
+
+            string[] newest_ids = {
+                "io.atom.Atom",
+                "com.slack.Slack",
+                "org.telegram",
+                "org.gnome.meld",
+                "com.steampowered.steam",
+                "net.lutris.Lutris",
+                "com.mattermost.Desktop",
+                "com.visualstudio.code",
+                "com.spotify.Client",
+                "com.gexperts.Tilix",
+                "alacritty",
+                "com.uploadedlobster.peek",
+                "virt-manager",
+                "org.signal.Signal",
+                "flameshot",
+                "com.getpostman.Postman",
+                "io.dbeaver.DBeaverCommunity",
+                "chromium" // TODO: Chrome
+            };
             featured_apps = {};
             foreach (var package in newest_ids) {
                 if (packages_for_banner.size >= NUM_PACKAGES_IN_BANNER) {
                     break;
                 }
-
 
                 var candidate_package = AppCenterCore.Client.get_default ().get_package_for_component_id (package);
                 if (candidate_package != null) {
@@ -257,17 +281,7 @@ namespace AppCenter {
                 }
             }
 
-            shuffle_featured_apps ();
-
-            switcher.show_all ();
-            switcher_revealer.set_reveal_child (true);
-
-            page_loaded ();
-        }
-
-        public void shuffle_featured_apps () {
             featured_carousel.get_children ().foreach ((c) => c.destroy ());
-            Utils.shuffle_array (featured_apps);
 
             if (featured_apps.length != 0) {
                 Idle.add (() => {
@@ -278,6 +292,11 @@ namespace AppCenter {
                     return false;
                 });
             }
+
+            switcher.show_all ();
+            switcher_revealer.set_reveal_child (true);
+
+            page_loaded ();
         }
 #else
                     // If the banners weren't populated, try again to populate them
