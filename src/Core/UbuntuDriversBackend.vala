@@ -55,8 +55,8 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
             return cached_packages;
         }
 
-        unowned string? latest_nvidia_pkg = null;
-        unowned string? latest_nvidia_ver = null;
+        string? latest_nvidia_pkg = null;
+        string? latest_nvidia_ver = null;
 
         string[] tokens = command_output.split ("\n");
         for (int i = 0; i < tokens.length; i++) {
@@ -64,11 +64,13 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
                 break;
             }
 
-            unowned string package_name = tokens[i];
-            if (package_name.strip () == "") {
+            unowned string token = tokens[i];
+            if (token.strip () == "") {
                 continue;
             }
 
+            string[] parts = token.split(",");
+            unowned string package_name = parts[0];
             if (package_name.has_prefix ("backport-") && package_name.has_suffix ("-dkms")) {
                 continue;
             }
