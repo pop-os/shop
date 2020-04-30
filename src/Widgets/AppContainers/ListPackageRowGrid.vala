@@ -19,17 +19,25 @@
  */
 
 public class AppCenter.Widgets.ListPackageRowGrid : AbstractPackageRowGrid {
+    Gtk.Label app_version;
+
     public ListPackageRowGrid (AppCenterCore.Package package, Gtk.SizeGroup? info_size_group, Gtk.SizeGroup? action_size_group, bool show_uninstall = true) {
         base (package, info_size_group, action_size_group, show_uninstall);
         set_up_package ();
     }
 
     construct {
+        app_version = new Gtk.Label (null);
+        app_version.get_style_context ().add_class (Gtk.STYLE_CLASS_DIM_LABEL);
+        ((Gtk.Misc) app_version).xalign = 0;
+
+        info_grid.attach (app_version, 1, 1, 1, 1);
+
         package_summary = new Gtk.Label (null);
         package_summary.get_style_context ().add_class (Gtk.STYLE_CLASS_DIM_LABEL);
         ((Gtk.Misc) package_summary).xalign = 0;
 
-        info_grid.attach (package_summary, 1, 1, 1, 1);
+        info_grid.attach (package_summary, 1, 2, 1, 1);
     }
 
     protected override void set_up_package (uint icon_size = 48) {
@@ -40,6 +48,15 @@ public class AppCenter.Widgets.ListPackageRowGrid : AbstractPackageRowGrid {
             action_stack.no_show_all = true;
             action_stack.visible = false;
         }
+
+        if (package.get_version () != null) {
+            app_version.label = "%s - %s".printf (package.get_version (), package.origin_description);
+            if (package.has_multiple_origins) {
+                app_version.label += ", and other sources";
+            }
+        }
+
+        app_version.ellipsize = Pango.EllipsizeMode.END;
 
         base.set_up_package (icon_size);
     }

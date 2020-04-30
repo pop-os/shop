@@ -331,7 +331,7 @@ public class AppCenterCore.Package : Object {
                     return _("Pop!_Shop");
                 } else if (origin.has_prefix ("ubuntu-")) {
                     return _("Ubuntu (deb)");
-                } else if (origin == "pop-artful-extra") {
+                } else if (origin.has_prefix ("pop-")) {
                     return _("Pop!_OS (deb)");
                 }
             } else if (backend is FlatpakBackend) {
