@@ -251,7 +251,7 @@ namespace AppCenter {
                 "com.slack.Slack",
                 "org.telegram",
                 "org.gnome.meld",
-                "com.steampowered.steam",
+                "com.valvesoftware.Steam",
                 "net.lutris.Lutris",
                 "com.mattermost.Desktop",
                 "com.visualstudio.code",
