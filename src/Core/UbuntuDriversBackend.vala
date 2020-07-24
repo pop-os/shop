@@ -57,7 +57,7 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
         }
 
         string? latest_nvidia_pkg = null;
-        string? latest_nvidia_ver = null;
+        int latest_nvidia_ver = 0;
 
         string[] tokens = command_output.split ("\n");
         for (int i = 0; i < tokens.length; i++) {
@@ -85,9 +85,11 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
             }
 
             if (null != nvidia_version) {
-                if (-1 == GLib.strcmp (latest_nvidia_ver, nvidia_version)) {
+                int parsed = int.parse (nvidia_version);
+
+                if (latest_nvidia_ver < parsed) {
                     latest_nvidia_pkg = package_name;
-                    latest_nvidia_ver = nvidia_version;
+                    latest_nvidia_ver = parsed;
                 }
 
                 continue;
