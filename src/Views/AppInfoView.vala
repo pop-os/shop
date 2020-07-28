@@ -211,6 +211,7 @@ namespace AppCenter.Views {
             app_description.pixels_below_lines = 3;
             app_description.pixels_inside_wrap = 3;
             app_description.wrap_mode = Gtk.WrapMode.WORD_CHAR;
+            app_description.margin = 8;
 
             var links_grid = new Gtk.Grid ();
             links_grid.column_spacing = 12;
