@@ -85,6 +85,8 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
             }
 
             if (null != nvidia_version) {
+                if (nvidia_version.contains ("-")) continue;
+
                 int parsed = int.parse (nvidia_version);
 
                 if (latest_nvidia_ver < parsed) {
