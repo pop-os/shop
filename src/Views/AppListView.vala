@@ -1,6 +1,5 @@
-// -*- Mode: vala; indent-tabs-mode: nil; tab-width: 4 -*-
 /*-
- * Copyright (c) 2014-2016 elementary LLC. (https://elementary.io)
+ * Copyright (c) 2014-2020 elementary, Inc. (https://elementary.io)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +26,18 @@ namespace AppCenter.Views {
         private GLib.ListStore list_store;
 
         construct {
+            var alert_view = new Granite.Widgets.AlertView (
+                _("No Results"),
+                _("No apps could be found. Try changing search terms."),
+                "edit-find-symbolic"
+            );
+            alert_view.show_all ();
+
 #if CURATED
             list_box.set_header_func ((Gtk.ListBoxUpdateHeaderFunc) row_update_header);
 #endif
+            list_box.set_placeholder (alert_view);
+
             list_store = new GLib.ListStore (typeof (AppCenterCore.Package));
             scrolled.edge_reached.connect ((position) => {
                 if (position == Gtk.PositionType.BOTTOM) {
@@ -62,8 +70,9 @@ namespace AppCenter.Views {
             // Don't show plugins or fonts in search and category views
             if (!package.is_plugin && !package.is_font) {
                 GLib.CompareDataFunc<AppCenterCore.Package> sort_fn = (a, b) => {
-                    return compare_packages(a, b);
+                    return compare_packages (a, b);
                 };
+
                 list_store.insert_sorted (package, sort_fn);
             }
         }
@@ -76,7 +85,7 @@ namespace AppCenter.Views {
         }
 
         protected override Widgets.AppListRow construct_row_for_package (AppCenterCore.Package package) {
-            return new Widgets.PackageRow.list (package, null, action_button_group, false);
+            return new Widgets.PackageRow.list (package);
         }
 
         // Show 20 more apps on the listbox

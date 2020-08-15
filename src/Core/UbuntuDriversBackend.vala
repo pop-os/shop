@@ -70,11 +70,19 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
                 continue;
             }
 
+            // ubuntu-drivers returns lines like the following for dkms packages:
+            // backport-iwlwifi-dkms, (kernel modules provided by backport-iwlwifi-dkms)
+            // we only want the bit before the comma
             string[] parts = token.split(",");
             unowned string package_name = parts[0];
             if (package_name.has_prefix ("backport-") && package_name.has_suffix ("-dkms")) {
                 continue;
             }
+
+            var driver_component = new AppStream.Component ();
+            driver_component.set_kind (AppStream.ComponentKind.DRIVER);
+            driver_component.set_pkgnames ({ package_name });
+            driver_component.set_id (package_name);
 
             unowned string? nvidia_version = null;
 
@@ -82,6 +90,16 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
                 nvidia_version = package_name.offset (14);
             } else if (package_name.has_prefix ("nvidia-")) {
                 nvidia_version = package_name.offset (7);
+            }
+
+            var package = new Package (this, driver_component);
+            try {
+                if (yield is_package_installed (package)) {
+                    package.mark_installed ();
+                    package.update_state ();
+                }
+            } catch (Error e) {
+                warning ("Unable to check if driver is installed: %s", e.message);
             }
 
             if (null != nvidia_version) {
