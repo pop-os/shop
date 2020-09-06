@@ -161,10 +161,6 @@
     opacity: 1;
 }
 
-stack {
-    background-color: transparent;
-}
-
 .terminal {
     background-color: #252e32;
     padding: 12px;
@@ -174,6 +170,10 @@ stack {
 .terminal selection {
     background-color: #93a1a1;
     color: #252e32;
+}
+
+list, stack, textview, textview text {
+    background: transparent;
 }
 
 flowboxchild grid image,
