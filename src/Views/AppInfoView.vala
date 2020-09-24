@@ -179,6 +179,7 @@ namespace AppCenter.Views {
             package_name.ellipsize = Pango.EllipsizeMode.MIDDLE;
             package_name.selectable = true;
             package_name.xalign = 0;
+            package_name.can_focus = false;
             package_name.get_style_context ().add_class (Granite.STYLE_CLASS_H1_LABEL);
 
             app_version = new Gtk.Label (null);
@@ -192,6 +193,7 @@ namespace AppCenter.Views {
             package_author.selectable = true;
             package_author.xalign = 0;
             package_author.valign = Gtk.Align.START;
+            package_author.can_focus = false;
             package_author.get_style_context ().add_class (Gtk.STYLE_CLASS_DIM_LABEL);
             package_author.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
 
@@ -202,6 +204,7 @@ namespace AppCenter.Views {
             package_summary.wrap = true;
             package_summary.wrap_mode = Pango.WrapMode.WORD_CHAR;
             package_summary.valign = Gtk.Align.CENTER;
+            package_summary.can_focus = false;
 
             app_description = new Gtk.TextView ();
             app_description.expand = true;
