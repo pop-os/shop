@@ -150,6 +150,10 @@
     background-color: transparent;
 }
 
+grid {
+    outline: none;
+}
+
 .switcher {
     background-color: transparent;
     border: none;
