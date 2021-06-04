@@ -84,9 +84,7 @@ namespace AppCenter.Views {
             screenshots = package_component.get_screenshots ();
 
             if (screenshots.length > 0) {
-                app_screenshots = new Hdy.Carousel () {
-                    height_request = 500
-                };
+                app_screenshots = new Hdy.Carousel ();
 
                 screenshot_previous = new ArrowButton ("go-previous-symbolic") {
                     sensitive = false,
