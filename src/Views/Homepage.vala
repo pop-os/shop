@@ -20,7 +20,7 @@
 
 public class AppCenter.Homepage : AbstractView {
     private const int MAX_PACKAGES_IN_BANNER = 6;
-    private const int MAX_PACKAGES_IN_CAROUSEL = 12;
+    private const int MAX_PACKAGES_IN_CAROUSEL = 9;
 
     private Gtk.FlowBox category_flow;
     private Gtk.ScrolledWindow scrolled_window;
@@ -101,7 +101,8 @@ public class AppCenter.Homepage : AbstractView {
 #endif
 
         var recently_updated_label = new Granite.HeaderLabel (_("Recently Updated")) {
-            margin_start = 12
+            margin_start = 12,
+            margin_top = 48
         };
 
         recently_updated_carousel = new Gtk.FlowBox () {
@@ -239,6 +240,14 @@ public class AppCenter.Homepage : AbstractView {
             show_package (package_row_grid.package);
         });
 
+#if POP_OS
+        picks_carousel.child_activated.connect ((child) => {
+            var package_row_grid = (AppCenter.Widgets.ListPackageRowGrid) child.get_child ();
+
+            show_package (package_row_grid.package);
+        });
+#endif
+
         destroy.connect (() => {
             banner_timeout_stop ();
         });
@@ -328,17 +337,17 @@ public class AppCenter.Homepage : AbstractView {
                 package_count++;
             }
         }
-#endif
-
+        
         foreach (var package in packages_in_banner) {
             var banner = new Widgets.Banner (package);
             banner.clicked.connect (() => {
                 show_package (package);
             });
-
+            
             banner_carousel.add (banner);
         }
-
+#endif
+        
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
 
