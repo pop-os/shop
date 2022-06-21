@@ -5,3 +5,4 @@ option('payments', type : 'boolean', value : true, description : 'Enable payment
 option('sharing', type : 'boolean', value : true, description : 'Display sharing features, i.e. copyable URLs to appcenter.elementary.io')
 option('hide_upstream_distro_apps', type : 'boolean', value : true, description : 'Used for hiding Ubuntu repo apps on elementary OS')
 option('runtime_name', type : 'string', value : 'io.elementary.Platform', description : 'The name of the distributor runtime')
+option('pop_os', type : 'boolean', value: true, description : 'Make Pop-specific changes')
