@@ -110,7 +110,8 @@ public class AppCenter.Homepage : AbstractView {
             column_spacing = 12,
             row_spacing = 12,
             homogeneous = true,
-            max_children_per_line = 5
+            max_children_per_line = 5,
+            selection_mode = Gtk.SelectionMode.NONE
         };
 
         var recently_updated_grid = new Gtk.Grid () {
@@ -159,7 +160,8 @@ public class AppCenter.Homepage : AbstractView {
         category_flow = new Widgets.CategoryFlowBox () {
             margin_start = 12,
             margin_end =12,
-            valign = Gtk.Align.START
+            valign = Gtk.Align.START,
+            selection_mode = Gtk.SelectionMode.NONE
         };
 
         var grid = new Gtk.Grid () {
