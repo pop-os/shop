@@ -22,6 +22,10 @@
     margin: 0;
 }
 
+.titlebar.windowhandle {
+    padding: 0 6px;
+}
+
 /* Include Text styles here as fallback */
 
 .h1 {
