@@ -203,28 +203,6 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
 
         spinner = new Gtk.Spinner ();
 
-#if POP_OS
-        repos_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-        repos_button.tooltip_text = _("Edit Software Sources…");
-        repos_button.clicked.connect (() => {
-            try {
-                string[] args = {
-                  "/usr/lib/repoman/repoman.pkexec"
-                };
-                Process.spawn_async (
-                    null,
-                    args,
-                    null,
-                    SpawnFlags.SEARCH_PATH,
-                    null,
-                    null
-                );
-            } catch (Error e) {
-                warning (e.message);
-            }
-        });
-#endif
-
         var automatic_updates_button = new Granite.SwitchModelButton (_("Automatic App Updates")) {
             description = _("System updates and unpaid apps will not update automatically")
         };

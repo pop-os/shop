@@ -47,6 +47,11 @@ public class AppCenter.Homepage : AbstractView {
     private Gtk.Revealer recently_updated_revealer;
     private AppCenter.SearchView search_view;
 
+#if POP_OS
+    private Gtk.FlowBox picks_carousel;
+    private Gtk.Revealer picks_revealer;
+#endif
+
     private uint banner_timeout_id;
 
     construct {
@@ -67,10 +72,33 @@ public class AppCenter.Homepage : AbstractView {
             orientation = Gtk.Orientation.VERTICAL
         };
         banner_grid.add (banner_event_box);
+#if !POP_OS
         banner_grid.add (banner_dots);
-
+#endif 
         banner_revealer = new Gtk.Revealer ();
         banner_revealer.add (banner_grid);
+
+#if POP_OS
+        var pop_banner_copy_1 = new Gtk.Label (_("EXPLORE YOUR HORIZONS AND"));
+        pop_banner_copy_1.margin_top = pop_banner_copy_1.margin_start = 38;
+        pop_banner_copy_1.xalign = 0;
+        pop_banner_copy_1.hexpand = true;
+        pop_banner_copy_1.wrap = true;
+
+        var pop_banner_copy_2 = new Gtk.Label (_("UNLEASH YOUR POTENTIAL"));
+        pop_banner_copy_2.margin_start = pop_banner_copy_2.margin_end = 37;
+        pop_banner_copy_2.xalign = 0;
+        pop_banner_copy_2.hexpand = true;
+        pop_banner_copy_2.wrap = true;
+
+        var pop_banner = new Gtk.Grid ();
+        pop_banner.height_request = 300;
+        pop_banner.expand = true;
+        pop_banner.get_style_context ().add_class ("pop-banner");
+        pop_banner.attach (pop_banner_copy_1, 0, 0, 1, 1);
+        pop_banner.attach (pop_banner_copy_2, 0, 1, 1, 1);
+        
+#endif
 
         var recently_updated_label = new Granite.HeaderLabel (_("Recently Updated")) {
             margin_start = 12
@@ -94,6 +122,34 @@ public class AppCenter.Homepage : AbstractView {
         recently_updated_revealer = new Gtk.Revealer ();
         recently_updated_revealer.add (recently_updated_grid );
 
+#if POP_OS
+        var picks_label = new Granite.HeaderLabel (_("Pop!_Picks")) {
+            margin_start = 12,
+            margin_top = 18
+        };
+
+        picks_carousel = new Gtk.FlowBox () {
+            activate_on_single_click = true,
+            column_spacing = 12,
+            row_spacing = 12,
+            homogeneous = true,
+            max_children_per_line = 5,
+            selection_mode = Gtk.SelectionMode.NONE
+        };
+
+
+        var picks_grid = new Gtk.Grid () {
+            margin_end = 12,
+            margin_start = 12,
+            row_spacing = 24
+        };
+
+        picks_grid.attach (picks_label, 0, 0);
+        picks_grid.attach (picks_carousel, 0, 1);
+        picks_revealer = new Gtk.Revealer ();
+        picks_revealer.add (picks_grid );
+#endif
+
         var categories_label = new Granite.HeaderLabel (_("Categories")) {
             margin_start = 24,
             margin_top = 24
@@ -110,6 +166,9 @@ public class AppCenter.Homepage : AbstractView {
             orientation = Gtk.Orientation.VERTICAL
         };
         grid.add (banner_revealer);
+#if POP_OS
+        grid.add (picks_revealer);
+#endif
         grid.add (recently_updated_revealer);
         grid.add (categories_label);
         grid.add (category_flow);
@@ -131,6 +190,16 @@ public class AppCenter.Homepage : AbstractView {
                 show_package (local_package);
             });
         }
+
+#if POP_OS
+        banner_carousel.prepend (pop_banner);
+        banner_carousel.interactive = false;
+        banner_dots.visible = false;
+
+        // Show the banner, since it only contains our artwork currently
+        banner_carousel.show_all ();
+        banner_revealer.reveal_child = true;
+#endif
 
         banner_timeout_start ();
         load_banners_and_carousels.begin ();
@@ -177,6 +246,7 @@ public class AppCenter.Homepage : AbstractView {
         var packages_by_release_date = fp_client.get_featured_packages_by_release_date ();
         var packages_in_banner = new Gee.LinkedList<AppCenterCore.Package> ();
 
+        int package_count = 0;
 #if POP_OS
         string[] newest_ids = {
             "com.slack.Slack",
@@ -231,8 +301,8 @@ public class AppCenter.Homepage : AbstractView {
 
         picks_carousel.show_all ();
         picks_revealer.reveal_child = picks_carousel.get_children ().length () > 0;
-#else
-        int package_count = 0;
+        //  #else
+#endif
         foreach (var package in packages_by_release_date) {
             if (package_count >= MAX_PACKAGES_IN_BANNER) {
                 break;
