@@ -835,6 +835,7 @@ namespace AppCenter.Views {
                 } while (origin_liststore.iter_next (ref iter));
             }
 
+            string theme_name = origin_combo.get_settings ().gtk_theme_name;
             var provider = new Gtk.CssProvider ();
             try {
                 string? color_primary = null;
@@ -847,6 +848,16 @@ namespace AppCenter.Views {
                 if (color_primary == null || color_primary_text == null) {
                     color_primary = DEFAULT_BANNER_COLOR_PRIMARY;
                     color_primary_text = DEFAULT_BANNER_COLOR_PRIMARY_TEXT;
+                }
+
+                if (theme_name.contains ("Contrast")) {
+                    color_primary = "#ededed";
+                    color_primary_text = "#000";
+                    if (theme_name.contains ("Inverse")) {
+                        color_primary = "#323232";
+                        color_primary_text = "#fff";
+                    }
+                    
                 }
 
                 var colored_css = BANNER_STYLE_CSS.printf (color_primary, color_primary_text);
