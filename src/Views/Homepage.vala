@@ -19,7 +19,7 @@
 */
 
 public class AppCenter.Homepage : AbstractView {
-    private const int MAX_PACKAGES_IN_BANNER = 5;
+    private const int MAX_PACKAGES_IN_BANNER = 6;
     private const int MAX_PACKAGES_IN_CAROUSEL = 12;
 
     private Gtk.FlowBox category_flow;
@@ -199,9 +199,10 @@ public class AppCenter.Homepage : AbstractView {
         // Show the banner, since it only contains our artwork currently
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
-#endif
+#else
 
         banner_timeout_start ();
+#endif
         load_banners_and_carousels.begin ();
 
         category_flow.child_activated.connect ((child) => {
@@ -226,9 +227,11 @@ public class AppCenter.Homepage : AbstractView {
             banner_timeout_stop ();
         });
 
+#if !POP_OS
         banner_event_box.leave_notify_event.connect (() => {
             banner_timeout_start ();
         });
+#endif
 
         recently_updated_carousel.child_activated.connect ((child) => {
             var package_row_grid = (AppCenter.Widgets.ListPackageRowGrid) child.get_child ();
@@ -247,6 +250,7 @@ public class AppCenter.Homepage : AbstractView {
         var packages_in_banner = new Gee.LinkedList<AppCenterCore.Package> ();
 
         int package_count = 0;
+
 #if POP_OS
         string[] newest_ids = {
             "com.slack.Slack",
@@ -301,8 +305,7 @@ public class AppCenter.Homepage : AbstractView {
 
         picks_carousel.show_all ();
         picks_revealer.reveal_child = picks_carousel.get_children ().length () > 0;
-        //  #else
-#endif
+#else
         foreach (var package in packages_by_release_date) {
             if (package_count >= MAX_PACKAGES_IN_BANNER) {
                 break;
@@ -325,6 +328,7 @@ public class AppCenter.Homepage : AbstractView {
                 package_count++;
             }
         }
+#endif
 
         foreach (var package in packages_in_banner) {
             var banner = new Widgets.Banner (package);
@@ -337,6 +341,7 @@ public class AppCenter.Homepage : AbstractView {
 
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
+
 
         foreach (var package in packages_by_release_date) {
             if (recently_updated_carousel.get_children ().length () >= MAX_PACKAGES_IN_CAROUSEL) {
