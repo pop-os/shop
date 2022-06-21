@@ -207,6 +207,30 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             description = _("System updates and unpaid apps will not update automatically")
         };
 
+#if POP_OS
+        var repos_button = new Gtk.ModelButton () {
+            label = _("System Software Sources…")
+        };
+        repos_button.tooltip_text = _("Open System software source settings");
+        repos_button.clicked.connect (() => {
+            try {
+                string[] args = {
+                  "/usr/lib/repoman/repoman.pkexec"
+                };
+                Process.spawn_async (
+                    null,
+                    args,
+                    null,
+                    SpawnFlags.SEARCH_PATH,
+                    null,
+                    null
+                );
+            } catch (Error e) {
+                warning (e.message);
+            }
+        });
+#endif
+
         var refresh_accellabel = new Granite.AccelLabel.from_action_name (
             _("Check for Updates"),
             "app.refresh"
@@ -222,7 +246,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             margin_bottom = 6,
             margin_top = 6
         };
+#if POP_OS
+        menu_popover_box.add(repos_button);
+#else
         menu_popover_box.add (automatic_updates_button);
+#endif
         menu_popover_box.add (refresh_menuitem);
         menu_popover_box.show_all ();
 
