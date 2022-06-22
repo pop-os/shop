@@ -762,7 +762,7 @@ namespace AppCenter.Views {
                 load_more_content(screenshot_files);
                 var top_level_width = get_toplevel ().get_allocated_width ();
                 int redraw_counter = 0;
-                body_clamp.size_allocate.connect (() => {
+                header_clamp.size_allocate.connect (() => {
                     if (redraw_counter == 0) {
                         var children = app_screenshots.get_children ();
                         foreach (var child in children) {
