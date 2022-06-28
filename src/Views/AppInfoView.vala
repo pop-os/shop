@@ -286,7 +286,9 @@ namespace AppCenter.Views {
 
             if (screenshots.length > 0) {
                 app_screenshots = new Hdy.Carousel () {
-                    height_request = 500
+                    height_request = 100,
+                    spacing = 128,
+                    allow_long_swipes = true
                 };
 
                 screenshot_previous = new ArrowButton ("go-previous-symbolic") {
@@ -615,16 +617,34 @@ namespace AppCenter.Views {
             button_box.add (uninstall_button_revealer);
             button_box.add (action_stack);
 
-            var header_grid = new Gtk.Grid () {
+            var header_flow = new Gtk.FlowBox () {
                 column_spacing = 12,
-                row_spacing = 6,
+                row_spacing = 12,
+                hexpand = true,
+                max_children_per_line = 2,
+                min_children_per_line = 1
+            };
+
+            var meta_grid = new Gtk.Grid () {
+                column_spacing = 12,
+                row_spacing = 12,
                 hexpand = true
             };
-            header_grid.attach (app_icon_overlay, 0, 0, 1, 3);
-            header_grid.attach (package_name, 1, 0);
-            header_grid.attach (author_label, 1, 1);
-            header_grid.attach (origin_combo_revealer, 1, 2, 3);
-            header_grid.attach (button_box, 3, 0);
+            meta_grid.attach (app_icon_overlay, 0, 0, 1, 3);
+            meta_grid.attach (package_name, 1, 0);
+            meta_grid.attach (author_label, 1, 1);
+            meta_grid.attach (origin_combo_revealer, 1, 2, 3);
+
+            var action_grid = new Gtk.Grid () {
+                column_spacing = 12,
+                row_spacing = 6,
+                hexpand = true,
+                halign = Gtk.Align.END
+            };
+            action_grid.attach (button_box, 3, 0);
+            action_grid.attach (action_stack, 3, 1);
+
+            //  header_grid.attach (button_box, 3, 0);
 
             if (!package.is_local) {
                 size_label = new Widgets.SizeLabel () {
@@ -635,14 +655,16 @@ namespace AppCenter.Views {
 
                 action_button_group.add_widget (size_label);
 
-                header_grid.attach (size_label, 3, 1);
+                action_grid.attach (size_label, 3, 2);
             }
+            header_flow.add (meta_grid);
+            header_flow.add (action_grid);
 
             var header_clamp = new Hdy.Clamp () {
                 margin = 24,
                 maximum_size = MAX_WIDTH
             };
-            header_clamp.add (header_grid);
+            header_clamp.add (header_flow);
 
             var header_box = new Gtk.Grid () {
                 hexpand = true
