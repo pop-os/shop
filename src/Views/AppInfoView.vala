@@ -644,8 +644,6 @@ namespace AppCenter.Views {
             action_grid.attach (button_box, 0, 0);
             action_grid.attach (action_stack, 0, 1);
 
-            //  header_grid.attach (button_box, 3, 0);
-
             if (!package.is_local) {
                 size_label = new Widgets.SizeLabel () {
                     halign = Gtk.Align.END,
