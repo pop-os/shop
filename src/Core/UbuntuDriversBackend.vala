@@ -75,7 +75,6 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
         string? latest_nvidia_pkg = null;
         int latest_nvidia_ver = 0;
 
-        //  string[] tokens = command_output.split ("\n");
         for (int i = 0; i < tokens.length; i++) {
             if (cancellable.is_cancelled ()) {
                 break;
