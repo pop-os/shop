@@ -30,6 +30,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     private Gtk.Label updates_badge;
     private Gtk.Revealer updates_badge_revealer;
     private Granite.Widgets.Toast toast;
+    private Hdy.HeaderBar headerbar;
 
     private AppCenterCore.Package? last_installed_package;
     private AppCenterCore.Package? selected_package;
@@ -106,6 +107,20 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         });
 
         show.connect (on_view_mode_changed);
+
+        size_allocate.connect (() => {
+            int width = 0;
+            get_size (out width, null);
+            if (width > 700) {
+                search_entry.width_chars = 22;
+                search_entry.placeholder_text = _("Search Apps");
+
+            } else {
+                search_entry.width_chars = 9;
+                search_entry.placeholder_text = _("Search");
+
+            }
+        });
     }
 
     construct {
@@ -113,6 +128,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         icon_name = Build.PROJECT_NAME;
         set_default_size (910, 640);
         height_request = 500;
+        width_request = 400; // Minimum viable width
 
         title = _(Build.APP_NAME);
 
@@ -146,6 +162,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             no_show_all = true,
             valign = Gtk.Align.CENTER
         };
+        foreach (var child in return_button.get_children ()) {
+            if (child is Gtk.Label) {
+                child.set_ellipsize (Pango.EllipsizeMode.END);
+            }
+        }
         return_button.get_style_context ().add_class (Granite.STYLE_CLASS_BACK_BUTTON);
 
         view_mode = new Granite.Widgets.ModeButton () {
@@ -264,7 +285,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             valign = Gtk.Align.CENTER
         };
 
-        var headerbar = new Hdy.HeaderBar () {
+        headerbar = new Hdy.HeaderBar () {
             show_close_button = true
         };
         headerbar.set_custom_title (custom_title_stack);
@@ -395,6 +416,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     }
 
     public void show_package (AppCenterCore.Package package) {
+        headerbar.set_custom_title (null);
         stack.visible_child = homepage;
         homepage.show_package (package);
     }
@@ -453,6 +475,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         if (return_name != null) {
             return_button.label = return_name;
         }
+        foreach (var child in return_button.get_children ()) {
+            if (child is Gtk.Label) {
+                child.set_ellipsize (Pango.EllipsizeMode.END);
+            }
+        }
 
         return_button.no_show_all = return_name == null;
         return_button.visible = return_name != null;
@@ -469,6 +496,10 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         if (sensitive) {
             search_entry.grab_focus_without_selecting ();
         }
+    }
+
+    public void show_title (bool? title_visible) {
+        custom_title_stack.visible = title_visible;
     }
 
     public void set_custom_header (string? custom_header) {

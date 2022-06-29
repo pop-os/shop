@@ -441,7 +441,7 @@ namespace AppCenter.Views {
             }
 
             var package_name = new Gtk.Label (package.get_name ()) {
-                ellipsize = Pango.EllipsizeMode.MIDDLE,
+                ellipsize = Pango.EllipsizeMode.END,
                 selectable = true,
                 valign = Gtk.Align.END,
                 xalign = 0
@@ -641,8 +641,8 @@ namespace AppCenter.Views {
                 hexpand = true,
                 halign = Gtk.Align.END
             };
-            action_grid.attach (button_box, 3, 0);
-            action_grid.attach (action_stack, 3, 1);
+            action_grid.attach (button_box, 0, 0);
+            action_grid.attach (action_stack, 0, 1);
 
             //  header_grid.attach (button_box, 3, 0);
 
@@ -655,7 +655,7 @@ namespace AppCenter.Views {
 
                 action_button_group.add_widget (size_label);
 
-                action_grid.attach (size_label, 3, 2);
+                action_grid.attach (size_label, 0, 2);
             }
             header_flow.add (meta_grid);
             header_flow.add (action_grid);

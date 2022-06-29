@@ -90,10 +90,23 @@ public abstract class AppCenter.AbstractView : Hdy.Deck {
 
     private void abstract_update_navigation () {
         var main_window = (AppCenter.MainWindow) ((Gtk.Application) GLib.Application.get_default ()).get_active_window ();
+        
+        int width = 0;
+        main_window.get_size (out width, null);
+
+        if (width < 700) {
+            main_window.show_title(false);
+        } else {
+            main_window.show_title(true);
+        }
 
         if (visible_child is Views.AppInfoView) {
             main_window.set_custom_header ("");
+            main_window.show_title (false);
             main_window.configure_search (false);
+        }
+        if (visible_child is Homepage) {
+            main_window.show_title(true);
         }
 
         var previous_child = get_adjacent_child (Hdy.NavigationDirection.BACK);
