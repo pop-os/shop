@@ -249,28 +249,16 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         menu_popover_box.add (refresh_menuitem);
 
 #if POP_OS
-        var repos_button = new Gtk.ModelButton () {
-            label = _("System Software Sources…")
+        var repos_accellabel = new Granite.AccelLabel.from_action_name (
+            _("System Software Sources…"),
+            "app.repos"
+        );
+        var repos_menuitem = new Gtk.ModelButton () {
+            action_name = "app.repos"
         };
-        repos_button.tooltip_text = _("Open System software source settings");
-        repos_button.clicked.connect (() => {
-            try {
-                string[] args = {
-                  "/usr/lib/repoman/repoman.pkexec"
-                };
-                Process.spawn_async (
-                    null,
-                    args,
-                    null,
-                    SpawnFlags.SEARCH_PATH,
-                    null,
-                    null
-                );
-            } catch (Error e) {
-                warning (e.message);
-            }
-        });
-        menu_popover_box.add(repos_button);
+        repos_menuitem.get_child ().destroy ();
+        repos_menuitem.add (repos_accellabel);
+        menu_popover_box.add (repos_menuitem);
 #endif
         menu_popover_box.show_all ();
 

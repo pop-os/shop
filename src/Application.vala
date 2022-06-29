@@ -50,6 +50,7 @@ public class AppCenter.App : Gtk.Application {
     public static GLib.Settings settings;
 
     public static SimpleAction refresh_action;
+    public static SimpleAction repos_action;
 
     static construct {
         settings = new GLib.Settings ("io.elementary.appcenter.settings");
@@ -89,6 +90,28 @@ public class AppCenter.App : Gtk.Application {
             client.update_cache.begin (true);
         });
 
+#if POP_OS
+        repos_action = new SimpleAction ("repos", null);
+        repos_action.activate.connect (() => {
+            print("Open repos");
+            try {
+                string[] args = {
+                "/usr/lib/repoman/repoman.pkexec"
+                };
+                Process.spawn_async (
+                    null,
+                    args,
+                    null,
+                    SpawnFlags.SEARCH_PATH,
+                    null,
+                    null
+                );
+            } catch (Error e) {
+                warning (e.message);
+            }
+        });
+#endif
+
         if (AppInfo.get_default_for_uri_scheme ("appstream") == null) {
             var appinfo = new DesktopAppInfo (application_id + ".desktop");
             try {
@@ -103,6 +126,10 @@ public class AppCenter.App : Gtk.Application {
         add_action (refresh_action);
         set_accels_for_action ("app.quit", {"<Control>q"});
         set_accels_for_action ("app.refresh", {"<Control>r"});
+#if POP_OS
+        add_action (repos_action);
+        set_accels_for_action ("app.repos", {"<Control>s"});
+#endif
 
         search_provider = new SearchProvider ();
     }
