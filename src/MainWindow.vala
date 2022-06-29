@@ -228,6 +228,26 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             description = _("System updates and unpaid apps will not update automatically")
         };
 
+        var refresh_accellabel = new Granite.AccelLabel.from_action_name (
+            _("Check for Updates"),
+            "app.refresh"
+        );
+
+        refresh_menuitem = new Gtk.ModelButton () {
+            action_name = "app.refresh"
+        };
+        refresh_menuitem.get_child ().destroy ();
+        refresh_menuitem.add (refresh_accellabel);
+
+        var menu_popover_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+            margin_bottom = 6,
+            margin_top = 6
+        };
+#if !POP_OS
+        menu_popover_box.add (automatic_updates_button);
+#endif
+        menu_popover_box.add (refresh_menuitem);
+
 #if POP_OS
         var repos_button = new Gtk.ModelButton () {
             label = _("System Software Sources…")
@@ -250,29 +270,8 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
                 warning (e.message);
             }
         });
-#endif
-
-        var refresh_accellabel = new Granite.AccelLabel.from_action_name (
-            _("Check for Updates"),
-            "app.refresh"
-        );
-
-        refresh_menuitem = new Gtk.ModelButton () {
-            action_name = "app.refresh"
-        };
-        refresh_menuitem.get_child ().destroy ();
-        refresh_menuitem.add (refresh_accellabel);
-
-        var menu_popover_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
-            margin_bottom = 6,
-            margin_top = 6
-        };
-#if POP_OS
         menu_popover_box.add(repos_button);
-#else
-        menu_popover_box.add (automatic_updates_button);
 #endif
-        menu_popover_box.add (refresh_menuitem);
         menu_popover_box.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
