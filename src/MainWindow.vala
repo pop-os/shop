@@ -403,7 +403,6 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     }
 
     public void show_package (AppCenterCore.Package package) {
-        headerbar.set_custom_title (null);
         stack.visible_child = homepage;
         homepage.show_package (package);
     }
