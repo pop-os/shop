@@ -760,33 +760,33 @@ namespace AppCenter.Views {
             realize.connect (() => {
                 var screenshot_files = new Gee.ArrayList<string> ();
                 load_more_content(screenshot_files);
-                    var top_level_width = get_toplevel ().get_allocated_width ();
-                    int redraw_counter = 0;
-                    body_clamp.size_allocate.connect (() => {
+                var top_level_width = get_toplevel ().get_allocated_width ();
+                int redraw_counter = 0;
+                body_clamp.size_allocate.connect (() => {
+                    if (redraw_counter == 0) {
+                        var children = app_screenshots.get_children ();
+                        foreach (var child in children) {
+                            child.hide ();
+                        }
+                    }
+                    redraw_counter++;
+                    Timeout.add(150, () => {
+                        redraw_counter--;
                         if (redraw_counter == 0) {
                             var children = app_screenshots.get_children ();
                             foreach (var child in children) {
-                                child.hide ();
+                                app_screenshots.remove (child);
+                            }
+                            foreach (var file in screenshot_files) {
+                                load_screenshot (null, file);
+                            }
+                            foreach (var child in children) {
+                                child.show ();
                             }
                         }
-                        redraw_counter++;
-                        Timeout.add(150, () => {
-                            redraw_counter--;
-                            if (redraw_counter == 0) {
-                                var children = app_screenshots.get_children ();
-                                foreach (var child in children) {
-                                    app_screenshots.remove (child);
-                                }
-                                foreach (var file in screenshot_files) {
-                                    load_screenshot (null, file);
-                                }
-                                foreach (var child in children) {
-                                    child.show ();
-                                }
-                            }
-                            return GLib.Source.REMOVE;
-                        });
+                        return GLib.Source.REMOVE;
                     });
+                });
             });
         }
 
