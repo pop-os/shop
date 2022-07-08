@@ -290,26 +290,7 @@ public class AppCenter.Homepage : AbstractView {
         int package_count = 0;
 
 #if POP_OS
-        string[] newest_ids = {
-            "com.slack.Slack",
-            "org.telegram",
-            "org.gnome.meld",
-            "com.valvesoftware.Steam",
-            "net.lutris.Lutris",
-            "com.mattermost.Desktop",
-            "com.visualstudio.code",
-            "org.gnome.DejaDup",
-            "com.spotify.Client",
-            "com.gexperts.Tilix",
-            "alacritty",
-            "com.uploadedlobster.peek",
-            "virt-manager",
-            "org.signal.Signal",
-            "flameshot",
-            "com.getpostman.Postman",
-            "io.dbeaver.DBeaverCommunity",
-            "org.chromium.Chromium"
-        };
+        string[] added_picks = {};
 
         foreach (var id in newest_ids) {
             if (package_count >= MAX_PACKAGES_IN_BANNER) {
