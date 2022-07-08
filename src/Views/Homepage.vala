@@ -292,10 +292,12 @@ public class AppCenter.Homepage : AbstractView {
 #if POP_OS
         string[] added_picks = {};
 
-        foreach (var id in newest_ids) {
-            if (package_count >= MAX_PACKAGES_IN_BANNER) {
-                break;
+        while (picks_carousel.get_children ().length () < MAX_PACKAGES_IN_BANNER) {
+            var random_pick = get_random_pick ();
+            if (random_pick in added_picks) {
+                continue;
             }
+            var package = AppCenterCore.Client.get_default ().get_package_for_component_id(random_pick);
 
             var package = AppCenterCore.Client.get_default ().get_package_for_component_id (id);
             var installed = false;
@@ -311,14 +313,11 @@ public class AppCenter.Homepage : AbstractView {
             }
 
             if (!installed) {
+                added_picks += random_pick;
                 packages_in_banner.add (package);
                 package_count++;
                 var package_row = new AppCenter.Widgets.ListPackageRowGrid (package);
                 picks_carousel.add (package_row);
-            }
-
-            if (picks_carousel.get_children ().length () >= MAX_PACKAGES_IN_CAROUSEL) {
-                break;
             }
         }
 
