@@ -21,6 +21,27 @@
 public class AppCenter.Homepage : AbstractView {
     private const int MAX_PACKAGES_IN_BANNER = 6;
     private const int MAX_PACKAGES_IN_CAROUSEL = 9;
+    private const string[] pop_picks = {
+        "com.slack.Slack",
+        "org.telegram",
+        "org.gnome.meld",
+        "com.valvesoftware.Steam",
+        "net.lutris.Lutris",
+        "com.mattermost.Desktop",
+        "com.visualstudio.code",
+        "org.gnome.DejaDup",
+        "com.spotify.Client",
+        "com.gexperts.Tilix",
+        "alacritty",
+        "com.uploadedlobster.peek",
+        "virt-manager",
+        "org.signal.Signal",
+        "flameshot",
+        "com.getpostman.Postman",
+        "io.dbeaver.DBeaverCommunity",
+        "org.chromium.Chromium"
+    };
+        
 
     private Gtk.FlowBox category_flow;
     private Gtk.ScrolledWindow scrolled_window;
