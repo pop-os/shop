@@ -276,6 +276,12 @@ public class AppCenter.Homepage : AbstractView {
         });
     }
 
+    private string get_random_pick () {
+        int random_index = GLib.Random.int_range(0, pop_picks.length);
+        return pop_picks[random_index];
+    }
+        
+
     private async void load_banners_and_carousels () {
         unowned var fp_client = AppCenterCore.FlatpakBackend.get_default ();
         var packages_by_release_date = fp_client.get_featured_packages_by_release_date ();
