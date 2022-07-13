@@ -299,7 +299,6 @@ public class AppCenter.Homepage : AbstractView {
             }
             var package = AppCenterCore.Client.get_default ().get_package_for_component_id(random_pick);
 
-            var package = AppCenterCore.Client.get_default ().get_package_for_component_id (id);
             var installed = false;
             foreach (var origin_package in package.origin_packages) {
                 try {
