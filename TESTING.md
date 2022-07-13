@@ -15,6 +15,6 @@ Check the following:
 - Viewing installed applications from the Updates menu works
 - Right clicking on applications in GNOME Shell and clicking on "Show Details" works for programs with appstream data
 - Pop!_Picks display in a random order
+- Swipe gesture goes back from an app listing or category
 - `Ctrl`+`R` Refreshes Apt Cache and Flatpak Metadata
 - `Crtl`+`S` Opens Software Sources (repoman)
-- Swipe gesture goes back from an app listing or category
