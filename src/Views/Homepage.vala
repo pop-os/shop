@@ -21,6 +21,27 @@
 public class AppCenter.Homepage : AbstractView {
     private const int MAX_PACKAGES_IN_BANNER = 6;
     private const int MAX_PACKAGES_IN_CAROUSEL = 9;
+    private const string[] pop_picks = {
+        "com.slack.Slack",
+        "org.telegram",
+        "org.gnome.meld",
+        "com.valvesoftware.Steam",
+        "net.lutris.Lutris",
+        "com.mattermost.Desktop",
+        "com.visualstudio.code",
+        "org.gnome.DejaDup",
+        "com.spotify.Client",
+        "com.gexperts.Tilix",
+        "alacritty",
+        "com.uploadedlobster.peek",
+        "virt-manager",
+        "org.signal.Signal",
+        "flameshot",
+        "com.getpostman.Postman",
+        "io.dbeaver.DBeaverCommunity",
+        "org.chromium.Chromium"
+    };
+        
 
     private Gtk.FlowBox category_flow;
     private Gtk.ScrolledWindow scrolled_window;
@@ -253,7 +274,7 @@ public class AppCenter.Homepage : AbstractView {
         destroy.connect (() => {
             banner_timeout_stop ();
         });
-    }
+    }        
 
     private async void load_banners_and_carousels () {
         unowned var fp_client = AppCenterCore.FlatpakBackend.get_default ();
@@ -263,29 +284,18 @@ public class AppCenter.Homepage : AbstractView {
         int package_count = 0;
 
 #if POP_OS
-        string[] newest_ids = {
-            "com.slack.Slack",
-            "org.telegram",
-            "org.gnome.meld",
-            "com.valvesoftware.Steam",
-            "net.lutris.Lutris",
-            "com.mattermost.Desktop",
-            "com.visualstudio.code",
-            "org.gnome.DejaDup",
-            "com.spotify.Client",
-            "com.gexperts.Tilix",
-            "alacritty",
-            "com.uploadedlobster.peek",
-            "virt-manager",
-            "org.signal.Signal",
-            "flameshot",
-            "com.getpostman.Postman",
-            "io.dbeaver.DBeaverCommunity",
-            "org.chromium.Chromium"
-        };
+        var randomized_picks = new List<string> ();
 
-        foreach (var id in newest_ids) {
-            if (package_count >= MAX_PACKAGES_IN_BANNER) {
+        foreach (var item in pop_picks) {
+            randomized_picks.append(item);
+        }
+
+        randomized_picks.sort ((a, b) => {
+            return GLib.Random.int_range (-10000000, 10000000);
+        });
+
+        foreach (var id in randomized_picks) {
+            if (picks_carousel.get_children ().length () > MAX_PACKAGES_IN_BANNER) {
                 break;
             }
 
@@ -307,10 +317,6 @@ public class AppCenter.Homepage : AbstractView {
                 package_count++;
                 var package_row = new AppCenter.Widgets.ListPackageRowGrid (package);
                 picks_carousel.add (package_row);
-            }
-
-            if (picks_carousel.get_children ().length () >= MAX_PACKAGES_IN_CAROUSEL) {
-                break;
             }
         }
 
