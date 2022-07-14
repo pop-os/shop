@@ -36,7 +36,7 @@ public class AppCenter.Homepage : AbstractView {
         "com.uploadedlobster.peek",
         "virt-manager",
         "org.signal.Signal",
-        "flameshot",
+        "org.flameshot.Flameshot",
         "com.getpostman.Postman",
         "io.dbeaver.DBeaverCommunity",
         "org.chromium.Chromium"
