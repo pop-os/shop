@@ -274,13 +274,7 @@ public class AppCenter.Homepage : AbstractView {
         destroy.connect (() => {
             banner_timeout_stop ();
         });
-    }
-
-    private string get_random_pick () {
-        int random_index = GLib.Random.int_range(0, pop_picks.length);
-        return pop_picks[random_index];
-    }
-        
+    }        
 
     private async void load_banners_and_carousels () {
         unowned var fp_client = AppCenterCore.FlatpakBackend.get_default ();
@@ -290,15 +284,22 @@ public class AppCenter.Homepage : AbstractView {
         int package_count = 0;
 
 #if POP_OS
-        string[] added_picks = {};
+        var randomized_picks = new List<string> ();
 
-        while (picks_carousel.get_children ().length () < MAX_PACKAGES_IN_BANNER) {
-            var random_pick = get_random_pick ();
-            if (random_pick in added_picks) {
-                continue;
+        foreach (var item in pop_picks) {
+            randomized_picks.append(item);
+        }
+
+        randomized_picks.sort ((a, b) => {
+            return GLib.Random.int_range (-10000000, 10000000);
+        });
+
+        foreach (var id in randomized_picks) {
+            if (picks_carousel.get_children ().length () > MAX_PACKAGES_IN_BANNER) {
+                break;
             }
-            var package = AppCenterCore.Client.get_default ().get_package_for_component_id(random_pick);
 
+            var package = AppCenterCore.Client.get_default ().get_package_for_component_id (id);
             var installed = false;
             foreach (var origin_package in package.origin_packages) {
                 try {
@@ -312,7 +313,6 @@ public class AppCenter.Homepage : AbstractView {
             }
 
             if (!installed) {
-                added_picks += random_pick;
                 packages_in_banner.add (package);
                 package_count++;
                 var package_row = new AppCenter.Widgets.ListPackageRowGrid (package);
