@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the io.elementary.appcenter package.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.elementary.appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-31 15:16+0000\n"
+"POT-Creation-Date: 2022-07-20 09:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,69 +18,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#. Add "AppCenter" to the translation catalog
-#: src/Application.vala:38 src/Core/Package.vala:343
+#: src/Application.vala:38 src/Core/Package.vala:366
 msgid "AppCenter"
 msgstr ""
 
-#: src/Application.vala:123
+#: src/Application.vala:150
 #, c-format
 msgid "Could not parse the media type %s"
 msgstr ""
 
-#: src/Application.vala:143
+#: src/Application.vala:170
 #, c-format
 msgid "Specified link '%s' could not be found, searching instead"
 msgstr ""
 
-#: src/Application.vala:307
+#: src/Application.vala:334
 msgid "The app has been installed"
 msgstr ""
 
-#. Only show a toast when we're not on the installed app's page, i.e if
-#. no package is selected (we are not on an app page), or a package is
-#. selected but it's not the app we're installing.
-#: src/Application.vala:308 src/MainWindow.vala:390
+#: src/Application.vala:335 src/MainWindow.vala:426
 #, c-format
 msgid "“%s” has been installed"
 msgstr ""
 
-#: src/MainWindow.vala:129
+#: src/MainWindow.vala:116 src/MainWindow.vala:221 src/MainWindow.vala:474
+#: src/Views/Homepage.vala:396
+msgid "Search Apps"
+msgstr ""
+
+#: src/MainWindow.vala:120
+msgid "Search"
+msgstr ""
+
+#: src/MainWindow.vala:145
 #, c-format
 msgid "Failed to launch “%s“"
 msgstr ""
 
-#: src/MainWindow.vala:157 src/Views/Homepage.vala:265
+#: src/MainWindow.vala:178 src/Views/Homepage.vala:412
 msgid "Home"
 msgstr ""
 
-#: src/MainWindow.vala:158 src/Views/InstalledView.vala:62
-msgctxt "view"
-msgid "Installed"
-msgstr ""
-
-#: src/MainWindow.vala:200 src/MainWindow.vala:433 src/Views/Homepage.vala:249
-msgid "Search Apps"
-msgstr ""
-
-#: src/MainWindow.vala:206
+#: src/MainWindow.vala:227
 msgid "Automatic App Updates"
 msgstr ""
 
-#: src/MainWindow.vala:207
+#: src/MainWindow.vala:228
 msgid "System updates and unpaid apps will not update automatically"
 msgstr ""
 
-#: src/MainWindow.vala:211
+#: src/MainWindow.vala:232
 msgid "Check for Updates"
 msgstr ""
 
-#: src/MainWindow.vala:235
+#: src/MainWindow.vala:253
+msgid "System Software Sources…"
+msgstr ""
+
+#: src/MainWindow.vala:271
 msgid "Settings"
 msgstr ""
 
-#. Show Open only when a desktop app is installed
-#: src/MainWindow.vala:393
+#: src/MainWindow.vala:429
 #: src/Widgets/AppContainers/AbstractAppContainer.vala:56
 msgid "Open"
 msgstr ""
@@ -114,7 +113,7 @@ msgstr ""
 msgid "Downloading"
 msgstr ""
 
-#: src/Utils.vala:76 src/Core/FlatpakBackend.vala:1138
+#: src/Utils.vala:76 src/Core/FlatpakBackend.vala:1140
 msgid "Installing"
 msgstr ""
 
@@ -159,9 +158,9 @@ msgid "Finished"
 msgstr ""
 
 #: src/Utils.vala:98 src/Core/ChangeInformation.vala:77
-#: src/Core/FlatpakBackend.vala:1147 src/Core/FlatpakBackend.vala:1171
-#: src/Core/FlatpakBackend.vala:1279 src/Core/FlatpakBackend.vala:1303
-#: src/Core/FlatpakBackend.vala:1449 src/Core/FlatpakBackend.vala:1471
+#: src/Core/FlatpakBackend.vala:1149 src/Core/FlatpakBackend.vala:1173
+#: src/Core/FlatpakBackend.vala:1281 src/Core/FlatpakBackend.vala:1305
+#: src/Core/FlatpakBackend.vala:1451 src/Core/FlatpakBackend.vala:1473
 msgid "Cancelling"
 msgstr ""
 
@@ -237,24 +236,24 @@ msgstr ""
 msgid "package operations are being performed"
 msgstr ""
 
-#: src/Core/Client.vala:72
+#: src/Core/Client.vala:74
 msgid "Update Available"
 msgid_plural "Updates Available"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Core/Client.vala:73
+#: src/Core/Client.vala:75
 #, c-format
 msgid "%u update is available for your system"
 msgid_plural "%u updates are available for your system"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Core/FlatpakBackend.vala:1270
+#: src/Core/FlatpakBackend.vala:1272
 msgid "Uninstalling"
 msgstr ""
 
-#: src/Core/FlatpakBackend.vala:1440
+#: src/Core/FlatpakBackend.vala:1442
 msgid "Updating"
 msgstr ""
 
@@ -263,28 +262,54 @@ msgstr ""
 msgid "%s Developers"
 msgstr ""
 
-#: src/Core/Package.vala:345
+#: src/Core/Package.vala:344
+msgid "Pop!_Shop"
+msgstr ""
+
+#: src/Core/Package.vala:346
+msgid "Ubuntu (deb)"
+msgstr ""
+
+#: src/Core/Package.vala:348
+msgid "Pop!_OS (deb)"
+msgstr ""
+
+#: src/Core/Package.vala:353
+#, c-format
+msgid "%s (system-wide flatpak)"
+msgstr ""
+
+#: src/Core/Package.vala:356
+#, c-format
+msgid "%s (flatpak)"
+msgstr ""
+
+#: src/Core/Package.vala:359 src/Core/Package.vala:380
+msgid "Ubuntu Drivers"
+msgstr ""
+
+#: src/Core/Package.vala:362
+msgid "Other (deb)"
+msgstr ""
+
+#: src/Core/Package.vala:368
 msgid "elementary Updates"
 msgstr ""
 
-#: src/Core/Package.vala:347
+#: src/Core/Package.vala:370
 msgid "Ubuntu (non-curated)"
 msgstr ""
 
-#: src/Core/Package.vala:352
+#: src/Core/Package.vala:375
 #, c-format
 msgid "%s (system-wide)"
 msgstr ""
 
-#: src/Core/Package.vala:357
-msgid "Ubuntu Drivers"
-msgstr ""
-
-#: src/Core/Package.vala:360
+#: src/Core/Package.vala:383
 msgid "Unknown Origin (non-curated)"
 msgstr ""
 
-#: src/Core/Package.vala:532
+#: src/Core/Package.vala:556
 #, c-format
 msgid "Application state not set as installed in AppCenter for package: %s"
 msgstr ""
@@ -335,19 +360,29 @@ msgstr ""
 msgid "Please restart your system to finalize updates"
 msgstr ""
 
-#: src/Dialogs/InstallFailDialog.vala:26
+#: src/Dialogs/InstallFailDialog.vala:27
 msgid ""
-"This may be a temporary issue or could have been caused by external or "
-"manually compiled software."
+"You appear to be offline.\n"
+"\n"
+"Verify your internet connection, including the system's VPN and proxy "
+"settings, and try again."
 msgstr ""
 
-#: src/Dialogs/InstallFailDialog.vala:37
-msgid "Failed to install app"
+#: src/Dialogs/InstallFailDialog.vala:39
+msgid "Failed to install Applicaton.\n"
 msgstr ""
 
-#: src/Dialogs/InstallFailDialog.vala:40
+#: src/Dialogs/InstallFailDialog.vala:42
 #, c-format
-msgid "Failed to install “%s”"
+msgid "Failed to install %s.\n"
+msgstr ""
+
+#: src/Dialogs/InstallFailDialog.vala:46 src/Dialogs/UpdateFailDialog.vala:36
+msgid "Ignore"
+msgstr ""
+
+#: src/Dialogs/InstallFailDialog.vala:47
+msgid "Network Settings..."
 msgstr ""
 
 #: src/Dialogs/StripeDialog.vala:41
@@ -393,7 +428,6 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr ""
 
-#. / TRANSLATORS: Don't change the order, only transliterate
 #: src/Dialogs/StripeDialog.vala:182
 msgid "MM / YY"
 msgstr ""
@@ -528,7 +562,7 @@ msgstr ""
 msgid "Uninstall “%s”?"
 msgstr ""
 
-#: src/Dialogs/UninstallConfirmDialog.vala:42 src/Views/AppInfoView.vala:595
+#: src/Dialogs/UninstallConfirmDialog.vala:42 src/Views/AppInfoView.vala:597
 msgid "Uninstall"
 msgstr ""
 
@@ -554,10 +588,6 @@ msgstr ""
 msgid ""
 "This may have been caused by external, manually added software repositories "
 "or a corrupted sources file."
-msgstr ""
-
-#: src/Dialogs/UpdateFailDialog.vala:36
-msgid "Ignore"
 msgstr ""
 
 #: src/Dialogs/UpdateFailDialog.vala:37
@@ -673,138 +703,133 @@ msgstr ""
 msgid "Info Sharing"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:393
+#: src/Views/AppInfoView.vala:395
 msgid "Screenshot Not Available"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:494
+#: src/Views/AppInfoView.vala:496
 msgid "Homepage"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:500
+#: src/Views/AppInfoView.vala:502
 msgid "Translate"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:506
+#: src/Views/AppInfoView.vala:508
 msgid "Send Feedback"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:512
+#: src/Views/AppInfoView.vala:514
 msgid "Help"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:523
+#: src/Views/AppInfoView.vala:525
 msgid "What's New:"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:569
+#: src/Views/AppInfoView.vala:571
 msgid "Extensions:"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:681
+#: src/Views/AppInfoView.vala:701
 msgid "Link copied to clipboard"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:692
+#: src/Views/AppInfoView.vala:712
 #, c-format
 msgid "Check out %s on AppCenter:"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:700
+#: src/Views/AppInfoView.vala:720
 msgid "Share"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:792
+#: src/Views/AppInfoView.vala:842
 msgid "End of Life"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:793
+#: src/Views/AppInfoView.vala:843
 msgid "May not work as expected or receive security updates"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:799
+#: src/Views/AppInfoView.vala:849
 msgid "Outdated"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:800
+#: src/Views/AppInfoView.vala:850
 msgid "May not work as expected or support the latest features"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:808
+#: src/Views/AppInfoView.vala:858
 msgid "Unstable"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:809
+#: src/Views/AppInfoView.vala:859
 #, c-format
 msgid ""
 "Built for an unstable version of %s; may contain major issues. Not "
 "recommended for use on a production system."
 msgstr ""
 
-#. TRANSLATORS: See the Wikipedia page
-#: src/Views/AppInfoView.vala:1059
+#: src/Views/AppInfoView.vala:1121
 msgid "Public Domain"
 msgstr ""
 
-#. TRANSLATORS: Replace the link with the version for your language
-#: src/Views/AppInfoView.vala:1062
+#: src/Views/AppInfoView.vala:1124
 msgid "https://en.wikipedia.org/wiki/Public_domain"
 msgstr ""
 
-#. TRANSLATORS: Freedom, not price. See the GNU page.
-#: src/Views/AppInfoView.vala:1067
+#: src/Views/AppInfoView.vala:1129
 msgid "Free Software"
 msgstr ""
 
-#. TRANSLATORS: Replace the link with the version for your language
-#: src/Views/AppInfoView.vala:1070
+#: src/Views/AppInfoView.vala:1132
 msgid "https://www.gnu.org/philosophy/free-sw"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:1074
+#: src/Views/AppInfoView.vala:1136
 msgid "Proprietary"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:1077
+#: src/Views/AppInfoView.vala:1139
 msgid "Unknown License"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:1173
+#: src/Views/AppInfoView.vala:1235
 msgid "Fund"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:1181
+#: src/Views/AppInfoView.vala:1243
 msgid "Fund the development of this app"
 msgstr ""
 
-#: src/Views/AppInfoView.vala:1302
+#: src/Views/AppInfoView.vala:1364
 #, c-format
 msgid "Other Apps by %s"
 msgstr ""
 
-#: src/Views/AppListUpdateView.vala:32
+#: src/Views/AppListUpdateView.vala:34
 msgid "Checking for Updates"
 msgstr ""
 
-#: src/Views/AppListUpdateView.vala:33
+#: src/Views/AppListUpdateView.vala:35
 msgid "Downloading a list of available updates to the OS and installed apps"
 msgstr ""
 
-#: src/Views/AppListUpdateView.vala:41
+#: src/Views/AppListUpdateView.vala:43
 msgid "A restart is required to finish installing updates"
 msgstr ""
 
-#: src/Views/AppListUpdateView.vala:49
+#: src/Views/AppListUpdateView.vala:51
 msgid "Restart Now"
 msgstr ""
 
-#: src/Views/AppListUpdateView.vala:58
+#: src/Views/AppListUpdateView.vala:60
 msgid ""
 "Requesting a restart failed. Restart manually to finish installing updates"
 msgstr ""
 
-#. Unfortunately the update all button needs to be recreated everytime the header needs to be updated
-#: src/Views/AppListUpdateView.vala:210
+#: src/Views/AppListUpdateView.vala:246
 msgid "Update All"
 msgstr ""
 
@@ -816,27 +841,37 @@ msgstr ""
 msgid "Free Apps"
 msgstr ""
 
-#: src/Views/CategoryView.vala:59
+#: src/Views/CategoryView.vala:60
+msgid "Apps"
+msgstr ""
+
+#: src/Views/CategoryView.vala:64
 msgid "Non-Curated Apps"
 msgstr ""
 
-#: src/Views/Homepage.vala:75
+#: src/Views/Homepage.vala:103
+msgid "EXPLORE YOUR HORIZONS AND"
+msgstr ""
+
+#: src/Views/Homepage.vala:109
+msgid "UNLEASH YOUR POTENTIAL"
+msgstr ""
+
+#: src/Views/Homepage.vala:124
 msgid "Recently Updated"
 msgstr ""
 
-#: src/Views/Homepage.vala:97
+#: src/Views/Homepage.vala:149
+msgid "Pop!_Picks"
+msgstr ""
+
+#: src/Views/Homepage.vala:176
 msgid "Categories"
 msgstr ""
 
-#: src/Views/Homepage.vala:253 src/Views/Homepage.vala:257
+#: src/Views/Homepage.vala:400 src/Views/Homepage.vala:404
 #, c-format
 msgid "Search %s"
-msgstr ""
-
-#. / TRANSLATORS: the name of the Search view
-#: src/Views/Homepage.vala:268
-msgctxt "view"
-msgid "Search"
 msgstr ""
 
 #: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
@@ -947,13 +982,11 @@ msgstr ""
 msgid "Install"
 msgstr ""
 
-#. / This amount will be US Dollars. Some languages might need a "$%dUSD"
 #: src/Widgets/HumbleButton.vala:118
 #, c-format
 msgid "$%d.00"
 msgstr ""
 
-#. / This amount will be US Dollars. Some languages might need a "$%dUSD"
 #: src/Widgets/HumbleButton.vala:121
 #, c-format
 msgid "$%d"
@@ -967,7 +1000,6 @@ msgstr ""
 msgid "Connect to the Internet to browse and install apps."
 msgstr ""
 
-#. TRANSLATORS: Includes an ellipsis (…) in English to signify the action will be performed in a new window
 #: src/Widgets/NetworkInfoBar.vala:37
 msgid "Network Settings…"
 msgstr ""
