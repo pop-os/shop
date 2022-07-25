@@ -39,7 +39,18 @@ public class AppCenter.Homepage : AbstractView {
         "org.flameshot.Flameshot",
         "com.getpostman.Postman",
         "io.dbeaver.DBeaverCommunity",
-        "org.chromium.Chromium"
+        "org.chromium.Chromium",
+        "org.vim.Vim",
+        "org.gnu.emacs",
+        "org.blender.Blender",
+        "org.openscad.OpenSCAD",
+        "org.kde.krita",
+        "org.inkscape.Inkscape",
+        "org.gimp.GIMP",
+        "io.lmms.LMMS",
+        "com.github.wwmm.easyeffects",
+        "com.github.tchx84.Flatseal",
+        "com.ultimaker.cura",
     };
         
 
