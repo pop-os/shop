@@ -32,6 +32,11 @@ popover modelbutton {
     padding: 0 6px;
 }
 
+/* Search entry grey out when insensitive */
+.search:insensitive {
+    background-color: alpha(@bg_color, .3);
+}
+
 /* Include Text styles here as fallback */
 
 .h1 {

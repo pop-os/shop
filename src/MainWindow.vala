@@ -90,6 +90,31 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             return false;
         });
 
+        uint[] skip_keys = { 
+            // Skip these keys when trying to focus the text
+            Gdk.Key.Escape,
+            Gdk.Key.@3270_Enter,
+            Gdk.Key.ISO_Enter,
+            Gdk.Key.KP_Enter,
+            Gdk.Key.Return,
+            Gdk.Key.RockerEnter,
+            Gdk.Key.BackSpace
+        };
+
+        key_press_event.connect ((event) => {
+            if (!search_entry.has_focus && search_entry.sensitive) {
+                if (event.keyval in skip_keys) {
+                    return false;
+                }
+                search_entry.grab_focus ();
+                search_entry.text = event.str;
+                search_entry.set_position (-1);
+            } else {
+                return false;
+            }
+            return true;
+        });
+
         return_button.clicked.connect (view_return);
 
         homepage.package_selected.connect (package_selected);
