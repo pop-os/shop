@@ -11,6 +11,7 @@ io.elementary.appcenter
 Check the following:
 
 - Search works on the main page and inside a category
+- Search bar is useable without requiring explicit focus on both the Home and any Catagory page
 - Installing a new application and uninstalling it works
 - Viewing installed applications from the Updates menu works
 - Right clicking on applications in GNOME Shell and clicking on "Show Details" works for programs with appstream data
