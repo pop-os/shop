@@ -52,7 +52,7 @@ msgstr "%s blev succesfuldt installeret"
 #| msgid "Failed to uninstall “%s”"
 msgid "Failed to launch “%s“"
 msgstr "Det lykkedes ikke at afinstallere \"%s\""
-msgstr "Det lykkedes ikke at starte “%s“"
+
 
 #: src/MainWindow.vala:157 src/Views/Homepage.vala:265
 msgid "Home"
