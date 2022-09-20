@@ -28,7 +28,7 @@ public class AppCenter.SearchView : AbstractAppList {
         var flathub_link = "<a href='https://flathub.org'>%s</a>".printf (_("Flathub"));
         var alert_view = new Granite.Widgets.AlertView (
             _("No Apps Found"),
-            _("Try changing search terms. You can also sideload Flatpak apps e.g. from %s").printf (flathub_link),
+            _("Try changing search terms."),
             "edit-find-symbolic"
         );
         alert_view.show_all ();
@@ -46,7 +46,7 @@ public class AppCenter.SearchView : AbstractAppList {
 
         notify["current-search-term"].connect (() => {
             var dyn_flathub_link = "<a href='https://flathub.org/apps/search/%s'>%s</a>".printf (current_search_term, _("Flathub"));
-            alert_view.description = _("Try changing search terms. You can also sideload Flatpak apps e.g. from %s").printf (dyn_flathub_link);
+            alert_view.description = _("Try changing search terms.");
         });
     }
 
