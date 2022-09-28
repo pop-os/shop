@@ -17,10 +17,10 @@
 
 public class UpgradeFailDialog : Granite.MessageDialog {
     public AppCenterCore.Package? package { get; construct; }
-    public Error error { get; construct; }
+    public string error { get; construct; }
     private const string FALLBACK_ICON = "application-default-icon";
 
-    public UpgradeFailDialog (AppCenterCore.Package? package, Error error) {
+    public UpgradeFailDialog (AppCenterCore.Package? package, string error) {
         Object (
             title: "",
             secondary_text: _("This may have been caused by external or manually compiled software."),
@@ -43,6 +43,6 @@ public class UpgradeFailDialog : Granite.MessageDialog {
 
         response.connect (() => destroy ());
 
-        show_error_details (error.message);
+        show_error_details (error);
     }
 }

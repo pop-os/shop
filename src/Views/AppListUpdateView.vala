@@ -304,7 +304,7 @@ namespace AppCenter.Views {
                         if (e is GLib.IOError.CANCELLED) {
                             break;
                         } else {
-                            new UpgradeFailDialog (package, e).present ();
+                            new UpgradeFailDialog (package, (owned) e.message).present ();
                             break;
                         }
                     }
