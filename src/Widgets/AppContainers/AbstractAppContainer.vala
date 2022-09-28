@@ -265,7 +265,7 @@ namespace AppCenter {
                     yield package.update ();
                 } catch (Error e) {
                     if (!(e is GLib.IOError.CANCELLED)) {
-                        new UpgradeFailDialog (package, e).present ();
+                        new UpgradeFailDialog (package, (owned) e.message).present ();
                     }
                 }
             } else {
