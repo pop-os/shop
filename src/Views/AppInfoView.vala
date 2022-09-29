@@ -907,7 +907,7 @@ namespace AppCenter.Views {
                         color_primary = "#323232";
                         color_primary_text = "#fff";
                     }
-                    
+
                 }
 
                 var colored_css = BANNER_STYLE_CSS.printf (color_primary, color_primary_text);
@@ -1178,7 +1178,7 @@ namespace AppCenter.Views {
                     // Disable error dialog for if user clicks cancel. Reason: Failed to obtain authentication
                     // Pk ErrorEnums are mapped to the error code at an offset of 0xFF (see packagekit-glib2/pk-client.h)
                     if (!(e is Pk.ClientError) || e.code != Pk.ErrorEnum.NOT_AUTHORIZED + 0xFF) {
-                        new UninstallFailDialog (package, e).present ();
+                        new UninstallFailDialog (package, (owned) e.message).present ();
                     }
                 }
             });
