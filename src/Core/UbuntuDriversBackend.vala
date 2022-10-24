@@ -44,16 +44,15 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
 #if POP_OS
     // A package has Pop packaging if the source is from the Pop PPA.
     private async bool packaged_by_pop (Cancellable? cancellable = null, string package) {
-        string? output = null;
-        string? drivers_exec_path = Environment.find_program_in_path ("sh");
-        if (drivers_exec_path == null) {
+        string? exec = Environment.find_program_in_path ("sh");
+        if (exec == null) {
             return false;
         }
 
         Subprocess command;
         try {
-            command = new Subprocess (SubprocessFlags.STDOUT_PIPE, drivers_exec_path, "-c", "apt-cache policy %s | grep 'ppa.launchpad.net/system76/pop/ubuntu'".printf(package));
-            yield command.communicate_utf8_async (null, cancellable, out output, null);
+            command = new Subprocess (SubprocessFlags.STDOUT_PIPE, exec, "-c", "apt-cache policy %s | grep 'apt.pop-os.org/release'".printf(package));
+            yield command.communicate_utf8_async (null, cancellable, null, null);
         } catch (Error e) {
             return false;
         }
@@ -85,9 +84,12 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
                 continue;
             }
 
-            // Filter out the nvidia server drivers
-            if (package_name.contains ("nvidia") && package_name.contains ("-server")) {
-                continue;
+            // Filter NVIDIA packages from Ubuntu
+            if (package_name.contains ("nvidia")) {
+                var name = package_name.split (",")[0];
+                if (!yield packaged_by_pop(null, name)) {
+                    continue;
+                }
             }
 
             string[] pkgnames = {};
