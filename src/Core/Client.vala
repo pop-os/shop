@@ -45,6 +45,10 @@ public class AppCenterCore.Client : Object {
         last_cache_update = new DateTime.from_unix_utc (AppCenter.App.settings.get_int64 ("last-refresh-time"));
     }
 
+    public async Gee.Collection<AppCenterCore.PackageDetails> get_prepared_applications (Cancellable? cancellable = null) {
+        return yield BackendAggregator.get_default ().get_prepared_applications (cancellable);
+    }
+
     public async Gee.Collection<AppCenterCore.Package> get_installed_applications (Cancellable? cancellable = null) {
         return yield BackendAggregator.get_default ().get_installed_applications (cancellable);
     }
@@ -107,6 +111,10 @@ public class AppCenterCore.Client : Object {
 
     public async void update_cache (bool force = false, CacheUpdateType cache_update_type = CacheUpdateType.ALL) {
         cancellable.reset ();
+
+        if (Utils.is_running_in_demo_mode ()) {
+            return;
+        }
 
         debug ("update cache called %s", force.to_string ());
         bool success = false;

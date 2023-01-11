@@ -29,21 +29,14 @@ appcenter_files = files(
     'Views/AppListUpdateView.vala',
     'Views/CategoryView.vala',
     'Views/Homepage.vala',
-    'Views/InstalledView.vala',
-    'Views/AbstractView.vala',
     'Views/SearchView.vala',
-    'Widgets/AbstractAppList.vala',
     'Widgets/Banner.vala',
     'Widgets/CardNumberEntry.vala',
-    'Widgets/CategoryFlowBox.vala',
     'Widgets/HumbleButton.vala',
-    'Widgets/NetworkInfoBar.vala',
     'Widgets/PackageRow.vala',
-    'Widgets/ReleaseListBox.vala',
     'Widgets/ReleaseRow.vala',
     'Widgets/SharePopover.vala',
     'Widgets/SizeLabel.vala',
-    'Widgets/UpdateHeaderRow.vala',
     'Widgets/AppContainers/AbstractAppContainer.vala',
     'Widgets/AppContainers/AbstractPackageRowGrid.vala',
     'Widgets/AppContainers/InstalledPackageRowGrid.vala',
@@ -75,6 +68,10 @@ endif
 
 if appstream.version().version_compare('>=0.15')
     args += '--define=HAS_APPSTREAM_0_15'
+endif
+
+if get_option('hide_upstream_distro_apps')
+    args += '--define=HIDE_UPSTREAM_DISTRO_APPS'
 endif
 
 executable(

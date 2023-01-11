@@ -1,10 +1,10 @@
-# Jung-Kyu Park <bagjunggyu@gmail.com>, 2018, 2019.
+# Jung-Kyu Park <bagjunggyu@gmail.com>, 2018, 2019, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-31 15:16+0000\n"
-"PO-Revision-Date: 2019-06-30 03:52+0000\n"
+"POT-Creation-Date: 2023-01-02 17:44+0000\n"
+"PO-Revision-Date: 2022-08-07 23:58+0000\n"
 "Last-Translator: Jung-Kyu Park <bagjunggyu@gmail.com>\n"
 "Language-Team: Korean <https://l10n.elementary.io/projects/appcenter/appcenter/ko/>\n"
 "Language: ko\n"
@@ -12,81 +12,143 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.4.2\n"
 "X-Launchpad-Export-Date: 2017-03-14 06:25+0000\n"
 
 #. Add "AppCenter" to the translation catalog
-#: src/Application.vala:38 src/Core/Package.vala:343
+#: src/Application.vala:38 src/Core/Package.vala:332
 msgid "AppCenter"
 msgstr "앱센터"
 
-#: src/Application.vala:123
+#: src/Application.vala:85
 #, c-format
 msgid "Could not parse the media type %s"
 msgstr "미디어 형식 %s의 구문을 분석할 수 없습니다"
 
-#: src/Application.vala:143
+#: src/Application.vala:105
 #, c-format
 msgid "Specified link '%s' could not be found, searching instead"
 msgstr "'%s' 를 찾을 수 없네요, 검색으로 대신하겠습니다"
 
-#: src/Application.vala:307
-#, fuzzy
-#| msgid "%s has been successfully installed"
+#: src/Application.vala:297
 msgid "The app has been installed"
-msgstr "%s의 설치를 마쳤습니다"
+msgstr "앱을 설치했습니다"
 
-#. Only show a toast when we're not on the installed app's page, i.e if
-#. no package is selected (we are not on an app page), or a package is
-#. selected but it's not the app we're installing.
-#: src/Application.vala:308 src/MainWindow.vala:390
-#, fuzzy, c-format
-#| msgid "%s has been successfully installed"
+#: src/Application.vala:298 src/MainWindow.vala:546
+#, c-format
 msgid "“%s” has been installed"
-msgstr "%s의 설치를 마쳤습니다"
+msgstr "\"%s\" 설치를 마쳤습니다"
 
-#: src/MainWindow.vala:129
-#, fuzzy, c-format
+#: src/MainWindow.vala:93
+#, fuzzy
+#| msgid "Getting information"
+msgid "Getting app information…"
+msgstr "정보를 가져오고 있습니다"
+
+#: src/MainWindow.vala:96
+msgid "Getting download size…"
+msgstr ""
+
+#: src/MainWindow.vala:102
+#, fuzzy
+#| msgid "Checking for Updates"
+msgid "Checking for updates…"
+msgstr "업데이트 확인"
+
+#: src/MainWindow.vala:105
+#, fuzzy
+#| msgid "Installing"
+msgid "Installing…"
+msgstr "설치중"
+
+#: src/MainWindow.vala:108
+#, fuzzy
+#| msgid "Installing updates"
+msgid "Installing updates…"
+msgstr "업데이트 설치 중입니다"
+
+#: src/MainWindow.vala:111
+#, fuzzy
+#| msgid "Uninstalling"
+msgid "Uninstalling…"
+msgstr "제거 중"
+
+#: src/MainWindow.vala:141
+#, c-format
 msgid "Failed to launch “%s“"
-msgstr "앱을 검색하고 설치하기"
+msgstr "\"%s\" 실행을 실패했습니다"
 
-#: src/MainWindow.vala:157 src/Views/Homepage.vala:265
+#: src/MainWindow.vala:188
+#, fuzzy
+#| msgid "Failed to install app"
+msgctxt "view"
+msgid "Updates & installed apps"
+msgstr "앱 설치 실패"
+
+#: src/MainWindow.vala:201 src/MainWindow.vala:478 src/MainWindow.vala:620
+msgid "Search Apps"
+msgstr "앱 검색"
+
+#: src/MainWindow.vala:208
+msgid "Automatic App Updates"
+msgstr "자동 업데이트"
+
+#: src/MainWindow.vala:209
+msgid "System updates and unpaid apps will not update automatically"
+msgstr "시스템 업데이트 및 무료 앱은 자동으로 업데이트되지 않습니다"
+
+#: src/MainWindow.vala:213
+msgid "Check for Updates"
+msgstr "업데이트 확인"
+
+#: src/MainWindow.vala:237
+msgid "Settings"
+msgstr "설정"
+
+#: src/MainWindow.vala:265
+msgid "Network Not Available."
+msgstr "네트워크를 사용할 수 없습니다."
+
+#: src/MainWindow.vala:266
+msgid "Connect to the Internet to browse and install apps."
+msgstr "앱을 살펴보거나 설치하시려면 인터넷에 연결해 주세요."
+
+#: src/MainWindow.vala:276
+msgid "Network Settings…"
+msgstr "네트워크 설정…"
+
+#: src/MainWindow.vala:284
+msgid "Running in Demo Mode"
+msgstr ""
+
+#: src/MainWindow.vala:285
+#, fuzzy, c-format
+#| msgid "Connect to the Internet to browse and install apps."
+msgid "Install %s to browse and install apps."
+msgstr "앱을 살펴보거나 설치하시려면 인터넷에 연결해 주세요."
+
+#: src/MainWindow.vala:482 src/MainWindow.vala:486
+#, c-format
+msgid "Search %s"
+msgstr "%s 찾기"
+
+#: src/MainWindow.vala:503
 msgid "Home"
 msgstr "홈"
 
-#: src/MainWindow.vala:158 src/Views/InstalledView.vala:62
+#. / TRANSLATORS: the name of the Search view
+#: src/MainWindow.vala:506
+msgctxt "view"
+msgid "Search"
+msgstr "검색"
+
+#: src/MainWindow.vala:512
 msgctxt "view"
 msgid "Installed"
 msgstr "설치함"
 
-#: src/MainWindow.vala:200 src/MainWindow.vala:433 src/Views/Homepage.vala:249
-msgid "Search Apps"
-msgstr "앱 검색"
-
-#: src/MainWindow.vala:206
-#, fuzzy
-#| msgid "Failed to Fetch Updates"
-msgid "Automatic App Updates"
-msgstr "업데이트할 내용을 불러오지 못했습니다"
-
-#: src/MainWindow.vala:207
-msgid "System updates and unpaid apps will not update automatically"
-msgstr ""
-
-#: src/MainWindow.vala:211
-#, fuzzy
-#| msgid "Searching for updates…"
-msgid "Check for Updates"
-msgstr "업데이트 검색 중…"
-
-#: src/MainWindow.vala:235
-#, fuzzy
-#| msgid "Starting"
-msgid "Settings"
-msgstr "시작하고 있습니다"
-
 #. Show Open only when a desktop app is installed
-#: src/MainWindow.vala:393
+#: src/MainWindow.vala:549
 #: src/Widgets/AppContainers/AbstractAppContainer.vala:56
 msgid "Open"
 msgstr "열기"
@@ -95,7 +157,7 @@ msgstr "열기"
 msgid "Starting"
 msgstr "시작하고 있습니다"
 
-#: src/Utils.vala:64 src/Core/BackendAggregator.vala:292
+#: src/Utils.vala:64 src/Core/BackendAggregator.vala:310
 #: src/Core/ChangeInformation.vala:47 src/Core/ChangeInformation.vala:62
 msgid "Waiting"
 msgstr "기다리고 있습니다"
@@ -120,13 +182,13 @@ msgstr "패키지를 제거하고 있습니다"
 msgid "Downloading"
 msgstr "내려받고 있습니다"
 
-#: src/Utils.vala:76 src/Core/FlatpakBackend.vala:1138
+#: src/Utils.vala:76 src/Core/FlatpakBackend.vala:1166
 msgid "Installing"
 msgstr "설치중"
 
 #: src/Utils.vala:78
 msgid "Refreshing software list"
-msgstr "소프트웨어  목록을 새로 고치고 있습니다"
+msgstr "소프트웨어 목록을 새로 고치고 있습니다"
 
 #: src/Utils.vala:80
 msgid "Installing updates"
@@ -165,9 +227,9 @@ msgid "Finished"
 msgstr "마쳤습니다"
 
 #: src/Utils.vala:98 src/Core/ChangeInformation.vala:77
-#: src/Core/FlatpakBackend.vala:1147 src/Core/FlatpakBackend.vala:1171
-#: src/Core/FlatpakBackend.vala:1279 src/Core/FlatpakBackend.vala:1303
-#: src/Core/FlatpakBackend.vala:1449 src/Core/FlatpakBackend.vala:1471
+#: src/Core/FlatpakBackend.vala:1175 src/Core/FlatpakBackend.vala:1199
+#: src/Core/FlatpakBackend.vala:1307 src/Core/FlatpakBackend.vala:1331
+#: src/Core/FlatpakBackend.vala:1477 src/Core/FlatpakBackend.vala:1499
 msgid "Cancelling"
 msgstr "취소하고 있습니다"
 
@@ -241,122 +303,135 @@ msgstr "알 수 없는 상태"
 
 #: src/Core/BackendAggregator.vala:46
 msgid "package operations are being performed"
-msgstr ""
+msgstr "패키지 작업이 진행 중입니다"
 
-#: src/Core/Client.vala:72
+#: src/Core/Client.vala:76
 msgid "Update Available"
 msgid_plural "Updates Available"
 msgstr[0] "업데이트할 항목 있음"
 
-#: src/Core/Client.vala:73
+#: src/Core/Client.vala:77
 #, c-format
 msgid "%u update is available for your system"
 msgid_plural "%u updates are available for your system"
 msgstr[0] "시스템에 %u개의 업데이트할 항목이 있습니다"
 
-#: src/Core/FlatpakBackend.vala:1270
-#, fuzzy
-#| msgid "Uninstall"
+#: src/Core/FlatpakBackend.vala:44
+#, c-format
+msgid "%s (system-wide)"
+msgstr "%s (시스템 전체)"
+
+#: src/Core/FlatpakBackend.vala:1298
 msgid "Uninstalling"
-msgstr "제거"
+msgstr "제거 중"
 
-#: src/Core/FlatpakBackend.vala:1440
-#, fuzzy
-#| msgid "Update"
+#: src/Core/FlatpakBackend.vala:1468
 msgid "Updating"
-msgstr "업데이트"
+msgstr "업데이트 중"
 
-#: src/Core/Package.vala:313
+#: src/Core/Package.vala:308
 #, c-format
 msgid "%s Developers"
 msgstr "%s 개발자들"
 
-#: src/Core/Package.vala:345
+#: src/Core/Package.vala:334
 msgid "elementary Updates"
 msgstr "elementary 업데이트"
 
-#: src/Core/Package.vala:347
+#: src/Core/Package.vala:336
 msgid "Ubuntu (non-curated)"
 msgstr "Ubuntu (검수 안 함)"
 
-#: src/Core/Package.vala:352
-#, c-format
-msgid "%s (system-wide)"
-msgstr ""
-
-#: src/Core/Package.vala:357
+#: src/Core/Package.vala:346
 msgid "Ubuntu Drivers"
 msgstr "Ubuntu 드라이버"
 
-#: src/Core/Package.vala:360
+#: src/Core/Package.vala:349
 msgid "Unknown Origin (non-curated)"
 msgstr "알려지지 않은 소스 (검수 안 함)"
 
-#: src/Core/Package.vala:532
+#: src/Core/Package.vala:521
 #, c-format
 msgid "Application state not set as installed in AppCenter for package: %s"
-msgstr ""
+msgstr "앱센터에 설치한 것으로 설정되지 않은 패키지: %s"
 
-#: src/Core/PackageKitBackend.vala:297
-#, fuzzy, c-format
-#| msgid "%s (non-curated)"
+#: src/Core/PackageKitBackend.vala:308
+#, c-format
 msgid "%s (local)"
-msgstr "%s (검수 안 함)"
+msgstr "%s (로컬)"
 
-#: src/Core/UpdateManager.vala:37
+#: src/Core/UpdateManager.vala:41
 msgid "Operating System Updates"
 msgstr "운영 체제 업데이트"
 
-#: src/Core/UpdateManager.vala:38
+#: src/Core/UpdateManager.vala:42
 msgid "Updates to system components"
 msgstr "시스템 구성 요소를 업데이트합니다"
 
-#: src/Core/UpdateManager.vala:87
+#: src/Core/UpdateManager.vala:53
+#, fuzzy
+#| msgid "Check for Updates"
+msgid "Runtime Updates"
+msgstr "업데이트 확인"
+
+#: src/Core/UpdateManager.vala:54
+msgid "Updates to app runtimes"
+msgstr ""
+
+#: src/Core/UpdateManager.vala:99 src/Core/UpdateManager.vala:161
 #, c-format
 msgid "Version: %s"
 msgstr "버전: %s"
 
-#: src/Core/UpdateManager.vala:140
-msgid "Flatpak runtime"
-msgstr "Flatpak 런타임"
-
-#: src/Core/UpdateManager.vala:157
+#: src/Core/UpdateManager.vala:179
 msgid "No components with updates"
 msgstr "업데이트할 항목이 없습니다"
 
-#: src/Core/UpdateManager.vala:162
+#: src/Core/UpdateManager.vala:184
 #, c-format
 msgid "%u component with updates"
 msgid_plural "%u components with updates"
 msgstr[0] "%u개의 업데이트할 항목이 있습니다"
 
-#: src/Core/UpdateManager.vala:164
+#: src/Core/UpdateManager.vala:186 src/Core/UpdateManager.vala:198
 #, c-format
 msgid "%s:"
 msgstr "%s:"
 
-#: src/Core/UpdateManager.vala:202
+#: src/Core/UpdateManager.vala:191
+#, fuzzy
+#| msgid "No components with updates"
+msgid "No runtimes with updates"
+msgstr "업데이트할 항목이 없습니다"
+
+#: src/Core/UpdateManager.vala:196
+#, fuzzy, c-format
+#| msgid "%u component with updates"
+#| msgid_plural "%u components with updates"
+msgid "%u runtimes with updates"
+msgid_plural "%u runtimes with updates"
+msgstr[0] "%u개의 업데이트할 항목이 있습니다"
+
+#: src/Core/UpdateManager.vala:237
 msgid "Restart Required"
 msgstr "다시 시작해야 합니다"
 
-#: src/Core/UpdateManager.vala:203
+#: src/Core/UpdateManager.vala:238
 msgid "Please restart your system to finalize updates"
 msgstr "업데이트를 마무리하시려면 컴퓨터를 다시 시작해주세요"
 
 #: src/Dialogs/InstallFailDialog.vala:26
-#, fuzzy
 msgid "This may be a temporary issue or could have been caused by external or manually compiled software."
-msgstr "아마도 기본 시스템 이외의 외적인 요인이나, 수동으로 지정한 저장소 또는 망가진 소스 파일 때문으로 보입니다."
+msgstr "이는 일시적인 문제이거나 외부 또는 수동으로 컴파일된 소프트웨어로 인해 발생할 수 있습니다."
 
-#: src/Dialogs/InstallFailDialog.vala:37
-#, fuzzy
+#: src/Dialogs/InstallFailDialog.vala:36
 msgid "Failed to install app"
-msgstr "앱을 검색하고 설치하기"
+msgstr "앱 설치 실패"
 
-#: src/Dialogs/InstallFailDialog.vala:40
-#, fuzzy, c-format
+#: src/Dialogs/InstallFailDialog.vala:39
+#, c-format
 msgid "Failed to install “%s”"
-msgstr "앱을 검색하고 설치하기"
+msgstr "“%s” 앱 설치 실패"
 
 #: src/Dialogs/StripeDialog.vala:41
 msgid "An error occurred while processing the card. Please try again later. We apologize for any inconvenience caused."
@@ -366,180 +441,172 @@ msgstr "카드 결제 도중 오류가 생겼습니다. 다시 시도해 주세�
 msgid "Please review your payment info and try again."
 msgstr "지불 정보를 다시 한번 확인하신 후에 다시 진행해주세요."
 
-#: src/Dialogs/StripeDialog.vala:73
+#: src/Dialogs/StripeDialog.vala:72
 msgid "Payment"
 msgstr "지불"
 
-#: src/Dialogs/StripeDialog.vala:89 src/Dialogs/StripeDialog.vala:250
+#: src/Dialogs/StripeDialog.vala:92 src/Dialogs/StripeDialog.vala:255
 #, c-format
 msgid "Pay $%d for %s"
 msgstr "%d$를 %s에 지급합니다"
 
-#: src/Dialogs/StripeDialog.vala:94
-#, fuzzy
-#| msgid "This is a one time payment. Your email address is only used to send you a receipt."
+#: src/Dialogs/StripeDialog.vala:98
 msgid "This is a one time payment suggested by the developer. You can also choose your own price."
-msgstr "이것은 한 번 결제입니다. 여러분의 이메일은 오직 영수증을 보내기 위한 용도로만 이용됩니다."
+msgstr "개발자가 제안한 일회성 결제입니다. 여러분이 가격을 결정할 수 있습니다."
 
-#: src/Dialogs/StripeDialog.vala:115
+#: src/Dialogs/StripeDialog.vala:119
 msgid "or"
-msgstr ""
+msgstr "또는"
 
-#: src/Dialogs/StripeDialog.vala:152
+#: src/Dialogs/StripeDialog.vala:154
 msgid "Email"
 msgstr "이메일"
 
-#: src/Dialogs/StripeDialog.vala:157
-#, fuzzy
-#| msgid "Your email address is only used to send a receipt. You will not be subscribed to any mailing list."
+#: src/Dialogs/StripeDialog.vala:159
 msgid "Only used to send you a receipt. You will not be subscribed to any mailing list."
-msgstr "여러분의 이메일 주소는 영수증을 보내는 데 사용됩니다. 어떤 메일링 리스트에도 가입되지 않습니다."
+msgstr "영수증을 보내는 데만 사용됩니다. 어떤 메일링 리스트에도 가입되지 않습니다."
 
-#: src/Dialogs/StripeDialog.vala:158
+#: src/Dialogs/StripeDialog.vala:160
 msgid "Privacy Policy"
 msgstr "개인 정보 보호 정책"
 
 #. / TRANSLATORS: Don't change the order, only transliterate
-#: src/Dialogs/StripeDialog.vala:182
+#: src/Dialogs/StripeDialog.vala:184
 msgid "MM / YY"
 msgstr "MM / YY"
 
-#: src/Dialogs/StripeDialog.vala:190
+#: src/Dialogs/StripeDialog.vala:192
 msgid "CVC"
 msgstr "CVC"
 
-#: src/Dialogs/StripeDialog.vala:233 src/Dialogs/StripeDialog.vala:384
+#: src/Dialogs/StripeDialog.vala:237 src/Dialogs/StripeDialog.vala:394
 #: src/Widgets/AppContainers/AbstractAppContainer.vala:69
 msgid "Cancel"
 msgstr "취소"
 
-#: src/Dialogs/StripeDialog.vala:235 src/Dialogs/StripeDialog.vala:248
-#: src/Dialogs/StripeDialog.vala:383
+#: src/Dialogs/StripeDialog.vala:239 src/Dialogs/StripeDialog.vala:253
+#: src/Dialogs/StripeDialog.vala:393
 #, c-format
 msgid "Pay $%d.00"
 msgstr "$%d.00 지불"
 
-#: src/Dialogs/StripeDialog.vala:246
+#: src/Dialogs/StripeDialog.vala:251
 msgid "Try for Free"
-msgstr ""
+msgstr "무료로 사용해 보세요"
 
-#: src/Dialogs/StripeDialog.vala:312
+#: src/Dialogs/StripeDialog.vala:314
 msgid "Processing"
 msgstr "처리하고 있습니다"
 
-#: src/Dialogs/StripeDialog.vala:337
+#: src/Dialogs/StripeDialog.vala:341
 msgid "There Was a Problem Processing Your Payment"
 msgstr "결제 처리 과정에서 문제가 있었습니다"
 
-#: src/Dialogs/StripeDialog.vala:375
+#: src/Dialogs/StripeDialog.vala:385
 msgid "Pay Later"
 msgstr "나중에 지불하겠습니다"
 
-#: src/Dialogs/StripeDialog.vala:376
+#: src/Dialogs/StripeDialog.vala:386
 msgid "Retry"
 msgstr "다시 시도"
 
-#: src/Dialogs/StripeDialog.vala:557 src/Dialogs/StripeDialog.vala:622
+#: src/Dialogs/StripeDialog.vala:567 src/Dialogs/StripeDialog.vala:632
 msgid "The card number is incorrect. Please try again using the correct card number."
 msgstr "카드 번호가 맞지 않습니다. 올바른 카드 번호로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:559
+#: src/Dialogs/StripeDialog.vala:569
 msgid "The expiration month is invalid. Please try again using the correct expiration date."
-msgstr "유효기간 중 월(MM)이  맞지 않습니다. 올바른 유효 기간으로 다시 시도해 주세요."
+msgstr "유효 기간 중 월이 맞지 않습니다. 올바른 유효 기간으로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:561 src/Dialogs/StripeDialog.vala:619
+#: src/Dialogs/StripeDialog.vala:571 src/Dialogs/StripeDialog.vala:629
 msgid "The expiration year is invalid. Please try again using the correct expiration date."
-msgstr "유효기간 중 년(YY)이  맞지 않습니다. 올바른 유효 기간으로 다시 시도해 주세요."
+msgstr "유효 기간 중 년이 맞지 않습니다. 올바른 유효 기간으로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:564 src/Dialogs/StripeDialog.vala:617
+#: src/Dialogs/StripeDialog.vala:574 src/Dialogs/StripeDialog.vala:627
 msgid "The CVC number is incorrect. Please try again using the correct CVC."
-msgstr "CVC번호가  맞지 않습니다. 올바른 CVC 번호로 다시 시도해 주세요."
+msgstr "CVC 번호가 맞지 않습니다. 올바른 CVC 번호로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:566 src/Dialogs/StripeDialog.vala:608
+#: src/Dialogs/StripeDialog.vala:576 src/Dialogs/StripeDialog.vala:618
 msgid "The card has expired. Please try again with a different card."
 msgstr "카드의 유효기간이 지났습니다. 다른 카드로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:586
+#: src/Dialogs/StripeDialog.vala:596
 msgid "There are too many payment requests at the moment, please retry later."
 msgstr "지금 결제 요청이 너무 많아 결제가 어렵습니다, 다음에 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:602
+#: src/Dialogs/StripeDialog.vala:612
 msgid "This card does not support this kind of transaction. Please try again with a different card."
 msgstr "이 카드는 이런 방식의 거래를 지원하지 않습니다. 다른 카드로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:604
+#: src/Dialogs/StripeDialog.vala:614
 msgid "The currency is not supported by this card. Please try again with a different card."
 msgstr "이 카드에서 지원하지 않는 통용화폐입니다. 다른 카드로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:606
+#: src/Dialogs/StripeDialog.vala:616
 msgid "The transaction has already been processed."
 msgstr "이미 거래가 진행 중입니다."
 
-#: src/Dialogs/StripeDialog.vala:610
+#: src/Dialogs/StripeDialog.vala:620
 msgid "The ZIP/Postal code is incorrect. Please try again using the correct ZIP/postal code."
 msgstr "우편번호가 맞지 않습니다. 다른 우편번호를 이용해서 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:612
+#: src/Dialogs/StripeDialog.vala:622
 msgid "You don't have enough funds. Please use an alternative payment method."
 msgstr "잔고가 부족합니다. 다른 지불 방식을 이용해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:614
+#: src/Dialogs/StripeDialog.vala:624
 msgid "The amount is incorrect. Please try again using a valid amount."
 msgstr "수량이 틀렸습니다. 올바른 수량으로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:625
+#: src/Dialogs/StripeDialog.vala:635
 msgid "The PIN number is incorrect. Please try again using the correct PIN."
-msgstr "PIN 번호가  맞지 않습니다. 올바른 PIN 번호로 다시 시도해 주세요."
+msgstr "PIN 번호가 맞지 않습니다. 올바른 PIN 번호로 다시 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:627
+#: src/Dialogs/StripeDialog.vala:637
 msgid "There has been too many PIN attempts. Please try again with a different card."
 msgstr "PIN 번호 입력 시도를 초과했습니다. 다른 카드로 시도해 주세요."
 
-#: src/Dialogs/StripeDialog.vala:647
+#: src/Dialogs/StripeDialog.vala:657
 msgid "Unable to complete the transaction. Please contact your bank for further information."
 msgstr "거래를 마무리할 수 없습니다. 자세한 내용은 은행에 연락해서 알아보시기 바랍니다."
 
-#: src/Dialogs/StripeDialog.vala:650
+#: src/Dialogs/StripeDialog.vala:660
 msgid "The balance or credit limit on the card has been reached."
 msgstr "신용 한도 또는 신용 카드 한도에 다다랐습니다."
 
-#: src/Dialogs/StripeDialog.vala:653
+#: src/Dialogs/StripeDialog.vala:663
 msgid "The given card is a test card. Please use a real card to proceed."
 msgstr "지금 사용하신 카드는 테스트용 카드입니다. 실제 거래 가능한 카드로 다시 시도해주세요."
 
 #: src/Dialogs/UninstallConfirmDialog.vala:25
 msgid "Uninstalling this app may also delete its data."
-msgstr ""
+msgstr "이 앱을 제거하면 데이터도 삭제될 수 있습니다."
 
-#: src/Dialogs/UninstallConfirmDialog.vala:35
-#, fuzzy
+#: src/Dialogs/UninstallConfirmDialog.vala:34
 msgid "Uninstall app?"
-msgstr "제거"
+msgstr "앱을 제거하시겠습니까?"
 
-#: src/Dialogs/UninstallConfirmDialog.vala:38
-#, fuzzy, c-format
+#: src/Dialogs/UninstallConfirmDialog.vala:37
+#, c-format
 msgid "Uninstall “%s”?"
-msgstr "제거"
+msgstr "“%s” 제거하시겠습니까?"
 
-#: src/Dialogs/UninstallConfirmDialog.vala:42 src/Views/AppInfoView.vala:595
+#: src/Dialogs/UninstallConfirmDialog.vala:41 src/Views/AppInfoView.vala:641
 msgid "Uninstall"
 msgstr "제거"
 
 #: src/Dialogs/UninstallFailDialog.vala:26
-#: src/Dialogs/UpgradeFailDialog.vala:26
-#, fuzzy
 msgid "This may have been caused by external or manually compiled software."
-msgstr "아마도 기본 시스템 이외의 외적인 요인이나, 수동으로 지정한 저장소 또는 망가진 소스 파일 때문으로 보입니다."
+msgstr "이는 외부 또는 수동으로 컴파일된 소프트웨어로 인해 발생할 수 있습니다."
 
-#: src/Dialogs/UninstallFailDialog.vala:37
-#, fuzzy
+#: src/Dialogs/UninstallFailDialog.vala:36
 msgid "Failed to uninstall app"
-msgstr "앱을 검색하고 설치하기"
+msgstr "앱 제거 실패"
 
-#: src/Dialogs/UninstallFailDialog.vala:40
+#: src/Dialogs/UninstallFailDialog.vala:39
 #, c-format
 msgid "Failed to uninstall “%s”"
-msgstr ""
+msgstr "“%s” 앱 제거 실패"
 
 #: src/Dialogs/UpdateFailDialog.vala:26
 msgid "Failed to Fetch Updates"
@@ -557,387 +624,384 @@ msgstr "나중에 하겠습니다"
 msgid "Try Again"
 msgstr "다시 시도합니다"
 
-#: src/Dialogs/UpgradeFailDialog.vala:37
+#: src/Dialogs/UpgradeFailDialog.vala:26
 #, fuzzy
+#| msgid "This may have been caused by external, manually added software repositories or a corrupted sources file."
+msgid "This may have been caused by sideloaded or manually compiled software, a third-party software source, or a package manager error. Manually refreshing updates may resolve the issue."
+msgstr "아마도 기본 시스템 이외의 외적인 요인이나, 수동으로 지정한 저장소 또는 망가진 소스 파일 때문으로 보입니다."
+
+#: src/Dialogs/UpgradeFailDialog.vala:36
 msgid "Failed to update app"
-msgstr "앱을 검색하고 설치하기"
+msgstr "업데이트 실패"
 
-#: src/Dialogs/UpgradeFailDialog.vala:40
-#, fuzzy, c-format
+#: src/Dialogs/UpgradeFailDialog.vala:39
+#, c-format
 msgid "Failed to update “%s”"
-msgstr "앱을 검색하고 설치하기"
+msgstr "“%s” 업데이트 실패"
 
-#: src/Views/AppInfoView.vala:95
-msgid "Illicit Substances"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:96
-msgid "Presence of or references to alcohol, narcotics, or tobacco"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:101
-msgid "Sex & Nudity"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:102
-msgid "Adult nudity or sexual themes"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:107
-msgid "Offensive Language"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:108
-msgid "Profanity, discriminatory language, or adult humor"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:113
-msgid "Gambling"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:114
-msgid "Realistic or participatory gambling"
-msgstr ""
+#: src/Dialogs/UpgradeFailDialog.vala:43
+#, fuzzy
+#| msgid "Check for Updates"
+msgid "Refresh Updates"
+msgstr "업데이트 확인"
 
 #: src/Views/AppInfoView.vala:131
-#, fuzzy
-#| msgid "Non-Curated Apps"
-msgid "Non-Curated"
-msgstr "값을 매기지 않는 앱"
+msgid "Illicit Substances"
+msgstr "불법 약물"
 
 #: src/Views/AppInfoView.vala:132
+msgid "Presence of or references to alcohol, narcotics, or tobacco"
+msgstr "알코올, 마약 또는 담배의 존재 또는 언급"
+
+#: src/Views/AppInfoView.vala:137
+msgid "Sex & Nudity"
+msgstr "섹스 및 누드"
+
+#: src/Views/AppInfoView.vala:138
+msgid "Adult nudity or sexual themes"
+msgstr "성인 누드 또는 성적인 주제"
+
+#: src/Views/AppInfoView.vala:143
+msgid "Offensive Language"
+msgstr "공격적인 언어"
+
+#: src/Views/AppInfoView.vala:144
+msgid "Profanity, discriminatory language, or adult humor"
+msgstr "욕설, 차별적 언어 또는 성인용 유머"
+
+#: src/Views/AppInfoView.vala:149
+msgid "Gambling"
+msgstr "도박"
+
+#: src/Views/AppInfoView.vala:150
+msgid "Realistic or participatory gambling"
+msgstr "현실적 또는 참여적 도박"
+
+#: src/Views/AppInfoView.vala:175
+msgid "Non-Curated"
+msgstr "정하지 않음"
+
+#: src/Views/AppInfoView.vala:176
 msgid "Not reviewed by elementary for security, privacy, or system integration"
-msgstr ""
+msgstr "보안, 개인 정보 보호 또는 시스템 통합을 위해 elementary에서 검토하지 않음"
 
-#: src/Views/AppInfoView.vala:154
+#: src/Views/AppInfoView.vala:198
 msgid "Conflict"
-msgstr ""
+msgstr "갈등"
 
-#: src/Views/AppInfoView.vala:155
+#: src/Views/AppInfoView.vala:199
 msgid "Depictions of unsafe situations or aggressive conflict"
-msgstr ""
+msgstr "불안전한 상황이나 공격적인 갈등에 대한 묘사"
 
-#: src/Views/AppInfoView.vala:168
+#: src/Views/AppInfoView.vala:212
 msgid "Violence"
-msgstr ""
+msgstr "폭력"
 
-#: src/Views/AppInfoView.vala:173
+#: src/Views/AppInfoView.vala:217
 msgid "Fantasy Violence"
-msgstr ""
-
-#: src/Views/AppInfoView.vala:178
-msgid "Graphic violence, bloodshed, or death"
-msgstr ""
+msgstr "판타지 폭력"
 
 #: src/Views/AppInfoView.vala:222
+msgid "Graphic violence, bloodshed, or death"
+msgstr "노골적인 폭력, 유혈, 죽음"
+
+#: src/Views/AppInfoView.vala:266
 msgid "Multiplayer"
-msgstr ""
+msgstr "멀티플레이어"
 
-#: src/Views/AppInfoView.vala:223
+#: src/Views/AppInfoView.vala:267
 msgid "Online play with other people"
-msgstr ""
+msgstr "다른 사람들과 온라인 플레이"
 
-#: src/Views/AppInfoView.vala:239
+#: src/Views/AppInfoView.vala:283
 msgid "Unmoderated Audio, Video, or Text messaging with other people"
-msgstr ""
+msgstr "다른 사람과 협의하지 않은 오디오, 비디오 또는 문자 메시지"
 
-#: src/Views/AppInfoView.vala:241
+#: src/Views/AppInfoView.vala:285
 msgid "Moderated Audio, Video, or Text messaging with other people"
-msgstr ""
+msgstr "다른 사람과 협의한 오디오, 비디오 또는 문자 메시지"
 
-#: src/Views/AppInfoView.vala:245
+#: src/Views/AppInfoView.vala:289
 msgid "Online Interactions"
-msgstr ""
+msgstr "온라인 상호작용"
 
-#: src/Views/AppInfoView.vala:255
+#: src/Views/AppInfoView.vala:299
 msgid "Location Sharing"
-msgstr ""
+msgstr "위치 공유"
 
-#: src/Views/AppInfoView.vala:256
+#: src/Views/AppInfoView.vala:300
 msgid "Other people can see your real-world location"
-msgstr ""
+msgstr "다른 사람들이 내 실제 위치를 볼 수 있습니다"
 
-#: src/Views/AppInfoView.vala:268
+#: src/Views/AppInfoView.vala:312
 msgid "Collects anonymous usage data"
-msgstr ""
+msgstr "익명의 사용 데이터 수집"
 
-#: src/Views/AppInfoView.vala:271
+#: src/Views/AppInfoView.vala:315
 msgid "Collects usage data that could be used to identify you"
-msgstr ""
+msgstr "귀하를 식별하는 데 사용할 수 있는 사용 데이터를 수집합니다"
 
-#: src/Views/AppInfoView.vala:276
+#: src/Views/AppInfoView.vala:320
 msgid "Info Sharing"
-msgstr ""
+msgstr "정보 공유"
 
-#: src/Views/AppInfoView.vala:393
+#: src/Views/AppInfoView.vala:440
 msgid "Screenshot Not Available"
 msgstr "스크린샷을 찍을 수 없습니다"
 
-#: src/Views/AppInfoView.vala:494
+#: src/Views/AppInfoView.vala:551
 msgid "Homepage"
 msgstr "홈 페이지"
 
-#: src/Views/AppInfoView.vala:500
+#: src/Views/AppInfoView.vala:557
 msgid "Translate"
-msgstr ""
+msgstr "번역"
 
-#: src/Views/AppInfoView.vala:506
+#: src/Views/AppInfoView.vala:563
 msgid "Send Feedback"
-msgstr ""
+msgstr "피드백 보내기"
 
-#: src/Views/AppInfoView.vala:512
+#: src/Views/AppInfoView.vala:569
 msgid "Help"
 msgstr "도움말"
 
-#: src/Views/AppInfoView.vala:523
+#: src/Views/AppInfoView.vala:580
 msgid "What's New:"
 msgstr "새로워진 점:"
 
-#: src/Views/AppInfoView.vala:569
+#: src/Views/AppInfoView.vala:615
 msgid "Extensions:"
 msgstr "확장 프로그램:"
 
-#: src/Views/AppInfoView.vala:681
+#: src/Views/AppInfoView.vala:744
 msgid "Link copied to clipboard"
 msgstr "링크를 클립보드에 복사했습니다"
 
-#: src/Views/AppInfoView.vala:692
+#: src/Views/AppInfoView.vala:755
 #, c-format
 msgid "Check out %s on AppCenter:"
 msgstr "앱센터에서 %s 확인하기:"
 
-#: src/Views/AppInfoView.vala:700
+#: src/Views/AppInfoView.vala:763
 msgid "Share"
 msgstr "공유"
 
-#: src/Views/AppInfoView.vala:792
+#: src/Views/AppInfoView.vala:857
 msgid "End of Life"
-msgstr ""
+msgstr "사용 기한"
 
-#: src/Views/AppInfoView.vala:793
+#: src/Views/AppInfoView.vala:858
 msgid "May not work as expected or receive security updates"
-msgstr ""
+msgstr "예상대로 작동하지 않거나 보안 업데이트를 받을 수 없습니다"
 
-#: src/Views/AppInfoView.vala:799
+#: src/Views/AppInfoView.vala:864
 msgid "Outdated"
-msgstr ""
+msgstr "오래됨"
 
-#: src/Views/AppInfoView.vala:800
+#: src/Views/AppInfoView.vala:865
 msgid "May not work as expected or support the latest features"
-msgstr ""
+msgstr "예상대로 작동하지 않거나 최신 기능을 지원하지 않을 수 있습니다"
 
-#: src/Views/AppInfoView.vala:808
-#, fuzzy
-#| msgid "Uninstall"
+#: src/Views/AppInfoView.vala:873
 msgid "Unstable"
-msgstr "제거"
+msgstr "불안정"
 
-#: src/Views/AppInfoView.vala:809
+#: src/Views/AppInfoView.vala:874
 #, c-format
 msgid "Built for an unstable version of %s; may contain major issues. Not recommended for use on a production system."
-msgstr ""
+msgstr "%s의 불안정 버전용으로 제작되었습니다. 주요 문제가 포함될 수 있습니다. 프로덕션 시스템에서는 사용하지 않는 것이 좋습니다."
 
 #. TRANSLATORS: See the Wikipedia page
-#: src/Views/AppInfoView.vala:1059
+#: src/Views/AppInfoView.vala:1133
 msgid "Public Domain"
 msgstr "퍼블릭 도메인"
 
 #. TRANSLATORS: Replace the link with the version for your language
-#: src/Views/AppInfoView.vala:1062
+#: src/Views/AppInfoView.vala:1136
 msgid "https://en.wikipedia.org/wiki/Public_domain"
 msgstr "https://ko.wikipedia.org/wiki/퍼블릭_도메인"
 
 #. TRANSLATORS: Freedom, not price. See the GNU page.
-#: src/Views/AppInfoView.vala:1067
+#: src/Views/AppInfoView.vala:1141
 msgid "Free Software"
 msgstr "자유 소프트웨어"
 
 #. TRANSLATORS: Replace the link with the version for your language
-#: src/Views/AppInfoView.vala:1070
+#: src/Views/AppInfoView.vala:1144
 msgid "https://www.gnu.org/philosophy/free-sw"
 msgstr "http://www.gnu.org/philosophy/free-sw.ko.html"
 
-#: src/Views/AppInfoView.vala:1074
+#: src/Views/AppInfoView.vala:1148
 msgid "Proprietary"
 msgstr "소유권"
 
-#: src/Views/AppInfoView.vala:1077
+#: src/Views/AppInfoView.vala:1151
 msgid "Unknown License"
 msgstr "알 수 없는 라이선스"
 
-#: src/Views/AppInfoView.vala:1173
+#: src/Views/AppInfoView.vala:1243
 msgid "Fund"
-msgstr "투자"
+msgstr "펀드"
 
-#: src/Views/AppInfoView.vala:1181
+#: src/Views/AppInfoView.vala:1249
 msgid "Fund the development of this app"
 msgstr "이 앱의 개발에 투자하기"
 
-#: src/Views/AppInfoView.vala:1302
+#: src/Views/AppInfoView.vala:1367
 #, c-format
 msgid "Other Apps by %s"
 msgstr "%s에서 지원되는 다른 앱들"
 
-#: src/Views/AppListUpdateView.vala:32
-#, fuzzy
-#| msgid "Searching for updates…"
+#: src/Views/AppListUpdateView.vala:42
 msgid "Checking for Updates"
-msgstr "업데이트 검색 중…"
+msgstr "업데이트 확인"
 
-#: src/Views/AppListUpdateView.vala:33
+#: src/Views/AppListUpdateView.vala:43
 msgid "Downloading a list of available updates to the OS and installed apps"
-msgstr ""
+msgstr "OS 및 설치된 앱에 사용 가능한 업데이트 목록 다운로드"
 
-#: src/Views/AppListUpdateView.vala:41
-#, fuzzy
-#| msgid "A restart is required to complete the installation of updates"
-msgid "A restart is required to finish installing updates"
-msgstr "업데이트를 마무리하려면 다시 시작해야 합니다"
-
-#: src/Views/AppListUpdateView.vala:49
-msgid "Restart Now"
-msgstr "지금 다시 시작하기"
-
-#: src/Views/AppListUpdateView.vala:58
-msgid "Requesting a restart failed. Restart manually to finish installing updates"
-msgstr ""
-
-#. Unfortunately the update all button needs to be recreated everytime the header needs to be updated
-#: src/Views/AppListUpdateView.vala:210
+#: src/Views/AppListUpdateView.vala:57
 msgid "Update All"
 msgstr "모두 업데이트하기"
 
-#: src/Views/CategoryView.vala:37
-#, fuzzy
-#| msgid "Search Apps"
-msgid "Paid Apps"
-msgstr "앱 검색"
+#: src/Views/AppListUpdateView.vala:88
+msgid "A restart is required to finish installing updates"
+msgstr "업데이트를 마무리하려면 다시 시작해야 합니다"
 
-#: src/Views/CategoryView.vala:48
-#, fuzzy
-#| msgid "Free"
-msgid "Free Apps"
-msgstr "무료"
+#: src/Views/AppListUpdateView.vala:96
+msgid "Restart Now"
+msgstr "지금 다시 시작하기"
 
-#: src/Views/CategoryView.vala:59
-msgid "Non-Curated Apps"
-msgstr "값을 매기지 않는 앱"
+#: src/Views/AppListUpdateView.vala:108
+msgid "Requesting a restart failed. Restart manually to finish installing updates"
+msgstr "다시 시작을 요청하지 못했습니다. 업데이트 설치를 마무리하려면 수동으로 다시 시작하세요"
 
-#: src/Views/Homepage.vala:75
+#: src/Views/AppListUpdateView.vala:162
+#, c-format
+msgid "%u Update Available"
+msgid_plural "%u Updates Available"
+msgstr[0] "%u개의 업데이트 가능한 항목이 있습니다"
+
+#: src/Views/AppListUpdateView.vala:323
+msgid "Drivers"
+msgstr "드라이버"
+
+#: src/Views/AppListUpdateView.vala:336
+msgid "Up to Date"
+msgstr "최신 버전입니다"
+
+#: src/Views/CategoryView.vala:35 src/Views/Homepage.vala:62
 msgid "Recently Updated"
 msgstr "최근 업데이트 항목"
 
-#: src/Views/Homepage.vala:97
+#: src/Views/CategoryView.vala:37
+msgid "Paid Apps"
+msgstr "유료 앱"
+
+#: src/Views/CategoryView.vala:39
+msgid "Free Apps"
+msgstr "무료 앱"
+
+#: src/Views/CategoryView.vala:42
+msgid "Non-Curated Apps"
+msgstr "값을 매기지 않는 앱"
+
+#: src/Views/Homepage.vala:84
 msgid "Categories"
 msgstr "카테고리"
 
-#: src/Views/Homepage.vala:253 src/Views/Homepage.vala:257
-#, c-format
-msgid "Search %s"
-msgstr "%s 찾기"
+#: src/Views/Homepage.vala:110
+msgid "Accessories"
+msgstr "액세서리"
 
-#. / TRANSLATORS: the name of the Search view
-#: src/Views/Homepage.vala:268
-msgctxt "view"
-msgid "Search"
-msgstr "검색"
+#: src/Views/Homepage.vala:111
+msgid "Audio"
+msgstr "오디오"
 
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
+#: src/Views/Homepage.vala:112
+msgid "Communication"
+msgstr "통신"
+
+#: src/Views/Homepage.vala:121
+msgid "Development"
+msgstr "개발"
+
+#: src/Views/Homepage.vala:131
+msgid "Education"
+msgstr "교육"
+
+#: src/Views/Homepage.vala:132
+msgid "Finance"
+msgstr "재무"
+
+#: src/Views/Homepage.vala:137
+msgid "Graphics"
+msgstr "그래픽"
+
+#: src/Views/Homepage.vala:146
+msgid "Internet"
+msgstr "인터넷"
+
+#: src/Views/Homepage.vala:150
+msgid "Math, Science, & Engineering"
+msgstr "수학, 사이언스 & 엔지니어링"
+
+#: src/Views/Homepage.vala:169
+msgid "Media Production"
+msgstr "미디어 제작"
+
+#: src/Views/Homepage.vala:176
+msgid "Office"
+msgstr "오피스"
+
+#: src/Views/Homepage.vala:183
+msgid "System"
+msgstr "시스템"
+
+#: src/Views/Homepage.vala:187
+msgid "Universal Access"
+msgstr "손 쉬운 사용"
+
+#: src/Views/Homepage.vala:188
+msgid "Video"
+msgstr "비디오"
+
+#: src/Views/Homepage.vala:193
+msgid "Writing & Language"
+msgstr "글쓰기 & 언어"
+
+#: src/Views/Homepage.vala:203
+msgid "Privacy & Security"
+msgstr "개인 정보 보호 및 보안"
+
+#: src/Views/Homepage.vala:454
+msgid "Fun & Games"
+msgstr "재밌는 게임들"
+
+#: src/Views/Homepage.vala:482
+msgid "Fun &"
+msgstr "재미있는 &"
+
+#: src/Views/Homepage.vala:491
+msgid "Games"
+msgstr "게임"
+
+#: src/Views/SearchView.vala:32 src/Views/SearchView.vala:58
 msgid "Flathub"
-msgstr ""
+msgstr "Flathub"
 
-#: src/Views/SearchView.vala:30
+#: src/Views/SearchView.vala:34
 msgid "No Apps Found"
-msgstr ""
+msgstr "앱을 찾을 수 없음"
 
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
+#: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr ""
+msgstr "검색어를 변경해 보세요. %s에서 Flatpak 앱을 사이드로드할 수도 있습니다"
 
 #: src/Widgets/CardNumberEntry.vala:41
 msgid "Card Number"
 msgstr "카드 번호"
-
-#: src/Widgets/CategoryFlowBox.vala:29
-msgid "Accessories"
-msgstr "액세서리"
-
-#: src/Widgets/CategoryFlowBox.vala:30
-msgid "Audio"
-msgstr "오디오"
-
-#: src/Widgets/CategoryFlowBox.vala:31
-msgid "Communication"
-msgstr "통신"
-
-#: src/Widgets/CategoryFlowBox.vala:40
-msgid "Development"
-msgstr "개발"
-
-#: src/Widgets/CategoryFlowBox.vala:50
-msgid "Education"
-msgstr "교육"
-
-#: src/Widgets/CategoryFlowBox.vala:51
-msgid "Finance"
-msgstr "재무"
-
-#: src/Widgets/CategoryFlowBox.vala:56
-msgid "Graphics"
-msgstr "그래픽"
-
-#: src/Widgets/CategoryFlowBox.vala:65
-msgid "Internet"
-msgstr "인터넷"
-
-#: src/Widgets/CategoryFlowBox.vala:69
-msgid "Math, Science, & Engineering"
-msgstr "수학, 사이언스 & 엔지니어링"
-
-#: src/Widgets/CategoryFlowBox.vala:88
-msgid "Media Production"
-msgstr "미디어 제작"
-
-#: src/Widgets/CategoryFlowBox.vala:95
-msgid "Office"
-msgstr "오피스"
-
-#: src/Widgets/CategoryFlowBox.vala:102
-msgid "System"
-msgstr "시스템"
-
-#: src/Widgets/CategoryFlowBox.vala:106
-msgid "Universal Access"
-msgstr "편리한 기능"
-
-#: src/Widgets/CategoryFlowBox.vala:107
-msgid "Video"
-msgstr "비디오"
-
-#: src/Widgets/CategoryFlowBox.vala:112
-msgid "Writing & Language"
-msgstr "글쓰기 & 언어"
-
-#: src/Widgets/CategoryFlowBox.vala:122
-#, fuzzy
-#| msgid "Privacy Policy"
-msgid "Privacy & Security"
-msgstr "개인 정보 보호 정책"
-
-#: src/Widgets/CategoryFlowBox.vala:231
-#, fuzzy
-#| msgid "Games"
-msgid "Fun & Games"
-msgstr "게임"
-
-#: src/Widgets/CategoryFlowBox.vala:259
-msgid "Fun &"
-msgstr ""
-
-#: src/Widgets/CategoryFlowBox.vala:268
-msgid "Games"
-msgstr "게임"
 
 #: src/Widgets/HumbleButton.vala:66
 msgid "Requires payments, which are not enabled"
@@ -965,88 +1029,90 @@ msgstr "$%d.00"
 msgid "$%d"
 msgstr "$%d"
 
-#: src/Widgets/NetworkInfoBar.vala:28
+#: src/Widgets/ReleaseRow.vala:66
+msgid "Fixed Issues"
+msgstr ""
+
+#: src/Widgets/ReleaseRow.vala:94
 #, fuzzy
-msgid "Network Not Available."
-msgstr "네트워크를 사용할 수 없습니다"
+#| msgid "Unknown state"
+msgid "Unknown date"
+msgstr "알 수 없는 상태"
 
-#: src/Widgets/NetworkInfoBar.vala:29
-#, fuzzy
-msgid "Connect to the Internet to browse and install apps."
-msgstr "앱을 설치하거나 업데이트하시려면 인터넷에 연결해주세요."
-
-#. TRANSLATORS: Includes an ellipsis (…) in English to signify the action will be performed in a new window
-#: src/Widgets/NetworkInfoBar.vala:37
-msgid "Network Settings…"
-msgstr "네트워크 설정…"
-
-#: src/Widgets/ReleaseRow.vala:67
-#, c-format
-msgid "<b>%s</b> – %s"
-msgstr "<b>%s</b> – %s"
-
-#: src/Widgets/ReleaseRow.vala:74
+#: src/Widgets/ReleaseRow.vala:101
 msgid "Unknown version"
 msgstr "버전 정보 없음"
 
-#: src/Widgets/ReleaseRow.vala:90 src/Widgets/ReleaseRow.vala:93
+#: src/Widgets/ReleaseRow.vala:118
 msgid "No description available"
 msgstr "세부 정보가 없습니다"
 
-#: src/Widgets/SharePopover.vala:44
+#: src/Widgets/SharePopover.vala:35
 msgid "Facebook"
 msgstr "Facebook"
 
-#: src/Widgets/SharePopover.vala:48
+#: src/Widgets/SharePopover.vala:39
 msgid "Twitter"
 msgstr "Twitter"
 
-#: src/Widgets/SharePopover.vala:52
+#: src/Widgets/SharePopover.vala:43
 msgid "Reddit"
 msgstr "Reddit"
 
-#: src/Widgets/SharePopover.vala:56
+#: src/Widgets/SharePopover.vala:47
 msgid "Tumblr"
 msgstr "Tumblr"
 
-#: src/Widgets/SharePopover.vala:60
+#: src/Widgets/SharePopover.vala:51
 msgid "Telegram"
 msgstr "Telegram"
 
-#: src/Widgets/SharePopover.vala:64
+#: src/Widgets/SharePopover.vala:55
 msgid "Copy link"
 msgstr "링크 복사"
 
 #: src/Widgets/SizeLabel.vala:35
 msgid "Actual Download Size Likely to Be Smaller"
-msgstr ""
+msgstr "실제 다운로드 크기는 더 작을 수 있음"
 
 #: src/Widgets/SizeLabel.vala:36
 msgid "Only the parts of apps and updates that are needed will be downloaded."
-msgstr ""
+msgstr "필요한 앱 및 업데이트의 일부만 다운로드됩니다."
 
 #: src/Widgets/SizeLabel.vala:63
-#, fuzzy, c-format
-msgid "Up to %s"
-msgstr "최신 버전입니다"
-
-#: src/Widgets/UpdateHeaderRow.vala:41
 #, c-format
-msgid "%u Update Available"
-msgid_plural "%u Updates Available"
-msgstr[0] "%u개의 업데이트 가능한 항목이 있습니다"
-
-#: src/Widgets/UpdateHeaderRow.vala:54
-msgid "Drivers"
-msgstr "드라이버"
-
-#: src/Widgets/UpdateHeaderRow.vala:58
-msgid "Up to Date"
-msgstr "최신 버전입니다"
+msgid "Up to %s"
+msgstr "최대 %s"
 
 #: src/Widgets/AppContainers/AbstractAppContainer.vala:204
 msgid "Update"
 msgstr "업데이트"
+
+#: src/Widgets/AppContainers/AbstractAppContainer.vala:207
+#, fuzzy
+#| msgid "Downloading"
+msgid "Download"
+msgstr "내려받고 있습니다"
+
+#: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:61
+msgid "Release notes"
+msgstr ""
+
+#: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:132
+#, fuzzy, c-format
+#| msgid "What's New:"
+msgid "What's new in %s"
+msgstr "새로워진 점:"
+
+#: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:155
+msgid "Close"
+msgstr "닫기"
+
+#~ msgid "Flatpak runtime"
+#~ msgstr "Flatpak 런타임"
+
+#~ msgid "<b>%s</b> – %s"
+#~ msgstr "<b>%s</b> – %s"
 
 #, fuzzy
 #~| msgid "Content Warning"
@@ -1152,9 +1218,6 @@ msgstr "업데이트"
 
 #~ msgid "<b>%s</b>"
 #~ msgstr "<b>%s</b>"
-
-#~ msgid "Close"
-#~ msgstr "닫기"
 
 #~ msgid "App Center"
 #~ msgstr "앱 센터"

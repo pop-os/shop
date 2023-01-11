@@ -18,9 +18,11 @@
 *              Dane Henson <thegreatdane@gmail.com>
 */
 
-public class AppCenter.Homepage : AbstractView {
-    private const int MAX_PACKAGES_IN_BANNER = 6;
-    private const int MAX_PACKAGES_IN_CAROUSEL = 9;
+public class AppCenter.Homepage : Gtk.Box {
+    public signal void show_package (AppCenterCore.Package package);
+    public signal void show_category (AppStream.Category category);
+    private const int MAX_PACKAGES_IN_BANNER = 5;
+    private const int MAX_PACKAGES_IN_CAROUSEL = 12;
     private const string[] pop_picks = {
         "com.slack.Slack",
         "org.telegram",
@@ -41,26 +43,9 @@ public class AppCenter.Homepage : AbstractView {
         "io.dbeaver.DBeaverCommunity",
         "org.chromium.Chromium"
     };
-        
 
     private Gtk.FlowBox category_flow;
     private Gtk.ScrolledWindow scrolled_window;
-
-    public bool viewing_package {
-        get {
-            return visible_child is Views.AppInfoView;
-        }
-    }
-
-    public AppStream.Category? currently_viewed_category {
-        get {
-            if (visible_child is CategoryView) {
-                return ((CategoryView) visible_child).category;
-            }
-
-            return null;
-        }
-    }
 
     private Hdy.Carousel banner_carousel;
     private Gtk.Revealer banner_revealer;
@@ -76,6 +61,9 @@ public class AppCenter.Homepage : AbstractView {
     private uint banner_timeout_id;
 
     construct {
+        get_style_context ().add_class (Gtk.STYLE_CLASS_VIEW);
+        expand = true;
+
         banner_carousel = new Hdy.Carousel () {
             allow_long_swipes = true
         };
@@ -89,15 +77,12 @@ public class AppCenter.Homepage : AbstractView {
             carousel = banner_carousel
         };
 
-        var banner_grid = new Gtk.Grid () {
-            orientation = Gtk.Orientation.VERTICAL
-        };
-        banner_grid.add (banner_event_box);
-#if !POP_OS
-        banner_grid.add (banner_dots);
-#endif 
+        var banner_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        banner_box.add (banner_event_box);
+        banner_box.add (banner_dots);
+
         banner_revealer = new Gtk.Revealer ();
-        banner_revealer.add (banner_grid);
+        banner_revealer.add (banner_box);
 
 #if POP_OS
         var pop_banner_copy_1 = new Gtk.Label (_("EXPLORE YOUR HORIZONS AND"));
@@ -178,29 +163,139 @@ public class AppCenter.Homepage : AbstractView {
             margin_top = 24
         };
 
-        category_flow = new Widgets.CategoryFlowBox () {
+        category_flow = new Gtk.FlowBox () {
+            activate_on_single_click = true,
+            homogeneous = true,
             margin_start = 12,
             margin_end =12,
+            margin_bottom = 12,
             valign = Gtk.Align.START,
             selection_mode = Gtk.SelectionMode.NONE
         };
 
-        var grid = new Gtk.Grid () {
-            column_spacing = 24,
-            orientation = Gtk.Orientation.VERTICAL
-        };
-        grid.add (banner_revealer);
+        category_flow.set_sort_func ((child1, child2) => {
+            var item1 = (AbstractCategoryCard) child1;
+            var item2 = (AbstractCategoryCard) child2;
+            if (item1 != null && item2 != null) {
+                return item1.category.name.collate (item2.category.name);
+            }
+
+            return 0;
+        });
+
+        var games_card = new GamesCard ();
+
+        category_flow.add (new LegacyCard (_("Accessories"), "applications-accessories", {"Utility"}, "accessories"));
+        category_flow.add (new LegacyCard (_("Audio"), "appcenter-audio-symbolic", {"Audio", "Music"}, "audio"));
+        category_flow.add (new LegacyCard (_("Communication"), "", {
+            "Chat",
+            "ContactManagement",
+            "Email",
+            "InstantMessaging",
+            "IRCClient",
+            "Telephony",
+            "VideoConference"
+        }, "communication"));
+        category_flow.add (new LegacyCard (_("Development"), "", {
+            "Database",
+            "Debugger",
+            "Development",
+            "GUIDesigner",
+            "IDE",
+            "RevisionControl",
+            "TerminalEmulator",
+            "WebDevelopment"
+        }, "development"));
+        category_flow.add (new LegacyCard (_("Education"), "", {"Education"}, "education"));
+        category_flow.add (new LegacyCard (_("Finance"), "appcenter-finance-symbolic", {
+            "Economy",
+            "Finance"
+        }, "finance"));
+        category_flow.add (games_card);
+        category_flow.add (new LegacyCard (_("Graphics"), "", {
+            "2DGraphics",
+            "3DGraphics",
+            "Graphics",
+            "ImageProcessing",
+            "Photography",
+            "RasterGraphics",
+            "VectorGraphics"
+        }, "graphics"));
+        category_flow.add (new LegacyCard (_("Internet"), "applications-internet", {
+            "Network",
+            "P2P"
+        }, "internet"));
+        category_flow.add (new LegacyCard (_("Math, Science, & Engineering"), "", {
+            "ArtificialIntelligence",
+            "Astronomy",
+            "Biology",
+            "Calculator",
+            "Chemistry",
+            "ComputerScience",
+            "DataVisualization",
+            "Electricity",
+            "Electronics",
+            "Engineering",
+            "Geology",
+            "Geoscience",
+            "Math",
+            "NumericalAnalysis",
+            "Physics",
+            "Robotics",
+            "Science"
+        }, "science"));
+        category_flow.add (new LegacyCard (_("Media Production"), "appcenter-multimedia-symbolic", {
+            "AudioVideoEditing",
+            "Midi",
+            "Mixer",
+            "Recorder",
+            "Sequencer"
+        }, "media-production"));
+        category_flow.add (new LegacyCard (_("Office"), "appcenter-office-symbolic", {
+            "Office",
+            "Presentation",
+            "Publishing",
+            "Spreadsheet",
+            "WordProcessor"
+        }, "office"));
+        category_flow.add (new LegacyCard (_("System"), "applications-system-symbolic", {
+            "Monitor",
+            "System"
+        }, "system"));
+        category_flow.add (new LegacyCard (_("Universal Access"), "appcenter-accessibility-symbolic", {"Accessibility"}, "accessibility"));
+        category_flow.add (new LegacyCard (_("Video"), "appcenter-video-symbolic", {
+            "Tuner",
+            "TV",
+            "Video"
+        }, "video"));
+        category_flow.add (new LegacyCard (_("Writing & Language"), "preferences-desktop-locale", {
+            "Dictionary",
+            "Languages",
+            "Literature",
+            "OCR",
+            "TextEditor",
+            "TextTools",
+            "Translation",
+            "WordProcessor"
+        }, "writing-language"));
+        category_flow.add (new LegacyCard (_("Privacy & Security"), "preferences-system-privacy", {
+            "Security",
+        }, "privacy-security"));
+
 #if POP_OS
         grid.add (picks_revealer);
 #endif
-        grid.add (recently_updated_revealer);
-        grid.add (categories_label);
-        grid.add (category_flow);
+
+        var box = new Gtk.Box (orientation = Gtk.Orientation.VERTICAL, 0);
+        box.add (banner_revealer);
+        box.add (recently_updated_revealer);
+        box.add (categories_label);
+        box.add (category_flow);
 
         scrolled_window = new Gtk.ScrolledWindow (null, null) {
             hscrollbar_policy = Gtk.PolicyType.NEVER
         };
-        scrolled_window.add (grid);
+        scrolled_window.add (box);
 
         add (scrolled_window);
 
@@ -230,15 +325,15 @@ public class AppCenter.Homepage : AbstractView {
         load_banners_and_carousels.begin ();
 
         category_flow.child_activated.connect ((child) => {
-            var card = (Widgets.CategoryFlowBox.AbstractCategoryCard) child;
-            show_app_list_for_category (card.category);
+            var card = (AbstractCategoryCard) child;
+            show_category (card.category);
         });
 
         AppCenterCore.Client.get_default ().installed_apps_changed.connect (() => {
             Idle.add (() => {
                 // Clear the cached categories when the AppStream pool is updated
-                foreach (weak Gtk.Widget child in category_flow.get_children ()) {
-                    var item = (Widgets.CategoryFlowBox.AbstractCategoryCard) child;
+                foreach (unowned var child in category_flow.get_children ()) {
+                    var item = (AbstractCategoryCard) child;
                     var category_components = item.category.get_components ();
                     category_components.remove_range (0, category_components.length);
                 }
@@ -359,7 +454,6 @@ public class AppCenter.Homepage : AbstractView {
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
 
-
         foreach (var package in packages_by_release_date) {
             if (recently_updated_carousel.get_children ().length () >= MAX_PACKAGES_IN_CAROUSEL) {
                 break;
@@ -384,101 +478,6 @@ public class AppCenter.Homepage : AbstractView {
         }
         recently_updated_carousel.show_all ();
         recently_updated_revealer.reveal_child = recently_updated_carousel.get_children ().length () > 0;
-    }
-
-    public override void update_navigation () {
-        var main_window = (AppCenter.MainWindow) ((Gtk.Application) GLib.Application.get_default ()).get_active_window ();
-
-        var previous_child = get_adjacent_child (Hdy.NavigationDirection.BACK);
-
-        if (visible_child == scrolled_window) {
-            main_window.set_custom_header (null);
-            main_window.configure_search (true, _("Search Apps"), "");
-        } else if (visible_child is CategoryView) {
-            var current_category = ((CategoryView) visible_child).category;
-            main_window.set_custom_header (current_category.name);
-            main_window.configure_search (true, _("Search %s").printf (current_category.name), "");
-        } else if (visible_child == search_view) {
-            if (previous_child is CategoryView) {
-                var previous_category = ((CategoryView) previous_child).category;
-                main_window.configure_search (true, _("Search %s").printf (previous_category.name));
-                main_window.set_custom_header (previous_category.name);
-            } else {
-                main_window.set_custom_header (null);
-            }
-        }
-
-        if (previous_child == scrolled_window) {
-            main_window.set_return_name (_("Home"));
-        } else if (previous_child == search_view) {
-            /// TRANSLATORS: the name of the Search view
-            main_window.set_return_name (C_("view", "Search"));
-        }
-    }
-
-    public void search (string search_term, bool mimetype = false) {
-        if (search_term == "") {
-            // Prevent navigating away from category views when backspacing
-            if (visible_child == search_view) {
-                navigate (Hdy.NavigationDirection.BACK);
-            }
-
-            return;
-        }
-
-        if (visible_child != search_view) {
-            search_view = new AppCenter.SearchView ();
-            search_view.show_all ();
-
-            search_view.show_app.connect ((package) => {
-                show_package (package);
-            });
-
-            add (search_view);
-            visible_child = search_view;
-        }
-
-        search_view.clear ();
-        search_view.current_search_term = search_term;
-
-        unowned var client = AppCenterCore.Client.get_default ();
-
-        Gee.Collection<AppCenterCore.Package> found_apps;
-
-        if (mimetype) {
-            found_apps = client.search_applications_mime (search_term);
-            search_view.add_packages (found_apps);
-        } else {
-            AppStream.Category current_category = null;
-
-            var previous_child = get_adjacent_child (Hdy.NavigationDirection.BACK);
-            if (previous_child is CategoryView) {
-                current_category = ((CategoryView) previous_child).category;
-            }
-
-            found_apps = client.search_applications (search_term, current_category);
-            search_view.add_packages (found_apps);
-        }
-    }
-
-    public void show_app_list_for_category (AppStream.Category category) {
-        var child = get_child_by_name (category.name);
-        if (child != null) {
-            visible_child = child;
-            return;
-        }
-
-        var category_view = new CategoryView (category);
-
-        add (category_view);
-        visible_child = category_view;
-
-        category_view.show_app.connect ((package) => {
-            base.show_package (package);
-
-            var main_window = (AppCenter.MainWindow) ((Gtk.Application) GLib.Application.get_default ()).get_active_window ();
-            main_window.set_return_name (category.name);
-        });
     }
 
     private void banner_timeout_start () {
@@ -508,6 +507,151 @@ public class AppCenter.Homepage : AbstractView {
         if (banner_timeout_id != 0) {
             Source.remove (banner_timeout_id);
             banner_timeout_id = 0;
+        }
+    }
+
+    private abstract class AbstractCategoryCard : Gtk.FlowBoxChild {
+        public AppStream.Category category { get; protected set; }
+
+        protected Gtk.Grid content_area;
+        protected unowned Gtk.StyleContext style_context;
+
+        protected static Gtk.CssProvider category_provider;
+
+        static construct {
+            category_provider = new Gtk.CssProvider ();
+            category_provider.load_from_resource ("io/elementary/appcenter/categories.css");
+        }
+
+        construct {
+            var expanded_grid = new Gtk.Grid () {
+                hexpand = true,
+                vexpand = true
+            };
+
+            content_area = new Gtk.Grid ();
+            content_area.add (expanded_grid);
+
+            style_context = content_area.get_style_context ();
+            style_context.add_class (Granite.STYLE_CLASS_CARD);
+            style_context.add_class (Granite.STYLE_CLASS_ROUNDED);
+            style_context.add_class ("category");
+            style_context.add_provider (category_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            child = content_area;
+        }
+    }
+
+    private class LegacyCard : AbstractCategoryCard {
+        public LegacyCard (string name, string icon, string[] groups, string style) {
+            category = new AppStream.Category ();
+            category.set_name (name);
+            category.set_icon (icon);
+
+            foreach (var group in groups) {
+                category.add_desktop_group (group);
+            }
+
+            var name_label = new Gtk.Label (null);
+            name_label.wrap = true;
+            name_label.max_width_chars = 15;
+            name_label.get_style_context ().add_provider (category_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6) {
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER
+            };
+
+            content_area.attach (box, 0, 0);
+
+            if (category.icon != "") {
+                var display_image = new Gtk.Image.from_icon_name (category.icon, Gtk.IconSize.DIALOG) {
+                    halign = Gtk.Align.END,
+                    valign = Gtk.Align.CENTER
+                };
+
+                box.add (display_image);
+
+                name_label.xalign = 0;
+                name_label.halign = Gtk.Align.START;
+            } else {
+                name_label.justify = Gtk.Justification.CENTER;
+            }
+
+            box.add (name_label);
+            style_context.add_class (style);
+
+            if (style == "accessibility") {
+                name_label.label = category.name.up ();
+            } else {
+                name_label.label = category.name;
+            }
+
+            if (style == "science") {
+                name_label.justify = Gtk.Justification.CENTER;
+            }
+        }
+    }
+
+    private class GamesCard : AbstractCategoryCard {
+        construct {
+            category = new AppStream.Category () {
+                name = _("Fun & Games"),
+                icon = "appcenter-games-symbolic"
+            };
+            category.add_desktop_group ("ActionGame");
+            category.add_desktop_group ("AdventureGame");
+            category.add_desktop_group ("Amusement");
+            category.add_desktop_group ("ArcadeGame");
+            category.add_desktop_group ("BlocksGame");
+            category.add_desktop_group ("BoardGame");
+            category.add_desktop_group ("CardGame");
+            category.add_desktop_group ("Game");
+            category.add_desktop_group ("KidsGame");
+            category.add_desktop_group ("LogicGame");
+            category.add_desktop_group ("RolePlaying");
+            category.add_desktop_group ("Shooter");
+            category.add_desktop_group ("Simulation");
+            category.add_desktop_group ("SportsGame");
+            category.add_desktop_group ("StrategyGame");
+
+            var image = new Gtk.Image () {
+                icon_name = "appcenter-games-symbolic",
+                pixel_size = 64
+            };
+
+            unowned var image_context = image.get_style_context ();
+            image_context.add_class (Granite.STYLE_CLASS_ACCENT);
+            image_context.add_class ("slate");
+
+            var fun_label = new Gtk.Label (_("Fun &")) {
+                halign = Gtk.Align.START
+            };
+
+            unowned var fun_label_context = fun_label.get_style_context ();
+            fun_label_context.add_class (Granite.STYLE_CLASS_ACCENT);
+            fun_label_context.add_class ("pink");
+            fun_label_context.add_provider (category_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            var games_label = new Gtk.Label (_("Games"));
+
+            unowned var games_label_context = games_label.get_style_context ();
+            games_label_context.add_class (Granite.STYLE_CLASS_ACCENT);
+            games_label_context.add_class ("blue");
+            games_label_context.add_provider (category_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            var grid = new Gtk.Grid () {
+                column_spacing = 12,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER
+            };
+            grid.attach (image, 0, 0, 1, 2);
+            grid.attach (fun_label, 1, 0);
+            grid.attach (games_label, 1, 1);
+
+            content_area.attach (grid, 0, 0);
+
+            style_context.add_class ("games");
         }
     }
 }

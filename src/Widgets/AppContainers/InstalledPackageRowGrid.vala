@@ -21,17 +21,8 @@ public class AppCenter.Widgets.InstalledPackageRowGrid : AbstractPackageRowGrid 
     public signal void changed ();
 
     private AppStream.Release? newest = null;
-    private Gtk.Expander release_expander;
     private Gtk.Label app_version;
-    private Gtk.Label release_description;
-    private Gtk.Label release_expander_label;
-    private Gtk.Label release_single_label;
-    private Gtk.FlowBox info_flowbox;
-    private Gtk.Revealer release_stack_revealer;
-    private Gtk.Stack release_stack;
-
-    private static Gtk.SizeGroup info_size_group;
-    private static Gtk.SizeGroup updates_size_group;
+    private Gtk.Revealer release_button_revealer;
 
     public InstalledPackageRowGrid (AppCenterCore.Package package, Gtk.SizeGroup? action_size_group) {
         Object (package: package);
@@ -42,11 +33,6 @@ public class AppCenter.Widgets.InstalledPackageRowGrid : AbstractPackageRowGrid 
         }
 
         set_up_package ();
-    }
-
-    static construct {
-        info_size_group = new Gtk.SizeGroup (Gtk.SizeGroupMode.HORIZONTAL);
-        updates_size_group = new Gtk.SizeGroup (Gtk.SizeGroupMode.HORIZONTAL);
     }
 
     construct {
@@ -67,91 +53,37 @@ public class AppCenter.Widgets.InstalledPackageRowGrid : AbstractPackageRowGrid 
         };
         app_version.get_style_context ().add_class (Gtk.STYLE_CLASS_DIM_LABEL);
 
-        release_description = new Gtk.Label (null) {
+        var release_button = new Gtk.Button.from_icon_name ("dialog-information-symbolic", Gtk.IconSize.SMALL_TOOLBAR) {
+            valign = Gtk.Align.CENTER
+        };
+
+        release_button_revealer = new Gtk.Revealer () {
+            halign = Gtk.Align.END,
             hexpand = true,
-            margin_start = 12,
-            selectable = true,
-            use_markup = true,
-            wrap = true,
-            xalign = 0
-        };
-
-        release_expander_label = new Gtk.Label ("") {
-            hexpand = true,
-            wrap = true,
-            use_markup = true,
-            xalign = 0
-        };
-
-        release_expander = new Gtk.Expander ("") {
-            hexpand = true,
-            valign = Gtk.Align.START,
-            label_widget = release_expander_label,
-            visible = true
-        };
-        release_expander.add (release_description);
-        release_expander.show_all ();
-
-        release_single_label = new Gtk.Label (null) {
-            hexpand = true,
-            selectable = true,
-            use_markup = true,
-            valign = Gtk.Align.START,
-            visible = true,
-            wrap = true,
-            xalign = 0
-        };
-        release_single_label.show_all ();
-
-        release_stack = new Gtk.Stack () {
-            hexpand = true
-        };
-        release_stack.add (release_expander);
-        release_stack.add (release_single_label);
-
-        release_stack_revealer = new Gtk.Revealer () {
+            tooltip_text = _("Release notes"),
             transition_type = Gtk.RevealerTransitionType.CROSSFADE
         };
-        release_stack_revealer.add (release_stack);
+        release_button_revealer.add (release_button);
 
-        var info_grid = new Gtk.Grid () {
-            column_spacing = 12,
-            row_spacing = 6,
-            valign = Gtk.Align.START
-        };
-        info_grid.attach (app_icon_overlay, 0, 0, 1, 2);
-        info_grid.attach (package_name, 1, 0);
-        info_grid.attach (app_version, 1, 1);
-
-        info_flowbox = new Gtk.FlowBox () {
-            activate_on_single_click = true,
-            column_spacing = 24,
-            hexpand = true,
-            row_spacing = 12,
-            selection_mode = Gtk.SelectionMode.NONE
-        };
-        info_flowbox.add (info_grid);
-        info_flowbox.add (release_stack_revealer);
-
-
-        action_stack.homogeneous = false;
-        action_stack.margin_top = 10;
-        action_stack.valign = Gtk.Align.START;
+        action_stack.hexpand = false;
 
         var grid = new Gtk.Grid () {
-            column_spacing = 24
+            column_spacing = 12,
+            row_spacing = 6
         };
-        grid.attach(info_flowbox, 0, 0);
-        grid.attach (action_stack, 3, 0);
+        grid.attach (app_icon_overlay, 0, 0, 1, 2);
+        grid.attach (package_name, 1, 0);
+        grid.attach (app_version, 1, 1);
+        grid.attach (release_button_revealer, 2, 0, 1, 2);
+        grid.attach (action_stack, 3, 0, 1, 2);
 
         add (grid);
 
-        info_size_group.add_widget (info_grid);
-        updates_size_group.add_widget (release_stack_revealer);
-
-        release_expander.button_press_event.connect (() => {
-            release_expander.expanded = !release_expander.expanded;
-            return true;
+        release_button.clicked.connect (() => {
+            var releases_dialog = new ReleaseDialog (package) {
+                transient_for = (Gtk.Window) get_toplevel ()
+            };
+            releases_dialog.present ();
         });
     }
 
@@ -180,25 +112,53 @@ public class AppCenter.Widgets.InstalledPackageRowGrid : AbstractPackageRowGrid 
             if (newest == null) {
                 newest = package.get_newest_release ();
                 if (newest != null) {
-                    string description = ReleaseRow.format_release_description (newest);
-                    string[] lines = description.split ("\n", 2);
-                    if (lines.length > 1) {
-                        release_expander_label.label = lines[0];
-                        release_description.set_text (lines[1]);
-                        release_stack.visible_child = release_expander;
-                    } else if (lines.length > 0) {
-                        release_single_label.label = lines[0];
-                        release_stack.visible_child = release_single_label;
-                    }
-
-                    release_stack_revealer.reveal_child = true;
+                    release_button_revealer.reveal_child = true;
                 }
             } else {
-                release_stack_revealer.reveal_child = true;
+                release_button_revealer.reveal_child = true;
             }
         }
 
         update_action ();
         changed ();
+    }
+
+    private class ReleaseDialog : Granite.Dialog {
+        public AppCenterCore.Package package { get; construct; }
+
+        public ReleaseDialog (AppCenterCore.Package package) {
+            Object (package: package);
+        }
+
+        construct {
+            title = _("What's new in %s").printf (package.get_name ());
+            modal = true;
+
+            var releases_title = new Gtk.Label (title) {
+                selectable = true,
+                width_chars = 20,
+                wrap = true
+            };
+            releases_title.get_style_context ().add_class ("primary");
+
+            var release_row = new AppCenter.Widgets.ReleaseRow (package.get_newest_release ());
+
+            var releases_dialog_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 12) {
+                margin_end = 12,
+                margin_start = 12,
+                vexpand = true
+            };
+            releases_dialog_box.add (releases_title);
+            releases_dialog_box.add (release_row);
+            releases_dialog_box.show_all ();
+
+            get_content_area ().add (releases_dialog_box);
+
+            add_button (_("Close"), Gtk.ResponseType.CLOSE);
+
+            response.connect (() => {
+                close ();
+            });
+        }
     }
 }

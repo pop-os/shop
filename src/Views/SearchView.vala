@@ -19,8 +19,12 @@
 *              Atheesh Thirumalairajan <candiedoperation@icloud.com>
 */
 
-public class AppCenter.SearchView : AbstractAppList {
+public class AppCenter.SearchView : Gtk.Box {
+    public signal void show_app (AppCenterCore.Package package);
+
     public string? current_search_term { get; set; default = null; }
+
+    private Gtk.ListBox list_box;
     private uint current_visible_index = 0U;
     private GLib.ListStore list_store;
 
@@ -28,29 +32,47 @@ public class AppCenter.SearchView : AbstractAppList {
         var flathub_link = "<a href='https://flathub.org'>%s</a>".printf (_("Flathub"));
         var alert_view = new Granite.Widgets.AlertView (
             _("No Apps Found"),
-            _("Try changing search terms."),
+            _("Try changing search terms. You can also sideload Flatpak apps e.g. from %s").printf (flathub_link),
             "edit-find-symbolic"
         );
         alert_view.show_all ();
 
-        list_box.set_placeholder (alert_view);
-
         list_store = new GLib.ListStore (typeof (AppCenterCore.Package));
-        scrolled.edge_reached.connect ((position) => {
-            if (position == Gtk.PositionType.BOTTOM) {
-                show_more_apps ();
-            }
-        });
+
+        list_box = new Gtk.ListBox () {
+            activate_on_single_click = true,
+            hexpand = true,
+            vexpand = true
+        };
+        list_box.set_placeholder (alert_view);
+        list_box.set_sort_func ((Gtk.ListBoxSortFunc) package_row_compare);
+
+        var scrolled = new Gtk.ScrolledWindow (null, null) {
+            hscrollbar_policy = Gtk.PolicyType.NEVER
+        };
+        scrolled.add (list_box);
 
         add (scrolled);
 
         notify["current-search-term"].connect (() => {
             var dyn_flathub_link = "<a href='https://flathub.org/apps/search/%s'>%s</a>".printf (current_search_term, _("Flathub"));
-            alert_view.description = _("Try changing search terms.");
+            alert_view.description = _("Try changing search terms. You can also sideload Flatpak apps e.g. from %s").printf (dyn_flathub_link);
+        });
+
+        list_box.row_activated.connect ((row) => {
+            if (row is Widgets.PackageRow) {
+                show_app (((Widgets.PackageRow) row).get_package ());
+            }
+        });
+
+        scrolled.edge_reached.connect ((position) => {
+            if (position == Gtk.PositionType.BOTTOM) {
+                show_more_apps ();
+            }
         });
     }
 
-    public override void add_packages (Gee.Collection<AppCenterCore.Package> packages) {
+    public void add_packages (Gee.Collection<AppCenterCore.Package> packages) {
         foreach (var package in packages) {
             add_row_for_package (package);
         }
@@ -60,17 +82,9 @@ public class AppCenter.SearchView : AbstractAppList {
         }
     }
 
-    public override void add_package (AppCenterCore.Package package) {
-        add_row_for_package (package);
-
-        if (current_visible_index < 20) {
-            show_more_apps ();
-        }
-    }
-
     private void add_row_for_package (AppCenterCore.Package package) {
         // Don't show plugins or fonts in search and category views
-        if (!package.is_plugin && !package.is_font) {
+        if (package.kind != AppStream.ComponentKind.ADDON && package.kind != AppStream.ComponentKind.FONT) {
             GLib.CompareDataFunc<AppCenterCore.Package> sort_fn = (a, b) => {
                 return compare_packages (a, b);
             };
@@ -79,9 +93,16 @@ public class AppCenter.SearchView : AbstractAppList {
         }
     }
 
-    public override void clear () {
-        base.clear ();
+    public void clear () {
+        foreach (unowned var child in list_box.get_children ()) {
+            if (child is Widgets.PackageRow) {
+                child.destroy ();
+            }
+        };
+
         list_store.remove_all ();
+        list_box.invalidate_sort ();
+
         current_search_term = null;
         current_visible_index = 0U;
     }
@@ -91,7 +112,10 @@ public class AppCenter.SearchView : AbstractAppList {
         uint old_index = current_visible_index;
         while (current_visible_index < list_store.get_n_items ()) {
             var package = (AppCenterCore.Package?) list_store.get_object (current_visible_index);
+
             var row = new Widgets.PackageRow.list (package);
+            row.show_all ();
+
             list_box.add (row);
 
             current_visible_index++;
@@ -124,8 +148,8 @@ public class AppCenter.SearchView : AbstractAppList {
     }
 
     private int compare_packages (AppCenterCore.Package p1, AppCenterCore.Package p2) {
-        if (p1.is_plugin != p2.is_plugin) {
-            return p1.is_plugin ? 1 : -1;
+        if ((p1.kind == AppStream.ComponentKind.ADDON) != (p2.kind == AppStream.ComponentKind.ADDON)) {
+            return p1.kind == AppStream.ComponentKind.ADDON ? 1 : -1;
         }
 
         int sp1 = search_priority (p1.get_name ());
@@ -138,7 +162,7 @@ public class AppCenter.SearchView : AbstractAppList {
     }
 
     [CCode (instance_pos = -1)]
-    protected override int package_row_compare (Widgets.PackageRow row1, Widgets.PackageRow row2) {
+    private int package_row_compare (Widgets.PackageRow row1, Widgets.PackageRow row2) {
         return compare_packages (row1.get_package (), row2.get_package ());
     }
 }

@@ -17,44 +17,34 @@
 public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     public bool working { get; set; }
 
+    private AppCenter.SearchView search_view;
     private Gtk.Revealer view_mode_revealer;
-    private Gtk.Stack custom_title_stack;
-    private Gtk.Label homepage_header;
-    private Granite.Widgets.ModeButton view_mode;
-    private Gtk.Stack stack;
     private Gtk.SearchEntry search_entry;
-    private Gtk.Spinner spinner;
     private Gtk.ModelButton refresh_menuitem;
-    private Homepage homepage;
     private Gtk.Button return_button;
     private Gtk.Label updates_badge;
     private Gtk.Revealer updates_badge_revealer;
     private Granite.Widgets.Toast toast;
-    private Hdy.HeaderBar headerbar;
+    private Granite.Widgets.OverlayBar overlaybar;
+    private Hdy.Deck deck;
 
     private AppCenterCore.Package? last_installed_package;
-    private AppCenterCore.Package? selected_package;
 
     private uint configure_id;
-    private int homepage_view_id;
-    private int installed_view_id;
 
     private bool mimetype;
 
     private const int VALID_QUERY_LENGTH = 3;
 
-    public static Views.InstalledView installed_view { get; private set; }
+    public static Views.AppListUpdateView installed_view { get; private set; }
 
     public MainWindow (Gtk.Application app) {
         Object (application: app);
 
-        weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_default ();
-        default_theme.add_resource_path ("/io/elementary/appcenter/icons");
-
         search_entry.grab_focus_without_selecting ();
 
         var go_back = new SimpleAction ("go-back", null);
-        go_back.activate.connect (view_return);
+        go_back.activate.connect (() => deck.navigate (Hdy.NavigationDirection.BACK));
         add_action (go_back);
 
         var focus_search = new SimpleAction ("focus-search", null);
@@ -67,7 +57,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         button_release_event.connect ((event) => {
             // On back mouse button pressed
             if (event.button == 8) {
-                view_return ();
+                deck.navigate (Hdy.NavigationDirection.BACK);
                 return true;
             }
 
@@ -90,66 +80,46 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             return false;
         });
 
-        uint[] skip_keys = { 
-            // Skip these keys when trying to focus the text
-            Gdk.Key.Escape,
-            Gdk.Key.@3270_Enter,
-            Gdk.Key.ISO_Enter,
-            Gdk.Key.KP_Enter,
-            Gdk.Key.Return,
-            Gdk.Key.RockerEnter,
-            Gdk.Key.BackSpace
-        };
-
-        key_press_event.connect ((event) => {
-            if (!search_entry.has_focus && search_entry.sensitive) {
-                if (event.keyval in skip_keys) {
-                    return false;
-                }
-                search_entry.grab_focus ();
-                search_entry.text = event.str;
-                search_entry.set_position (-1);
-            } else {
-                return false;
-            }
-            return true;
-        });
-
         return_button.clicked.connect (view_return);
 
-        homepage.package_selected.connect (package_selected);
-        installed_view.package_selected.connect (package_selected);
-
-        unowned var aggregator = AppCenterCore.BackendAggregator.get_default ();
-        aggregator.bind_property ("working", this, "working", GLib.BindingFlags.SYNC_CREATE);
+        aggregator.notify ["job-type"].connect (() => {
+            switch (aggregator.job_type) {
+                case GET_DETAILS_FOR_PACKAGE_IDS:
+                case GET_PACKAGE_DEPENDENCIES:
+                case GET_PACKAGE_DETAILS:
+                case IS_PACKAGE_INSTALLED:
+                    overlaybar.label = _("Getting app information…");
+                    break;
+                case GET_DOWNLOAD_SIZE:
+                    overlaybar.label = _("Getting download size…");
+                    break;
+                case GET_PREPARED_PACKAGES:
+                case GET_INSTALLED_PACKAGES:
+                case GET_UPDATES:
+                case REFRESH_CACHE:
+                    overlaybar.label = _("Checking for updates…");
+                    break;
+                case INSTALL_PACKAGE:
+                    overlaybar.label = _("Installing…");
+                    break;
+                case UPDATE_PACKAGE:
+                    overlaybar.label = _("Installing updates…");
+                    break;
+                case REMOVE_PACKAGE:
+                    overlaybar.label = _("Uninstalling…");
+                    break;
+            }
+        });
 
         notify["working"].connect (() => {
             Idle.add (() => {
-                spinner.active = working;
                 App.refresh_action.set_enabled (!working);
                 return GLib.Source.REMOVE;
             });
         });
-
-        show.connect (on_view_mode_changed);
-
-        size_allocate.connect (() => {
-            int width = 0;
-            get_size (out width, null);
-            if (width > 700) {
-                search_entry.width_chars = 22;
-                search_entry.placeholder_text = _("Search Apps");
-
-            } else {
-                search_entry.width_chars = 9;
-                search_entry.placeholder_text = _("Search");
-
-            }
-        });
     }
 
     construct {
-        Hdy.init ();
         icon_name = Build.PROJECT_NAME;
         set_default_size (910, 640);
         height_request = 500;
@@ -175,7 +145,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
                     message_dialog.badge_icon = new ThemedIcon ("dialog-error");
                     message_dialog.transient_for = this;
 
-                    message_dialog.show_all ();
+                    message_dialog.present ();
                     message_dialog.response.connect ((response_id) => {
                         message_dialog.destroy ();
                     });
@@ -184,6 +154,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         });
 
         return_button = new Gtk.Button () {
+            action_name = "win.go-back",
             no_show_all = true,
             valign = Gtk.Align.CENTER
         };
@@ -194,14 +165,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         }
         return_button.get_style_context ().add_class (Granite.STYLE_CLASS_BACK_BUTTON);
 
-        view_mode = new Granite.Widgets.ModeButton () {
-            margin_end = 12,
-            margin_start = 12,
-            valign = Gtk.Align.CENTER
-        };
-
-        homepage_view_id = view_mode.append_text (_("Home"));
-        installed_view_id = view_mode.append_text (C_("view", "Installed"));
+        var updates_button = new Gtk.Button.from_icon_name ("software-update-available", Gtk.IconSize.LARGE_TOOLBAR);
 
         var badge_provider = new Gtk.CssProvider ();
         badge_provider.load_from_resource ("io/elementary/appcenter/badge.css");
@@ -224,30 +188,26 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
         eventbox_badge.add (updates_badge_revealer);
 
-        var view_mode_overlay = new Gtk.Overlay ();
-        view_mode_overlay.add (view_mode);
-        view_mode_overlay.add_overlay (eventbox_badge);
+        var updates_overlay = new Gtk.Overlay () {
+            tooltip_text = C_("view", "Updates & installed apps")
+        };
+        updates_overlay.add (updates_button);
+        updates_overlay.add_overlay (eventbox_badge);
 
         view_mode_revealer = new Gtk.Revealer () {
             reveal_child = true,
-            transition_type = Gtk.RevealerTransitionType.CROSSFADE
+            transition_type = Gtk.RevealerTransitionType.SLIDE_LEFT
         };
-        view_mode_revealer.add (view_mode_overlay);
-
-        homepage_header = new Gtk.Label (null);
-        homepage_header.get_style_context ().add_class (Gtk.STYLE_CLASS_TITLE);
-
-        custom_title_stack = new Gtk.Stack ();
-        custom_title_stack.add (view_mode_revealer);
-        custom_title_stack.add (homepage_header);
-        custom_title_stack.set_visible_child (view_mode_revealer);
+        view_mode_revealer.add (updates_overlay);
 
         search_entry = new Gtk.SearchEntry () {
+            hexpand = true,
             placeholder_text = _("Search Apps"),
             valign = Gtk.Align.CENTER
         };
 
-        spinner = new Gtk.Spinner ();
+        var search_clamp = new Hdy.Clamp ();
+        search_clamp.add (search_entry);
 
         var automatic_updates_button = new Granite.SwitchModelButton (_("Automatic App Updates")) {
             description = _("System updates and unpaid apps will not update automatically")
@@ -268,23 +228,8 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             margin_bottom = 6,
             margin_top = 6
         };
-#if !POP_OS
         menu_popover_box.add (automatic_updates_button);
-#endif
         menu_popover_box.add (refresh_menuitem);
-
-#if POP_OS
-        var repos_accellabel = new Granite.AccelLabel.from_action_name (
-            _("System Software Sources…"),
-            "app.repos"
-        );
-        var repos_menuitem = new Gtk.ModelButton () {
-            action_name = "app.repos"
-        };
-        repos_menuitem.get_child ().destroy ();
-        repos_menuitem.add (repos_accellabel);
-        menu_popover_box.add (repos_menuitem);
-#endif
         menu_popover_box.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
@@ -300,39 +245,67 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         headerbar = new Hdy.HeaderBar () {
             show_close_button = true
         };
-        headerbar.set_custom_title (custom_title_stack);
+        headerbar.set_custom_title (search_clamp);
         headerbar.pack_start (return_button);
         headerbar.pack_end (menu_button);
-        headerbar.pack_end (search_entry);
-        headerbar.pack_end (spinner);
+        headerbar.pack_end (view_mode_revealer);
 
-        homepage = new Homepage ();
-        installed_view = new Views.InstalledView ();
+        var homepage = new Homepage ();
+        installed_view = new Views.AppListUpdateView ();
 
-        stack = new Gtk.Stack () {
-            transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
+        deck = new Hdy.Deck () {
+            can_swipe_back = true
         };
-        stack.add (homepage);
-        stack.add (installed_view);
+        deck.add (homepage);
 
         var overlay = new Gtk.Overlay ();
         overlay.add_overlay (toast);
-        overlay.add (stack);
+        overlay.add (deck);
 
-        var network_info_bar = new AppCenter.Widgets.NetworkInfoBar ();
+        overlaybar = new Granite.Widgets.OverlayBar (overlay);
+        overlaybar.bind_property ("active", overlaybar, "visible");
 
-        var grid = new Gtk.Grid () {
-            orientation = Gtk.Orientation.VERTICAL
+        var network_info_bar_label = new Gtk.Label ("<b>%s</b> %s".printf (
+            _("Network Not Available."),
+            _("Connect to the Internet to browse and install apps.")
+        )) {
+            use_markup = true,
+            wrap = true
         };
-        grid.add (headerbar);
-        grid.add (network_info_bar);
-        grid.add (overlay);
 
-        add (grid);
+        var network_info_bar = new Gtk.InfoBar () {
+            message_type = Gtk.MessageType.WARNING
+        };
+        network_info_bar.get_content_area ().add (network_info_bar_label);
+        network_info_bar.add_button (_("Network Settings…"), Gtk.ResponseType.ACCEPT);
 
-        int window_x, window_y;
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        box.add (headerbar);
+        box.add (network_info_bar);
+
+        if (Utils.is_running_in_demo_mode ()) {
+            var demo_mode_info_bar_label = new Gtk.Label ("<b>%s</b> %s".printf (
+                _("Running in Demo Mode"),
+                _("Install %s to browse and install apps.").printf (Environment.get_os_info (GLib.OsInfoKey.NAME))
+            )) {
+                use_markup = true,
+                wrap = true
+            };
+
+            var demo_mode_info_bar = new Gtk.InfoBar () {
+                message_type = Gtk.MessageType.WARNING
+            };
+            demo_mode_info_bar.get_content_area ().add (demo_mode_info_bar_label);
+
+            box.add (demo_mode_info_bar);
+        }
+
+        box.add (overlay);
+        box.show_all ();
+
+        add (box);
+
         int window_width, window_height;
-        App.settings.get ("window-position", "(ii)", out window_x, out window_y);
         App.settings.get ("window-size", "(ii)", out window_width, out window_height);
         App.settings.bind (
             "automatic-updates",
@@ -341,35 +314,70 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             SettingsBindFlags.DEFAULT
         );
 
-        if (window_x != -1 || window_y != -1) {
-            move (window_x, window_y);
-        }
-
         resize (window_width, window_height);
 
         if (App.settings.get_boolean ("window-maximized")) {
             maximize ();
         }
 
-        stack.notify["visible-child"].connect (on_view_mode_changed);
+        var client = AppCenterCore.Client.get_default ();
 
         automatic_updates_button.notify["active"].connect (() => {
             if (automatic_updates_button.active) {
-                AppCenterCore.Client.get_default ().update_cache.begin (true, AppCenterCore.Client.CacheUpdateType.FLATPAK);
+                client.update_cache.begin (true, AppCenterCore.Client.CacheUpdateType.FLATPAK);
             } else {
-                AppCenterCore.Client.get_default ().cancel_updates (true);
+                client.cancel_updates (true);
             }
         });
 
-        eventbox_badge.button_release_event.connect (() => {
-            stack.visible_child = installed_view;
+        client.notify["updates-number"].connect (() => {
+            show_update_badge (client.updates_number);
         });
 
-        view_mode.notify["selected"].connect (() => {
-            if (view_mode.selected == homepage_view_id) {
-                stack.visible_child = homepage;
-            } else if (view_mode.selected == installed_view_id) {
-                stack.visible_child = installed_view;
+        var network_monitor = NetworkMonitor.get_default ();
+        network_monitor.bind_property ("network-available", network_info_bar, "revealed", BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE);
+
+        network_info_bar.response.connect (() => {
+            try {
+                Gtk.show_uri_on_window (this, "settings://network", Gdk.CURRENT_TIME);
+            } catch (GLib.Error e) {
+                critical (e.message);
+            }
+        });
+
+        updates_button.clicked.connect (() => {
+            go_to_installed ();
+        });
+
+        eventbox_badge.button_release_event.connect (() => {
+            go_to_installed ();
+        });
+
+        homepage.show_category.connect ((category) => {
+            show_category (category);
+        });
+
+        homepage.show_package.connect ((package) => {
+            show_package (package);
+        });
+
+        installed_view.show_app.connect ((package) => {
+            show_package (package);
+        });
+
+        destroy.connect (() => {
+           installed_view.clear ();
+        });
+
+        deck.notify["visible-child"].connect (() => {
+            if (!deck.transition_running) {
+                update_navigation ();
+            }
+        });
+
+        deck.notify["transition-running"].connect (() => {
+            if (!deck.transition_running) {
+                update_navigation ();
             }
         });
     }
@@ -388,10 +396,6 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
                     int width, height;
                     get_size (out width, out height);
                     App.settings.set ("window-size", "(ii)", width, height);
-
-                    int root_x, root_y;
-                    get_position (out root_x, out root_y);
-                    App.settings.set ("window-position", "(ii)", root_x, root_y);
                 }
 
                 return GLib.Source.REMOVE;
@@ -418,22 +422,116 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         return false;
     }
 
-    public void show_update_badge (uint updates_number) {
-        if (updates_number == 0U) {
-            updates_badge_revealer.reveal_child = false;
-        } else {
-            updates_badge.label = updates_number.to_string ();
-            updates_badge_revealer.reveal_child = true;
+    private void show_update_badge (uint updates_number) {
+        Idle.add (() => {
+            if (updates_number == 0U) {
+                updates_badge_revealer.reveal_child = false;
+            } else {
+                updates_badge.label = updates_number.to_string ();
+                updates_badge_revealer.reveal_child = true;
+            }
+
+            return GLib.Source.REMOVE;
+        });
+    }
+
+    public void show_package (AppCenterCore.Package package, bool remember_history = true) {
+        if (deck.transition_running) {
+            return;
+        }
+
+        var package_hash = package.hash;
+
+        var pk_child = deck.get_child_by_name (package_hash) as Views.AppInfoView;
+        if (pk_child != null && pk_child.to_recycle) {
+            // Don't switch to a view that needs recycling
+            pk_child.destroy ();
+            pk_child = null;
+        }
+
+        if (pk_child != null) {
+            pk_child.view_entered ();
+            deck.visible_child = pk_child;
+            return;
+        }
+
+        var app_info_view = new Views.AppInfoView (package);
+        app_info_view.show_all ();
+
+        deck.add (app_info_view);
+        deck.visible_child = app_info_view;
+
+        app_info_view.show_other_package.connect ((_package, remember_history, transition) => {
+            if (!transition) {
+                deck.transition_duration = 0;
+            }
+
+            show_package (_package, remember_history);
+            if (remember_history) {
+                set_return_name (package.get_name ());
+            }
+            deck.transition_duration = 200;
+        });
+    }
+
+    private void update_navigation () {
+        var previous_child = deck.get_adjacent_child (Hdy.NavigationDirection.BACK);
+
+        if (deck.visible_child is Homepage) {
+            view_mode_revealer.reveal_child = true;
+            configure_search (true, _("Search Apps"), "");
+        } else if (deck.visible_child is CategoryView) {
+            var current_category = ((CategoryView) deck.visible_child).category;
+            view_mode_revealer.reveal_child = false;
+            configure_search (true, _("Search %s").printf (current_category.name), "");
+        } else if (deck.visible_child == search_view) {
+            if (previous_child is CategoryView) {
+                var previous_category = ((CategoryView) previous_child).category;
+                configure_search (true, _("Search %s").printf (previous_category.name));
+                view_mode_revealer.reveal_child = false;
+            } else {
+                configure_search (true);
+                view_mode_revealer.reveal_child = true;
+            }
+        } else if (deck.visible_child is Views.AppInfoView) {
+            view_mode_revealer.reveal_child = false;
+            configure_search (false);
+        } else if (deck.visible_child is Views.AppListUpdateView) {
+            view_mode_revealer.reveal_child = true;
+            configure_search (false);
+        }
+
+        if (previous_child == null) {
+            set_return_name (null);
+        } else if (previous_child is Homepage) {
+            set_return_name (_("Home"));
+        } else if (previous_child == search_view) {
+            /// TRANSLATORS: the name of the Search view
+            set_return_name (C_("view", "Search"));
+        } else if (previous_child is Views.AppInfoView) {
+            set_return_name (((Views.AppInfoView) previous_child).package.get_name ());
+        } else if (previous_child is CategoryView) {
+            set_return_name (((CategoryView) previous_child).category.name);
+        } else if (previous_child is Views.AppListUpdateView) {
+            set_return_name (C_("view", "Installed"));
+        }
+
+        while (deck.get_adjacent_child (Hdy.NavigationDirection.FORWARD) != null) {
+            var next_child = deck.get_adjacent_child (Hdy.NavigationDirection.FORWARD);
+            if (next_child is AppCenter.Views.AppListUpdateView) {
+                deck.remove (next_child);
+            } else {
+                next_child.destroy ();
+            }
         }
     }
 
-    public void show_package (AppCenterCore.Package package) {
-        stack.visible_child = homepage;
-        homepage.show_package (package);
-    }
-
     public void go_to_installed () {
-        stack.visible_child = installed_view;
+        if (deck.get_children ().find (installed_view) == null) {
+            deck.add (installed_view);
+        }
+        installed_view.show_all ();
+        deck.visible_child = installed_view;
     }
 
     public void search (string term, bool mimetype = false) {
@@ -444,33 +542,69 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     public void send_installed_toast (AppCenterCore.Package package) {
         last_installed_package = package;
 
-        // Only show a toast when we're not on the installed app's page, i.e if
-        // no package is selected (we are not on an app page), or a package is 
-        // selected but it's not the app we're installing.
-        if (selected_package == null || (selected_package != null && selected_package.get_name () != package.get_name ())) {
-            toast.title = _("“%s” has been installed").printf (package.get_name ());
-            // Show Open only when a desktop app is installed
-            if (package.component.get_kind () == AppStream.ComponentKind.DESKTOP_APP) {
-                toast.set_default_action (_("Open"));
-            } else {
-                toast.set_default_action (null);
-            }
-
-            toast.send_notification ();
+        // Only show a toast when we're not on the installed app's page
+        if (deck.visible_child is Views.AppInfoView && ((Views.AppInfoView) deck.visible_child).package == package) {
+            return;
         }
+
+        toast.title = _("“%s” has been installed").printf (package.get_name ());
+        // Show Open only when a desktop app is installed
+        if (package.component.get_kind () == AppStream.ComponentKind.DESKTOP_APP) {
+            toast.set_default_action (_("Open"));
+        } else {
+            toast.set_default_action (null);
+        }
+
+        toast.send_notification ();
     }
 
     private void trigger_search () {
-        unowned string query = search_entry.text;
-        uint query_length = query.length;
+        unowned string search_term = search_entry.text;
+        uint query_length = search_term.length;
         bool query_valid = query_length >= VALID_QUERY_LENGTH;
 
         view_mode_revealer.reveal_child = !query_valid;
 
         if (query_valid) {
-            homepage.search (query, mimetype);
-        } else if (stack.visible_child == homepage) {
-            homepage.search ("");
+            if (deck.visible_child != search_view) {
+                search_view = new AppCenter.SearchView ();
+                search_view.show_all ();
+
+                search_view.show_app.connect ((package) => {
+                    show_package (package);
+                });
+
+                deck.add (search_view);
+                deck.visible_child = search_view;
+            }
+
+            search_view.clear ();
+            search_view.current_search_term = search_term;
+
+            unowned var client = AppCenterCore.Client.get_default ();
+
+            Gee.Collection<AppCenterCore.Package> found_apps;
+
+            if (mimetype) {
+                found_apps = client.search_applications_mime (search_term);
+                search_view.add_packages (found_apps);
+            } else {
+                AppStream.Category current_category = null;
+
+                var previous_child = deck.get_adjacent_child (Hdy.NavigationDirection.BACK);
+                if (previous_child is CategoryView) {
+                    current_category = ((CategoryView) previous_child).category;
+                }
+
+                found_apps = client.search_applications (search_term, current_category);
+                search_view.add_packages (found_apps);
+            }
+
+        } else {
+            // Prevent navigating away from category views when backspacing
+            if (deck.visible_child == search_view) {
+                deck.navigate (Hdy.NavigationDirection.BACK);
+            }
         }
 
         if (mimetype) {
@@ -478,25 +612,16 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         }
     }
 
-    private void package_selected (AppCenterCore.Package package) {
-        selected_package = package;
-    }
-
-    public void set_return_name (string? return_name) {
+    private void set_return_name (string? return_name) {
         if (return_name != null) {
             return_button.label = return_name;
-        }
-        foreach (var child in return_button.get_children ()) {
-            if (child is Gtk.Label) {
-                child.set_ellipsize (Pango.EllipsizeMode.END);
-            }
         }
 
         return_button.no_show_all = return_name == null;
         return_button.visible = return_name != null;
     }
 
-    public void configure_search (bool sensitive, string? placeholder_text = _("Search Apps"), string? search_term = null) {
+    private void configure_search (bool sensitive, string? placeholder_text = _("Search Apps"), string? search_term = null) {
         search_entry.sensitive = sensitive;
         search_entry.placeholder_text = placeholder_text;
 
@@ -509,40 +634,22 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         }
     }
 
-    public void show_title (bool? title_visible) {
-        custom_title_stack.visible = title_visible;
-    }
-
-    public void set_custom_header (string? custom_header) {
-        if (custom_header != null) {
-            homepage_header.label = custom_header;
-            custom_title_stack.visible_child = homepage_header;
-        } else {
-            custom_title_stack.visible_child = view_mode_revealer;
+    private void show_category (AppStream.Category category) {
+        var child = deck.get_child_by_name (category.name);
+        if (child != null) {
+            deck.visible_child = child;
+            return;
         }
-    }
 
-    private void view_return () {
-        selected_package = null;
+        var category_view = new CategoryView (category);
 
-        var view = (AbstractView) stack.visible_child;
-        view.navigate (Hdy.NavigationDirection.BACK);
-    }
+        deck.add (category_view);
+        deck.visible_child = category_view;
 
-    private void on_view_mode_changed () {
-        if (stack.visible_child == homepage) {
-            search_entry.sensitive = !homepage.viewing_package;
-            view_mode_revealer.reveal_child = true;
-            view_mode.selected = homepage_view_id;
-        } else if (stack.visible_child == installed_view) {
-            search_entry.sensitive = false;
-            view_mode.selected = installed_view_id;
-        }
-    }
-
-    public void show_category (AppStream.Category category) {
-        stack.visible_child = homepage;
-        homepage.show_app_list_for_category (category);
+        category_view.show_app.connect ((package) => {
+            show_package (package);
+            set_return_name (category.name);
+        });
     }
 
 }

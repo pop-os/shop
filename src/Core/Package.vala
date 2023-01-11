@@ -83,6 +83,7 @@ public class AppCenterCore.Package : Object {
     }
 
     public const string OS_UPDATES_ID = "xxx-os-updates";
+    public const string RUNTIME_UPDATES_ID = "xxx-runtime-updates";
     public const string LOCAL_ID_SUFFIX = ".appcenter-local";
     public const string DEFAULT_PRICE_DOLLARS = "1";
 
@@ -102,7 +103,7 @@ public class AppCenterCore.Package : Object {
     private bool _installed = false;
     public bool installed {
         get {
-            if (component.get_id () == OS_UPDATES_ID) {
+            if (is_os_updates || is_runtime_updates) {
                 return true;
             }
 
@@ -149,7 +150,7 @@ public class AppCenterCore.Package : Object {
 
     public bool should_pay {
         get {
-            if (!is_native || is_os_updates) {
+            if (component.get_origin () != APPCENTER_PACKAGE_ORIGIN) {
                 return false;
             }
 
@@ -167,12 +168,6 @@ public class AppCenterCore.Package : Object {
             }
 
             return true;
-        }
-    }
-
-    public bool should_nag_update {
-        get {
-            return update_available && should_pay;
         }
     }
 
@@ -194,15 +189,15 @@ public class AppCenterCore.Package : Object {
         }
     }
 
-    public bool is_driver {
-       get {
-           return component.get_kind () == AppStream.ComponentKind.DRIVER;
-       }
+    public bool is_runtime_updates {
+        get {
+            return component.id == RUNTIME_UPDATES_ID;
+        }
     }
 
-    public bool is_font {
+    public AppStream.ComponentKind kind {
         get {
-            return component.get_kind () == AppStream.ComponentKind.FONT;
+            return component.get_kind ();
         }
     }
 
@@ -214,7 +209,7 @@ public class AppCenterCore.Package : Object {
 
     public bool is_shareable {
         get {
-            return is_native && !is_driver && !is_os_updates;
+            return is_native && component.get_kind () != AppStream.ComponentKind.DRIVER && !is_os_updates && !is_runtime_updates;
         }
     }
 
@@ -317,12 +312,6 @@ public class AppCenterCore.Package : Object {
         }
     }
 
-    public bool is_plugin {
-        get {
-            return component.get_kind () == AppStream.ComponentKind.ADDON;
-        }
-    }
-
     public Gee.Collection<Package> origin_packages {
         owned get {
             return BackendAggregator.get_default ().get_packages_for_component_id (component.get_id ());
@@ -371,11 +360,11 @@ public class AppCenterCore.Package : Object {
                 }
             } else if (backend is FlatpakBackend) {
                 var fp_package = this as FlatpakPackage;
-                if (fp_package != null && fp_package.installation == FlatpakBackend.system_installation) {
-                    return _("%s (system-wide)").printf (origin);
+                if (fp_package == null) {
+                    return origin;
                 }
 
-                return origin;
+                return fp_package.remote_title;
             } else if (backend is UbuntuDriversBackend) {
                 return _("Ubuntu Drivers");
             }
@@ -766,10 +755,34 @@ public class AppCenterCore.Package : Object {
         }
 
         if (icon == null) {
-            if (component.get_kind () == AppStream.ComponentKind.ADDON) {
-                icon = new ThemedIcon ("extension");
-            } else {
-                icon = new ThemedIcon ("application-default-icon");
+            switch (component.get_kind ()) {
+                case AppStream.ComponentKind.ADDON:
+                    icon = new ThemedIcon ("extension");
+                    break;
+                case AppStream.ComponentKind.FONT:
+                    icon = new ThemedIcon ("font-x-generic");
+                    break;
+                case AppStream.ComponentKind.ICON_THEME:
+                    icon = new ThemedIcon ("preferences-desktop-theme");
+                    break;
+                case AppStream.ComponentKind.CODEC:
+                case AppStream.ComponentKind.CONSOLE_APP:
+                case AppStream.ComponentKind.DESKTOP_APP:
+                case AppStream.ComponentKind.DRIVER:
+                case AppStream.ComponentKind.FIRMWARE:
+                case AppStream.ComponentKind.GENERIC:
+
+                case AppStream.ComponentKind.INPUT_METHOD: //ComponentKind.INPUTMETHOD is deprecated has same value so cannot be included
+                case AppStream.ComponentKind.LOCALIZATION:
+                case AppStream.ComponentKind.OPERATING_SYSTEM:
+                case AppStream.ComponentKind.REPOSITORY:
+                case AppStream.ComponentKind.RUNTIME:
+                case AppStream.ComponentKind.SERVICE:
+                case AppStream.ComponentKind.UNKNOWN:
+                case AppStream.ComponentKind.WEB_APP:
+                    debug ("component kind not handled %s", component.get_kind ().to_string ());
+                    icon = new ThemedIcon ("application-default-icon");
+                    break;
             }
         }
 
@@ -813,17 +826,16 @@ public class AppCenterCore.Package : Object {
         if (color_primary != null) {
             return color_primary;
         } else {
-            color_primary = component.get_custom_value ("x-appcenter-color-primary");
-            return color_primary;
-        }
-    }
+            var branding = component.get_branding ();
+            if (branding != null) {
+                color_primary = branding.get_color (AppStream.ColorKind.PRIMARY, AppStream.ColorSchemeKind.UNKNOWN);
+            }
 
-    public string? get_color_primary_text () {
-        if (color_primary_text != null) {
-            return color_primary_text;
-        } else {
-            color_primary_text = component.get_custom_value ("x-appcenter-color-primary-text");
-            return color_primary_text;
+            if (color_primary == null) {
+                color_primary = component.get_custom_value ("x-appcenter-color-primary");
+            }
+
+            return color_primary;
         }
     }
 
@@ -846,7 +858,7 @@ public class AppCenterCore.Package : Object {
     }
 
     private string convert_version (string version) {
-        if (is_os_updates) {
+        if (is_os_updates || is_runtime_updates) {
             return version;
         }
 
@@ -898,59 +910,6 @@ public class AppCenterCore.Package : Object {
         return app_info != null;
     }
 
-    public Gee.ArrayList<AppStream.Release> get_newest_releases (int min_releases, int max_releases) {
-        var list = new Gee.ArrayList<AppStream.Release> ();
-
-        var releases = component.get_releases ();
-        uint index = 0;
-        while (index < releases.length) {
-            if (releases[index].get_version () == null) {
-                releases.remove_index (index);
-                if (index >= releases.length) {
-                    break;
-                }
-
-                continue;
-            }
-
-            index++;
-        }
-
-        if (releases.length < min_releases) {
-            return list;
-        }
-
-        releases.sort_with_data ((a, b) => {
-            return b.vercmp (a);
-        });
-
-        string installed_version = get_version ();
-
-        int start_index = 0;
-        int end_index = min_releases;
-
-        if (installed) {
-            for (int i = 0; i < releases.length; i++) {
-                var release = releases.@get (i);
-                unowned string release_version = release.get_version ();
-                if (release_version == null) {
-                    continue;
-                }
-
-                if (AppStream.utils_compare_versions (release_version, installed_version) == 0) {
-                    end_index = i.clamp (min_releases, max_releases);
-                    break;
-                }
-            }
-        }
-
-        for (int j = start_index; j < end_index; j++) {
-            list.add (releases.get (j));
-        }
-
-        return list;
-    }
-
     public AppStream.Release? get_newest_release () {
         var releases = component.get_releases ();
         releases.sort_with_data ((a, b) => {
@@ -986,7 +945,7 @@ public class AppCenterCore.Package : Object {
     }
 
     private void populate_backend_details_sync () {
-        if (component.id == OS_UPDATES_ID || is_local) {
+        if (is_os_updates || is_runtime_updates || is_local) {
             backend_details = new PackageDetails ();
             return;
         }

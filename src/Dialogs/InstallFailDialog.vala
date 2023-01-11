@@ -17,10 +17,10 @@
 
 public class InstallFailDialog : Granite.MessageDialog {
     public AppCenterCore.Package? package { get; construct; }
-    public string error { get; construct; }
+    public string error_message { get; construct; }
     private const string FALLBACK_ICON = "application-default-icon";
 
-    public InstallFailDialog (AppCenterCore.Package? package, string error) {
+    public InstallFailDialog (AppCenterCore.Package? package, string error_message) {
         Object (
             title: "",
             secondary_text: _(error.contains ("whilst offline")
@@ -28,8 +28,7 @@ public class InstallFailDialog : Granite.MessageDialog {
                                 : "Try the following to resolve this error:\n\n• Install all available updates, reboot, and try again.\n\n• If the software supports multiple installation types, use the drop-down next to the Install button to select a different option and try again."
                             ),
             badge_icon: new ThemedIcon ("dialog-error"),
-            window_position: Gtk.WindowPosition.CENTER,
-            error: error,
+            error_message: error_message,
             package: package
         );
     }
@@ -48,6 +47,6 @@ public class InstallFailDialog : Granite.MessageDialog {
 	updates_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
 	updates_button.grab_focus ();
 
-    show_error_details (error);
+        show_error_details (error_message);
     }
 }

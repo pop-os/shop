@@ -36,6 +36,9 @@
     color: @fg_color;
     font-size: 32px;
     font-weight: 300;
+    margin: 1.333rem; /* 12px */
+    padding: 1.333rem;
+    min-height: 3em;
 }
 
 .category.accessibility {
@@ -185,27 +188,27 @@
     background-image:
         linear-gradient(
             to right,
-            transparent 0.47em,
-            alpha(white, 0.05) 0.47em,
+            transparent calc(0.5em - 1px),
+            alpha(white, 0.05) calc(0.5em - 1px),
             alpha(white, 0.05) 0.5em,
             transparent 0.5em
         ),
         linear-gradient(
             to bottom,
-            transparent 0.47em,
-            alpha(white, 0.05) 0.47em,
+            transparent calc(0.5em - 1px),
+            alpha(white, 0.05) calc(0.5em - 1px),
             alpha(white, 0.05) 0.5em,
             transparent 0.5em
         ),
         linear-gradient(
             to right,
-            transparent 0.97em,
-            alpha(white, 0.125) 0.97em
+            transparent calc(1em - 1px),
+            alpha(white, 0.125) calc(1em - 1px)
         ),
         linear-gradient(
             to bottom,
-            transparent 0.97em,
-            alpha(white, 0.125) 0.97em
+            transparent calc(1em - 1px),
+            alpha(white, 0.125) calc(1em - 1px)
         ),
         linear-gradient(
             to bottom right,
@@ -544,11 +547,6 @@
         0 3px 5px alpha(black, 0.1);
     color: @ORANGE_500;
     font-weight: normal;
-}
-
-.category.office label,
-.category.office image {
-    margin-bottom: 12px;
 }
 
 .category.science {
