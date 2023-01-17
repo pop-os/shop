@@ -288,6 +288,9 @@ public class AppCenter.Homepage : Gtk.Box {
 
         var box = new Gtk.Box (orientation = Gtk.Orientation.VERTICAL, 0);
         box.add (banner_revealer);
+#if POP_OS
+        box.add (picks_revealer);
+#endif
         box.add (recently_updated_revealer);
         box.add (categories_label);
         box.add (category_flow);
