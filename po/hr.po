@@ -934,7 +934,7 @@ msgstr ""
 msgid "Paid Apps"
 msgstr "Pretraži aplikacije"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"
@@ -1153,10 +1153,6 @@ msgstr ""
 #: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:155
 msgid "Close"
 msgstr "Zatvori"
-
-#, fuzzy
-#~ msgid "Install Anyway"
-#~ msgstr "Instaliranje"
 
 #, fuzzy
 #~ msgid "Install Anyway"

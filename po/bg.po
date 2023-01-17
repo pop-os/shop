@@ -928,7 +928,7 @@ msgstr "Наскоро Обновени"
 msgid "Paid Apps"
 msgstr "Търсене из приложения"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

@@ -895,7 +895,7 @@ msgstr "Äskettäin päivitetty"
 msgid "Paid Apps"
 msgstr "Maksulliset sovellukset"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 msgid "Free Apps"
 msgstr "Ilmaiset sovellukset"
 
@@ -992,19 +992,6 @@ msgid "No Apps Found"
 msgstr "Sovelluksia ei löytynyt"
 
 #: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr "Yritä hakea eri hakuehdoilla. Voit myös sivuladata Flatpak-sovelluksia esimerkiksi %s"
-
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr "Flathubista"
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr "Sovelluksia ei löytynyt"
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr "Yritä hakea eri hakuehdoilla. Voit myös sivuladata Flatpak-sovelluksia esimerkiksi %s"

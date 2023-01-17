@@ -922,7 +922,7 @@ msgstr ""
 msgid "Paid Apps"
 msgstr "Rechercher des Applications"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Search Apps"
 msgid "Free Apps"
@@ -1021,19 +1021,6 @@ msgid "No Apps Found"
 msgstr ""
 
 #: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr ""
-
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr ""
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr ""
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr ""
@@ -1144,10 +1131,6 @@ msgstr ""
 #: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:155
 msgid "Close"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Install Anyway"
-#~ msgstr "Installation en cours"
 
 #, fuzzy
 #~ msgid "Install Anyway"

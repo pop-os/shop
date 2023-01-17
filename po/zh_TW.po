@@ -1004,19 +1004,6 @@ msgstr "沒有找到應用程式"
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr "請嘗試更改搜索詞。您亦可旁加載 Flatpak 應用程序，例如 %s"
 
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr "Flathub"
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr "沒有找到應用程式"
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr "請嘗試更改搜索詞。您亦可旁加載 Flatpak 應用程序，例如 %s"
-
 #: src/Widgets/CardNumberEntry.vala:41
 msgid "Card Number"
 msgstr "號碼"

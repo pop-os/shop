@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the io.elementary.appcenter package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -408,12 +408,10 @@ msgstr ""
 msgid "Please restart your system to finalize updates"
 msgstr ""
 
-#: src/Dialogs/InstallFailDialog.vala:27
+#: src/Dialogs/InstallFailDialog.vala:26
 msgid ""
-"You appear to be offline.\n"
-"\n"
-"Verify your internet connection, including the system's VPN and proxy "
-"settings, and try again."
+"This may be a temporary issue or could have been caused by external or "
+"manually compiled software."
 msgstr ""
 
 #: src/Dialogs/InstallFailDialog.vala:36
@@ -422,7 +420,7 @@ msgstr ""
 
 #: src/Dialogs/InstallFailDialog.vala:39
 #, c-format
-msgid "Failed to install %s.\n"
+msgid "Failed to install “%s”"
 msgstr ""
 
 #: src/Dialogs/StripeDialog.vala:41
@@ -915,7 +913,7 @@ msgstr ""
 msgid "Paid Apps"
 msgstr ""
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 msgid "Free Apps"
 msgstr ""
 

@@ -917,7 +917,7 @@ msgstr ""
 msgid "Paid Apps"
 msgstr "اطلاقیےتلاش کریں"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Search Apps"
 msgid "Free Apps"
@@ -1022,19 +1022,6 @@ msgid "No Apps Found"
 msgstr ""
 
 #: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr ""
-
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr ""
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr ""
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr ""
@@ -1147,22 +1134,6 @@ msgstr ""
 #: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:155
 msgid "Close"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Non-Curated Warning"
-#~ msgstr "کوءی ایپلِی کیشن نہیں"
-
-#, fuzzy
-#~ msgid "Install non-curated app?"
-#~ msgstr "کوءی ایپلِی کیشن نہیں"
-
-#, fuzzy
-#~ msgid "Don’t Install"
-#~ msgstr "نصب کریں"
-
-#, fuzzy
-#~ msgid "Install Anyway"
-#~ msgstr "انسٹال کیا جارہا ہے"
 
 #, fuzzy
 #~ msgid "Non-Curated Warning"

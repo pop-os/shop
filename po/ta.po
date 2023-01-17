@@ -926,7 +926,7 @@ msgstr "சமீபத்தில் புதுப்பிக்கப்�
 msgid "Paid Apps"
 msgstr "பயன்பாடுகளை தேடு"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"
@@ -1145,10 +1145,6 @@ msgstr ""
 #: src/Widgets/AppContainers/InstalledPackageRowGrid.vala:155
 msgid "Close"
 msgstr "மூடு"
-
-#, fuzzy
-#~ msgid "Install Anyway"
-#~ msgstr "நிறுவுகிறது"
 
 #, fuzzy
 #~ msgid "Install Anyway"

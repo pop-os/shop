@@ -938,7 +938,7 @@ msgstr "Đã cập nhật gần đây"
 msgid "Paid Apps"
 msgstr "Tìm kiếm ứng dụng"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

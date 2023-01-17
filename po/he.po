@@ -881,7 +881,7 @@ msgstr "עודכנו לאחרונה"
 msgid "Paid Apps"
 msgstr "יישומים בתשלום"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 msgid "Free Apps"
 msgstr "יישומים בחינם"
 
@@ -978,19 +978,6 @@ msgid "No Apps Found"
 msgstr "לא נמצאו יישומים"
 
 #: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr "נא לנסות לשנות את תנאי החיפוש. ניתן גם לטעון יישומי Flatpak מהצד למשל דרך %s"
-
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr "Flathub"
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr "לא נמצאו יישומים"
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr "נא לנסות לשנות את תנאי החיפוש. ניתן גם לטעון יישומי Flatpak מהצד למשל דרך %s"

@@ -944,7 +944,7 @@ msgstr "Freŝe Ĝisdatigita"
 msgid "Paid Apps"
 msgstr "Serĉi Aplikaĵojn"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

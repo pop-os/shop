@@ -67,9 +67,7 @@ public class AppCenter.App : Gtk.Application {
 
         var quit_action = new SimpleAction ("quit", null);
         quit_action.activate.connect (() => {
-            if (main_window != null) {
-                main_window.destroy ();
-            }
+            quit();
         });
 
         var show_updates_action = new SimpleAction ("show-updates", null);
@@ -82,7 +80,6 @@ public class AppCenter.App : Gtk.Application {
         var client = AppCenterCore.Client.get_default ();
         client.operation_finished.connect (on_operation_finished);
         client.cache_update_failed.connect (on_cache_update_failed);
-        client.installed_apps_changed.connect (on_updates_available);
 
         refresh_action = new SimpleAction ("refresh", null);
         refresh_action.activate.connect (() => {

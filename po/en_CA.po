@@ -937,7 +937,7 @@ msgstr "Recently Updated"
 msgid "Paid Apps"
 msgstr "Search Apps"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"
@@ -1160,23 +1160,6 @@ msgstr "Close"
 
 #~ msgid "<b>%s</b> – %s"
 #~ msgstr "<b>%s</b> – %s"
-
-#, fuzzy
-#~| msgid "Non-Curated Apps"
-#~ msgid "Non-Curated Warning"
-#~ msgstr "Non-Curated Apps"
-
-#, fuzzy
-#~ msgid "Install non-curated app?"
-#~ msgstr "%s (local)"
-
-#, fuzzy
-#~ msgid "Don’t Install"
-#~ msgstr "Install"
-
-#, fuzzy
-#~ msgid "Install Anyway"
-#~ msgstr "Installing"
 
 #, fuzzy
 #~| msgid "Non-Curated Apps"

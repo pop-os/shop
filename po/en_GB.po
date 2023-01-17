@@ -890,7 +890,7 @@ msgstr "Recently Updated"
 msgid "Paid Apps"
 msgstr "Paid Apps"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 msgid "Free Apps"
 msgstr "Free Apps"
 
@@ -987,19 +987,6 @@ msgid "No Apps Found"
 msgstr "No Apps Found"
 
 #: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr "Flathub"
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr "No Apps Found"
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"

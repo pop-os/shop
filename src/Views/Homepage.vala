@@ -283,7 +283,7 @@ public class AppCenter.Homepage : Gtk.Box {
         }, "privacy-security"));
 
 #if POP_OS
-        grid.add (picks_revealer);
+        //  grid.add (picks_revealer);
 #endif
 
         var box = new Gtk.Box (orientation = Gtk.Orientation.VERTICAL, 0);
@@ -318,9 +318,8 @@ public class AppCenter.Homepage : Gtk.Box {
         // Show the banner, since it only contains our artwork currently
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
-#else
+        banner_timeout_start (); 
 
-        banner_timeout_start ();
 #endif
         load_banners_and_carousels.begin ();
 

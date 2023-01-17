@@ -929,7 +929,7 @@ msgstr "Actualizadas recentemente"
 msgid "Paid Apps"
 msgstr "Busca de aplicacións"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

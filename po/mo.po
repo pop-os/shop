@@ -957,7 +957,7 @@ msgstr "Actualizat recent"
 msgid "Paid Apps"
 msgstr "Căutare Apps"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"
@@ -1180,19 +1180,6 @@ msgstr ""
 
 #~ msgid "<b>%s</b> – %s"
 #~ msgstr "<b>%s</b> - %s"
-
-#, fuzzy
-#~| msgid "Non-Curated Apps"
-#~ msgid "Non-Curated Warning"
-#~ msgstr "Aplicații suspecte"
-
-#, fuzzy
-#~ msgid "Install non-curated app?"
-#~ msgstr "%s (local)"
-
-#, fuzzy
-#~ msgid "Install Anyway"
-#~ msgstr "Instalare"
 
 #, fuzzy
 #~| msgid "Non-Curated Apps"

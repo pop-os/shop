@@ -10,7 +10,7 @@
 # Vincent Yu <coolplayyhj@gmail.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-02 17:44+0000\n"
 "PO-Revision-Date: 2022-10-28 10:16+0000\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Weblate 4.4.2\n"
 "X-Launchpad-Export-Date: 2017-03-14 06:26+0000\n"
 
 #. Add "AppCenter" to the translation catalog
@@ -280,11 +280,11 @@ msgstr "正在等待认证"
 
 #: src/Utils.vala:124
 msgid "Updating running applications"
-msgstr "正在更新运行中的应用程序"
+msgstr "正在更新运行中的应用"
 
 #: src/Utils.vala:126
 msgid "Checking applications in use"
-msgstr "正在检查使用中的应用程序"
+msgstr "正在检查使用中的应用"
 
 #: src/Utils.vala:128
 msgid "Checking libraries in use"
@@ -417,16 +417,9 @@ msgstr "需要重启"
 msgid "Please restart your system to finalize updates"
 msgstr "请重启您的系统来完成更新"
 
-#: src/Dialogs/InstallFailDialog.vala:27
-msgid ""
-"You appear to be offline.\n"
-"\n"
-"Verify your internet connection, including the system's VPN and proxy "
-"settings, and try again."
-msgstr ""
-"您好像处于离线状态。\n"
-"\n"
-"请确认您已连接网络，包括系统的VPN设置和代理设置，然后再尝试一次。"
+#: src/Dialogs/InstallFailDialog.vala:26
+msgid "This may be a temporary issue or could have been caused by external or manually compiled software."
+msgstr "此问题可能只是暂时的，也可能是外部、手动添加的软件源或源文件损坏造成的。"
 
 #: src/Dialogs/InstallFailDialog.vala:36
 msgid "Failed to install app"
@@ -434,13 +427,11 @@ msgstr "安装应用失败"
 
 #: src/Dialogs/InstallFailDialog.vala:39
 #, c-format
-msgid "Failed to install %s.\n"
-msgstr "安装 %s 失败。\n"
+msgid "Failed to install “%s”"
+msgstr "安装 “%s” 失败"
 
 #: src/Dialogs/StripeDialog.vala:41
-msgid ""
-"An error occurred while processing the card. Please try again later. We "
-"apologize for any inconvenience caused."
+msgid "An error occurred while processing the card. Please try again later. We apologize for any inconvenience caused."
 msgstr "支付流程出现问题，请稍后再试。为您带来的不便我们深表歉意。"
 
 #: src/Dialogs/StripeDialog.vala:42
@@ -454,7 +445,7 @@ msgstr "支付方式"
 #: src/Dialogs/StripeDialog.vala:92 src/Dialogs/StripeDialog.vala:255
 #, c-format
 msgid "Pay $%d for %s"
-msgstr "支付 %d 给 %s"
+msgstr "为 %s 支付 $%d"
 
 #: src/Dialogs/StripeDialog.vala:98
 msgid "This is a one time payment suggested by the developer. You can also choose your own price."
@@ -860,7 +851,7 @@ msgstr "正在查找更新"
 
 #: src/Views/AppListUpdateView.vala:43
 msgid "Downloading a list of available updates to the OS and installed apps"
-msgstr "正在获取可用系统更新及已安装应用列表"
+msgstr "正在获取可用系统更新及已安装应用程序列表"
 
 #: src/Views/AppListUpdateView.vala:57
 msgid "Update All"
@@ -900,7 +891,7 @@ msgstr "最近更新"
 msgid "Paid Apps"
 msgstr "付费应用"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 msgid "Free Apps"
 msgstr "免费应用"
 
@@ -1057,7 +1048,7 @@ msgstr "Twitter"
 
 #: src/Widgets/SharePopover.vala:43
 msgid "Reddit"
-msgstr "Reddit"
+msgstr "reddit"
 
 #: src/Widgets/SharePopover.vala:47
 msgid "Tumblr"
@@ -1146,13 +1137,8 @@ msgstr "关闭"
 #~ msgid "“%s” contains explicit content"
 #~ msgstr "“%s” 包含限制级内容"
 
-#~ msgid ""
-#~ "“%s” may contain content only suitable for adults or that may be "
-#~ "sensitive or disturbing. In general, elementary does not review or "
-#~ "endorse the contents of this app."
-#~ msgstr ""
-#~ "“%s” 包含的内容可能不适合所有年龄段，或不宜在工作期间访问。一般情况下，"
-#~ "elementary 团队不会对应用程序内容进行审查。"
+#~ msgid "“%s” may contain content only suitable for adults or that may be sensitive or disturbing. In general, elementary does not review or endorse the contents of this app."
+#~ msgstr "“%s” 包含的内容可能不适合所有年龄段，或不宜在工作期间访问。一般情况下，elementary 团队不会对应用程序内容进行审查。"
 
 #~ msgid "Show content warnings"
 #~ msgstr "显示内容警告"
@@ -1262,6 +1248,9 @@ msgstr "关闭"
 
 #~ msgid "Error page"
 #~ msgstr "错误页面"
+
+#~ msgid "Software Sources"
+#~ msgstr "软件源"
 
 #~ msgid "Updates View"
 #~ msgstr "更新视图"

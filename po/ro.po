@@ -923,7 +923,7 @@ msgstr "Actualizate recent"
 msgid "Paid Apps"
 msgstr "Caută aplicații"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

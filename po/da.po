@@ -315,7 +315,7 @@ msgstr "Ukendt tilstand"
 
 #: src/Core/BackendAggregator.vala:46
 msgid "package operations are being performed"
-msgstr "Pakkehandlinger bliver udført"
+msgstr ""
 
 #: src/Core/Client.vala:76
 msgid "Update Available"
@@ -474,7 +474,7 @@ msgstr "Dette er en engangsbetaling. Din email adresse bruges kun til at sende d
 
 #: src/Dialogs/StripeDialog.vala:119
 msgid "or"
-msgstr "eller"
+msgstr ""
 
 #: src/Dialogs/StripeDialog.vala:154
 msgid "Email"
@@ -670,23 +670,23 @@ msgstr "Søger efter opdateringer"
 
 #: src/Views/AppInfoView.vala:131
 msgid "Illicit Substances"
-msgstr "Ulovlige Stoffer"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:132
 msgid "Presence of or references to alcohol, narcotics, or tobacco"
-msgstr "Tilstedeværelse af eller referencer til alkohol, narkotika eller tobak"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:137
 msgid "Sex & Nudity"
-msgstr "Sex & Nøgenhed"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:138
 msgid "Adult nudity or sexual themes"
-msgstr "Nøgenhed for voksne eller seksuelle temaer"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:143
 msgid "Offensive Language"
-msgstr "Stødende Sprogbrug"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:144
 msgid "Profanity, discriminatory language, or adult humor"
@@ -726,11 +726,11 @@ msgstr ""
 
 #: src/Views/AppInfoView.vala:217
 msgid "Fantasy Violence"
-msgstr "Fantasy Vold"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:222
 msgid "Graphic violence, bloodshed, or death"
-msgstr "Grafisk vold, blodbad eller død"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:266
 msgid "Multiplayer"
@@ -746,31 +746,31 @@ msgstr ""
 
 #: src/Views/AppInfoView.vala:285
 msgid "Moderated Audio, Video, or Text messaging with other people"
-msgstr "Modereret lyd, video eller tekstbeskeder med andre mennesker"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:289
 msgid "Online Interactions"
-msgstr "Online Interaktioner"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:299
 msgid "Location Sharing"
-msgstr "Placeringsdeling"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:300
 msgid "Other people can see your real-world location"
-msgstr "Andre personer kan se din placering i den virkelige verden"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:312
 msgid "Collects anonymous usage data"
-msgstr "Indsamler anonyme brugsdata"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:315
 msgid "Collects usage data that could be used to identify you"
-msgstr "Indsamler brugsdata, der kan bruges til at identificere dig"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:320
 msgid "Info Sharing"
-msgstr "Informationsdeling"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:440
 msgid "Screenshot Not Available"
@@ -782,11 +782,11 @@ msgstr "Startside"
 
 #: src/Views/AppInfoView.vala:557
 msgid "Translate"
-msgstr "Oversæt"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:563
 msgid "Send Feedback"
-msgstr "Send Feedback"
+msgstr ""
 
 #: src/Views/AppInfoView.vala:569
 msgid "Help"
@@ -905,7 +905,7 @@ msgstr "Genstart Nu"
 
 #: src/Views/AppListUpdateView.vala:108
 msgid "Requesting a restart failed. Restart manually to finish installing updates"
-msgstr "Anmodning om genstart mislykkedes. Genstart manuelt for at afslutte installationen af opdateringer"
+msgstr ""
 
 #: src/Views/AppListUpdateView.vala:162
 #, c-format
@@ -932,7 +932,7 @@ msgstr "Nyligt Opdaterede"
 msgid "Paid Apps"
 msgstr "Søg Apps"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"
@@ -1122,7 +1122,7 @@ msgstr "Kun de dele af applikationer og opdateringer der skal bruge vil blive do
 #: src/Widgets/SizeLabel.vala:63
 #, c-format
 msgid "Up to %s"
-msgstr "Op til %s"
+msgstr "Up to %s"
 
 #: src/Widgets/AppContainers/AbstractAppContainer.vala:204
 msgid "Update"

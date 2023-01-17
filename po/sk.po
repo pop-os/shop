@@ -918,7 +918,7 @@ msgstr "Nedávno aktualizované"
 msgid "Paid Apps"
 msgstr "Platené aplikácie"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 msgid "Free Apps"
 msgstr "Aplikácie zadarmo"
 
@@ -1017,19 +1017,6 @@ msgid "No Apps Found"
 msgstr "Neboli nájdené žiadne aplikácie"
 
 #: src/Views/SearchView.vala:35 src/Views/SearchView.vala:59
-#, c-format
-msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
-msgstr "Skúste pozmeniť vyhľadávaný výraz. Prípadne môžete nainštalovať Flatpak aplikácie z iného zdroja, napríklad z %s"
-
-#: src/Views/SearchView.vala:28 src/Views/SearchView.vala:48
-msgid "Flathub"
-msgstr "Flathub"
-
-#: src/Views/SearchView.vala:30
-msgid "No Apps Found"
-msgstr "Neboli nájdené žiadne aplikácie"
-
-#: src/Views/SearchView.vala:31 src/Views/SearchView.vala:49
 #, c-format
 msgid "Try changing search terms. You can also sideload Flatpak apps e.g. from %s"
 msgstr "Skúste pozmeniť vyhľadávaný výraz. Prípadne môžete nainštalovať Flatpak aplikácie z iného zdroja, napríklad z %s"

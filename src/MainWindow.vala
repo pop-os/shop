@@ -80,7 +80,9 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             return false;
         });
 
-        return_button.clicked.connect (view_return);
+        unowned var aggregator = AppCenterCore.BackendAggregator.get_default ();
+        aggregator.bind_property ("working", this, "working", GLib.BindingFlags.SYNC_CREATE);
+        aggregator.bind_property ("working", overlaybar, "active", GLib.BindingFlags.SYNC_CREATE);
 
         aggregator.notify ["job-type"].connect (() => {
             switch (aggregator.job_type) {
@@ -242,7 +244,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             valign = Gtk.Align.CENTER
         };
 
-        headerbar = new Hdy.HeaderBar () {
+        var headerbar = new Hdy.HeaderBar () {
             show_close_button = true
         };
         headerbar.set_custom_title (search_clamp);

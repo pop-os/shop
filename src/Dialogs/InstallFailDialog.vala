@@ -23,7 +23,7 @@ public class InstallFailDialog : Granite.MessageDialog {
     public InstallFailDialog (AppCenterCore.Package? package, string error_message) {
         Object (
             title: "",
-            secondary_text: _(error.contains ("whilst offline")
+            secondary_text: _(error_message.contains ("whilst offline")
                                 ? "You appear to be offline.\n\nVerify your internet connection, including the system's VPN and proxy settings, and try again."
                                 : "Try the following to resolve this error:\n\n• Install all available updates, reboot, and try again.\n\n• If the software supports multiple installation types, use the drop-down next to the Install button to select a different option and try again."
                             ),
@@ -43,7 +43,7 @@ public class InstallFailDialog : Granite.MessageDialog {
         }
 
 	add_button (_("Ignore"), Gtk.ResponseType.CLOSE);
-	var updates_button = add_button (_(error.contains ("whilst offline") ? "Network Settings..." : "Check For Updates"), Gtk.ResponseType.OK);
+	var updates_button = add_button (_(error_message.contains ("whilst offline") ? "Network Settings..." : "Check For Updates"), Gtk.ResponseType.OK);
 	updates_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
 	updates_button.grab_focus ();
 

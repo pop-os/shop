@@ -943,7 +943,7 @@ msgstr "Nedavno posodobljeno"
 msgid "Paid Apps"
 msgstr "Iskanje programov"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

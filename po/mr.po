@@ -922,7 +922,7 @@ msgstr "अलीकडे अपडेट केलेले"
 msgid "Paid Apps"
 msgstr "अनुप्रयोग शोधा"
 
-#: src/Views/CategoryView.vala:48
+#: src/Views/CategoryView.vala:39
 #, fuzzy
 #| msgid "Free"
 msgid "Free Apps"

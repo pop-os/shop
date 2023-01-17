@@ -41,6 +41,12 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
         return command.get_exit_status () == 0;
     }
 
+    public async Gee.Collection<PackageDetails> get_prepared_applications (Cancellable? cancellable = null) {
+        var prepared_packages = new Gee.HashSet<PackageDetails> ();
+
+        return prepared_packages;
+    }
+
 #if POP_OS
     // A package has Pop packaging if the source is from the Pop PPA.
     private async bool packaged_by_pop (Cancellable? cancellable = null, string package) {
@@ -72,8 +78,8 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
         cached_packages = new Gee.TreeSet<Package> ();
         var tokens = AppCenter.App.settings.get_strv ("cached-drivers");
 
-        string? latest_nvidia_pkg = null;
-        int latest_nvidia_ver = 0;
+        string? latest_nvidia_pkg = null; 
+        int latest_nvidia_ver = 0; 
 
         for (int i = 0; i < tokens.length; i++) {
             if (cancellable.is_cancelled ()) {
