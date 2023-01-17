@@ -17,6 +17,12 @@
 
  @import url("categories.css");
 
+ /* Styling addons for Granite OverlayBar until styling is incorporated */
+.overlay-bar label, 
+.overlay-bar spinner{
+    padding: 6px;
+}
+
 /* Fix for headerbar padding. Otherwise it's too tall */
 .titlebar box.linked button {
     margin: 0;
