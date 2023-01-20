@@ -339,11 +339,17 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         var network_monitor = NetworkMonitor.get_default ();
         network_monitor.bind_property ("network-available", network_info_bar, "revealed", BindingFlags.INVERT_BOOLEAN | BindingFlags.SYNC_CREATE);
 
-        network_info_bar.response.connect (() => {
-            try {
-                Gtk.show_uri_on_window (this, "settings://network", Gdk.CURRENT_TIME);
-            } catch (GLib.Error e) {
-                critical (e.message);
+        network_info_bar.response.connect ((response_id) => {
+            switch (response_id) {
+                case Gtk.ResponseType.ACCEPT:
+                    try {
+                        open_network_settings ();
+                    } catch (GLib.Error e) {
+                        critical (e.message);
+                    }
+                    break;
+                default:
+                    assert_not_reached ();
             }
         });
 
@@ -534,6 +540,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         }
         installed_view.show_all ();
         deck.visible_child = installed_view;
+    }
+
+    public void open_network_settings () {
+        AppInfo settings = AppInfo.create_from_commandline ("gnome-control-center wifi", "Settings", NONE);
+        settings.launch (null, null);
     }
 
     public void search (string term, bool mimetype = false) {
