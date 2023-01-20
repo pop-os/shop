@@ -230,8 +230,25 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             margin_bottom = 6,
             margin_top = 6
         };
+
+#if !POP_OS
         menu_popover_box.add (automatic_updates_button);
+#endif
         menu_popover_box.add (refresh_menuitem);
+
+#if POP_OS
+        var repos_accellabel = new Granite.AccelLabel.from_action_name (
+            _("System Software Sources…"),
+            "app.repos"
+        );
+        var repos_menuitem = new Gtk.ModelButton () {
+            action_name = "app.repos"
+        };
+        repos_menuitem.get_child ().destroy ();
+        repos_menuitem.add (repos_accellabel);
+        menu_popover_box.add (repos_menuitem);
+#endif
+
         menu_popover_box.show_all ();
 
         var menu_popover = new Gtk.Popover (null);
