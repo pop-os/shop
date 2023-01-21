@@ -613,7 +613,6 @@ namespace AppCenter.Views {
                 hexpand = true
             };
             button_box.add (uninstall_button_revealer);
-            button_box.add (action_stack);
 
             var header_flow = new Gtk.FlowBox () {
                 column_spacing = 12,
