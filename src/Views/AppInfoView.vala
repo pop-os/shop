@@ -759,7 +759,12 @@ namespace AppCenter.Views {
                 load_more_content(screenshot_files);
                 var top_level_width = get_toplevel ().get_allocated_width ();
                 int redraw_counter = 0;
+                int width = header_clamp.get_allocated_width ();
                 header_clamp.size_allocate.connect (() => {
+                    int next_width = header_clamp.get_allocated_width ();
+                    if (next_width == width) return;
+                    width = next_width;
+
                     if (redraw_counter == 0) {
                         var children = app_screenshots.get_children ();
                         foreach (var child in children) {
@@ -775,9 +780,6 @@ namespace AppCenter.Views {
                             }
                             foreach (var file in screenshot_files) {
                                 load_screenshot (null, file);
-                            }
-                            foreach (var child in app_screenshots.get_children ()) {
-                                child.show ();
                             }
                         }
                         return GLib.Source.REMOVE;
@@ -1079,11 +1081,8 @@ namespace AppCenter.Views {
                     image.tooltip_text = ellipsize (caption, max_caption_len);
                 }
 
-                Idle.add (() => {
-                    image.show ();
-                    app_screenshots.add (image);
-                    return GLib.Source.REMOVE;
-                });
+                image.show ();
+                app_screenshots.add (image);
             } catch (Error e) {
                 critical (e.message);
             }
