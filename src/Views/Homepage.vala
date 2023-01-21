@@ -103,7 +103,7 @@ public class AppCenter.Homepage : Gtk.Box {
         pop_banner.get_style_context ().add_class ("pop-banner");
         pop_banner.attach (pop_banner_copy_1, 0, 0, 1, 1);
         pop_banner.attach (pop_banner_copy_2, 0, 1, 1, 1);
-        
+
 #endif
 
         var recently_updated_label = new Granite.HeaderLabel (_("Recently Updated")) {
@@ -321,7 +321,7 @@ public class AppCenter.Homepage : Gtk.Box {
         // Show the banner, since it only contains our artwork currently
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
-        banner_timeout_start (); 
+        banner_timeout_start ();
 
 #endif
         load_banners_and_carousels.begin ();
@@ -329,19 +329,6 @@ public class AppCenter.Homepage : Gtk.Box {
         category_flow.child_activated.connect ((child) => {
             var card = (AbstractCategoryCard) child;
             show_category (card.category);
-        });
-
-        AppCenterCore.Client.get_default ().installed_apps_changed.connect (() => {
-            Idle.add (() => {
-                // Clear the cached categories when the AppStream pool is updated
-                foreach (unowned var child in category_flow.get_children ()) {
-                    var item = (AbstractCategoryCard) child;
-                    var category_components = item.category.get_components ();
-                    category_components.remove_range (0, category_components.length);
-                }
-
-                return GLib.Source.REMOVE;
-            });
         });
 
         banner_event_box.enter_notify_event.connect (() => {
@@ -371,7 +358,7 @@ public class AppCenter.Homepage : Gtk.Box {
         destroy.connect (() => {
             banner_timeout_stop ();
         });
-    }        
+    }
 
     private async void load_banners_and_carousels () {
         unowned var fp_client = AppCenterCore.FlatpakBackend.get_default ();
@@ -442,17 +429,17 @@ public class AppCenter.Homepage : Gtk.Box {
                 package_count++;
             }
         }
-        
+
         foreach (var package in packages_in_banner) {
             var banner = new Widgets.Banner (package);
             banner.clicked.connect (() => {
                 show_package (package);
             });
-            
+
             banner_carousel.add (banner);
         }
 #endif
-        
+
         banner_carousel.show_all ();
         banner_revealer.reveal_child = true;
 
