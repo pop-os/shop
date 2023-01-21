@@ -15,6 +15,14 @@
 */
 
 namespace Utils {
+    public async void nap (uint interval, int priority = GLib.Priority.DEFAULT) {
+        GLib.Timeout.add (interval, () => {
+            nap.callback ();
+            return false;
+            }, priority);
+        yield;
+    }
+
     public void shuffle_array<T> (T[] array) {
         // https://gitlab.gnome.org/GNOME/vala/issues/7
         var rand = new GLib.Rand ();
