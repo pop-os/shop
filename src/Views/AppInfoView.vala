@@ -770,14 +770,13 @@ namespace AppCenter.Views {
                     Timeout.add(150, () => {
                         redraw_counter--;
                         if (redraw_counter == 0) {
-                            var children = app_screenshots.get_children ();
-                            foreach (var child in children) {
+                            foreach (var child in app_screenshots.get_children ()) {
                                 app_screenshots.remove (child);
                             }
                             foreach (var file in screenshot_files) {
                                 load_screenshot (null, file);
                             }
-                            foreach (var child in children) {
+                            foreach (var child in app_screenshots.get_children ()) {
                                 child.show ();
                             }
                         }
