@@ -361,9 +361,19 @@ public class AppCenter.Homepage : Gtk.Box {
     }
 
     private async void load_banners_and_carousels () {
+        unowned var pk_client = AppCenterCore.PackageKitBackend.get_default ();
         unowned var fp_client = AppCenterCore.FlatpakBackend.get_default ();
+
+        // Fix pango/gtk layout segfault when pk or fp are still loading.
+        // And fix segfault in get_featured_packages.
+        while (fp_client.working || pk_client.working) {
+            yield Utils.nap(1000);
+        }
+
         var packages_by_release_date = fp_client.get_featured_packages_by_release_date ();
         var packages_in_banner = new Gee.LinkedList<AppCenterCore.Package> ();
+
+
 
         int package_count = 0;
 
