@@ -78,8 +78,8 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
         cached_packages = new Gee.TreeSet<Package> ();
         var tokens = AppCenter.App.settings.get_strv ("cached-drivers");
 
-        string? latest_nvidia_pkg = null; 
-        int latest_nvidia_ver = 0; 
+        string? latest_nvidia_pkg = null;
+        int latest_nvidia_ver = 0;
 
         for (int i = 0; i < tokens.length; i++) {
             if (cancellable.is_cancelled ()) {
@@ -158,8 +158,14 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
     private static async void add_kernel_headers_if_necessary (Package package, Cancellable? cancellable) {
         Gee.ArrayList<string>? depends = null;
 
+        // Fix segfault when packagekit packages are still being loaded.
+        unowned var package_kit = PackageKitBackend.get_default ();
+        while (package_kit.working) {
+            yield Utils.nap (1000);
+        }
+
         try {
-            depends = yield PackageKitBackend.get_default ().get_package_dependencies (package, cancellable);
+            depends = yield package_kit.get_package_dependencies (package, cancellable);
         } catch (Error e) {
             warning ("Unable to get dependencies of driver package, kernel headers may not be installed");
             return;
@@ -168,7 +174,7 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
         if (depends != null && "dkms" in depends) {
             // Ensure we have matching kernel headers installed for our installed `linux-image-generic` metapackages.
             // Sometimes Ubuntu drivers depend on non-HWE headers and the module doesn't get built for the running kernel
-            var installed = yield PackageKitBackend.get_default ().get_installed_packages (cancellable);
+            var installed = yield package_kit.get_installed_packages (cancellable);
             foreach (var pkg in installed) {
                 unowned string pkgname = pkg.get_name ();
                 if (pkgname.has_prefix ("linux-image-generic")) {
