@@ -367,9 +367,7 @@ public class AppCenter.Homepage : Gtk.Box {
         // Fix pango/gtk layout segfault when pk or fp are still loading.
         // And fix segfault in get_featured_packages.
         while (fp_client.working || pk_client.working) {
-            //  This used to `yield` here, but doing so seems to cause another
-            // segfault. This seems to work better?
-            Utils.nap (1000);
+            yield Utils.nap (1000);
         }
 
         var packages_by_release_date = fp_client.get_featured_packages_by_release_date ();

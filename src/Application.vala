@@ -249,6 +249,15 @@ public class AppCenter.App : Gtk.Application {
 
         var client = AppCenterCore.Client.get_default ();
 
+        if (active_window == null) {
+            var main_window = new MainWindow (this);
+            add_window (main_window);
+            active_window.present_with_time (Gdk.CURRENT_TIME);
+            
+            // Force a Flatpak cache refresh when the window is created, so we get new apps
+            client.update_cache.begin (true, AppCenterCore.Client.CacheUpdateType.FLATPAK);
+        }
+
         if (silent) {
             NetworkMonitor.get_default ().network_changed.connect ((available) => {
                 schedule_cache_update (!available);
@@ -269,14 +278,6 @@ public class AppCenter.App : Gtk.Application {
             } catch (Error e) {
                 warning ("Failed to load local AppStream XML file: %s", e.message);
             }
-        }
-
-        if (active_window == null) {
-            // Force a Flatpak cache refresh when the window is created, so we get new apps
-            client.update_cache.begin (true, AppCenterCore.Client.CacheUpdateType.FLATPAK);
-
-            var main_window = new MainWindow (this);
-            add_window (main_window);
         }
 
         if (show_updates) {
