@@ -83,6 +83,8 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     private double progress_denom = 200.0f;
     private double progress = 0.0f;
 
+    private Mutex _pk_mutex = new Mutex ();
+
     private bool worker_func () {
         while (thread_should_run) {
             last_action = new DateTime.now_local ();
@@ -512,6 +514,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void get_prepared_packages_internal (Job job) {
+        _pk_mutex.lock ();
         var args = (GetPreparedPackagesArgs)job.args;
         var cancellable = args.cancellable;
 
@@ -520,6 +523,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             results = client.get_updates (0, cancellable, (t, p) => { });
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -534,6 +538,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
 
         if (package_ids.length == 0) {
             job.result = Value (typeof (Object));
+            _pk_mutex.unlock ();
             job.result.take_object (new Pk.Results ());
             job.results_ready ();
             return;
@@ -546,6 +551,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             details = client.get_details (package_ids, cancellable, (p, t) => {});
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -555,6 +561,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         });
 
         job.result = Value (typeof (Object));
+        _pk_mutex.unlock ();
         job.result.take_object ((owned) results);
         job.results_ready ();
     }
@@ -568,6 +575,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void get_installed_packages_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (GetInstalledPackagesArgs)job.args;
         unowned var cancellable = args.cancellable;
 
@@ -581,6 +589,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             for (int i = 0; i < packages.length; i++) {
                 if (cancellable != null && cancellable.is_cancelled ()) {
                     job.result = Value (typeof (Object));
+                    _pk_mutex.unlock ();
                     job.result.take_object (installed);
                     job.results_ready ();
                     return;
@@ -595,6 +604,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         }
 
         job.result = Value (typeof (Object));
+        _pk_mutex.unlock ();
         job.result.take_object ((owned) installed);
         job.results_ready ();
     }
@@ -608,6 +618,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void get_download_size_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (GetDownloadSizeArgs)job.args;
         unowned var package = args.package;
         unowned var cancellable = args.cancellable;
@@ -617,6 +628,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             pk_package = get_package_internal (package);
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -639,6 +651,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
                 details = client.get_details (package_array, cancellable, (p, t) => {});
             } catch (Error e) {
                 job.error = e;
+                _pk_mutex.unlock ();
                 job.results_ready ();
                 return;
             }
@@ -651,6 +664,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         }
 
         job.result = Value (typeof (uint64));
+        _pk_mutex.unlock ();
         job.result.set_uint64 (size);
         job.results_ready ();
     }
@@ -669,6 +683,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void install_package_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (InstallPackageArgs)job.args;
         unowned var package = args.package;
         unowned ChangeInformation? change_info = args.change_info;
@@ -709,11 +724,13 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             exit_status = results.get_exit_code ();
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
 
         job.result = Value (typeof (bool));
+        _pk_mutex.unlock ();
         job.result.set_boolean (exit_status == Pk.Exit.SUCCESS);
         job.results_ready ();
     }
@@ -733,6 +750,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void update_package_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (UpdatePackageArgs)job.args;
         unowned var package = args.package;
         unowned var cancellable = args.cancellable;
@@ -745,6 +763,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
 
         if (packages_ids.length == 0) {
             job.result = true;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -763,11 +782,13 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             }
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
 
         job.result = Value (typeof (bool));
+        _pk_mutex.unlock ();
         job.result.set_boolean (exit_status == Pk.Exit.SUCCESS);
         job.results_ready ();
     }
@@ -798,6 +819,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void remove_package_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (RemovePackageArgs)job.args;
         unowned var package = args.package;
         unowned var cancellable = args.cancellable;
@@ -824,11 +846,13 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             exit_status = results.get_exit_code ();
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
 
         job.result = Value (typeof (bool));
+        _pk_mutex.unlock ();
         job.result.set_boolean (exit_status == Pk.Exit.SUCCESS);
         job.results_ready ();
     }
@@ -895,6 +919,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void get_updates_internal (Job job) {
+        _pk_mutex.lock ();
         var args = (GetUpdatesArgs)job.args;
         var cancellable = args.cancellable;
 
@@ -916,6 +941,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             }
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -930,6 +956,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
 
         if (package_ids.length == 0) {
             job.result = Value (typeof (Object));
+            _pk_mutex.unlock ();
             job.result.take_object (new Pk.Results ());
             job.results_ready ();
             return;
@@ -942,6 +969,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             details = client.get_details (package_ids, cancellable, (p, t) => {});
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -951,6 +979,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         });
 
         job.result = Value (typeof (Object));
+        _pk_mutex.unlock ();
         job.result.take_object ((owned) results);
         job.results_ready ();
     }
@@ -968,6 +997,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void refresh_cache_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (RefreshCacheArgs)job.args;
         unowned var cancellable = args.cancellable;
 
@@ -975,6 +1005,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         // Otherwise PackageKit deletes all information related to prepared updates
         if (get_downloaded_updates ().size > 0) {
             job.result = Value (typeof (bool));
+            _pk_mutex.unlock ();
             job.result.set_boolean (true);
             job.results_ready ();
             return;
@@ -985,6 +1016,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             results = client.refresh_cache (false, cancellable, (t, p) => { });
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -996,6 +1028,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         }
 
         job.result = Value (typeof (bool));
+        _pk_mutex.unlock ();
         job.result.set_boolean (exit_status == Pk.Exit.SUCCESS);
         job.results_ready ();
     }
@@ -1013,6 +1046,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void is_package_installed_internal (Job job) {
+        _pk_mutex.lock ();
         var args = (IsPackageInstalledArgs)job.args;
         unowned var package = args.package;
 
@@ -1021,11 +1055,13 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             pk_package = get_package_internal (package);
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
 
         job.result = Value (typeof (bool));
+        _pk_mutex.unlock ();
         job.result = pk_package.info == Pk.Info.INSTALLED;
         job.results_ready ();
     }
@@ -1138,6 +1174,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void get_package_details_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (GetPackageDetailsArgs)job.args;
         unowned var package = args.package;
 
@@ -1146,6 +1183,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             pk_package = get_package_internal (package);
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -1157,6 +1195,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         result.version = pk_package.get_version ();
 
         job.result = Value (typeof (Object));
+        _pk_mutex.unlock ();
         job.result.take_object ((owned) result);
         job.results_ready ();
     }
@@ -1174,6 +1213,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
     }
 
     private void get_package_dependencies_internal (Job job) {
+        _pk_mutex.lock ();
         unowned var args = (GetPackageDependenciesArgs)job.args;
         unowned var package = args.package;
         unowned var cancellable = args.cancellable;
@@ -1183,6 +1223,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             pk_package = get_package_internal (package);
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -1197,6 +1238,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             });
         } catch (Error e) {
             job.error = e;
+            _pk_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -1204,6 +1246,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         var result = new Gee.ArrayList<string>.wrap (package_array);
 
         job.result = Value (typeof (Object));
+        _pk_mutex.unlock ();
         job.result.take_object ((owned) result);
         job.results_ready ();
     }
