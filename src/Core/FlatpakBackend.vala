@@ -83,6 +83,8 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     private uint total_operations;
     private int current_operation;
 
+    private Mutex _fp_mutex = new Mutex ();
+
     private bool worker_func () {
         while (thread_should_run) {
             var job = jobs.pop ();
@@ -265,6 +267,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void get_installed_packages_internal (Job job) {
+        _fp_mutex.lock ();
         unowned var args = (GetInstalledPackagesArgs)job.args;
         unowned var cancellable = args.cancellable;
 
@@ -273,6 +276,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         if (user_installation == null && system_installation == null) {
             critical ("Couldn't get installed apps due to no flatpak installation");
             job.result = Value (typeof (Object));
+            _fp_mutex.unlock ();
             job.result.take_object ((owned) installed_apps);
             job.results_ready ();
             return;
@@ -285,6 +289,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Unable to get installed flatpaks: %s", e.message);
             job.result = Value (typeof (Object));
+            _fp_mutex.unlock ();
             job.result.take_object ((owned) installed_apps);
             job.results_ready ();
             return;
@@ -296,12 +301,14 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Unable to get installed flatpaks: %s", e.message);
             job.result = Value (typeof (Object));
+            _fp_mutex.unlock ();
             job.result.take_object ((owned) installed_apps);
             job.results_ready ();
             return;
         }
 
         job.result = Value (typeof (Object));
+        _fp_mutex.unlock ();
         job.result.take_object ((owned) installed_apps);
         job.results_ready ();
     }
@@ -541,6 +548,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void get_download_size_by_id_internal (Job job) {
+        _fp_mutex.lock ();
         unowned var args = (GetDownloadSizeByIdArgs)job.args;
         unowned var id = args.id;
         unowned var is_update = args.is_update;
@@ -552,6 +560,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         var split_success = get_package_list_key_parts (id, out system, out origin, out bundle_id);
         if (!split_success) {
             job.result = Value (typeof (uint64));
+            _fp_mutex.unlock ();
             job.result.set_uint64 (0);
             job.results_ready ();
             return;
@@ -566,6 +575,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
 
         if (installation == null) {
             job.result = Value (typeof (uint64));
+            _fp_mutex.unlock ();
             job.result.set_uint64 (0);
             job.results_ready ();
             return;
@@ -576,6 +586,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
             flatpak_ref = Flatpak.Ref.parse (bundle_id);
         } catch (Error e) {
             job.error = e;
+            _fp_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -600,7 +611,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
                     added_remotes.add (url);
                     return true;
                 }
-
+                
                 return false;
             });
 
@@ -667,12 +678,14 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             if (!(e is Flatpak.Error.ABORTED)) {
                 job.error = e;
+                _fp_mutex.unlock ();
                 job.results_ready ();
                 return;
             }
         }
 
         job.result = Value (typeof (uint64));
+        _fp_mutex.unlock ();
         job.result.set_uint64 (download_size);
         job.results_ready ();
     }
@@ -693,6 +706,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void is_package_installed_internal (Job job) {
+        _fp_mutex.lock ();
         var args = (IsPackageInstalledArgs)job.args;
         unowned var package = args.package;
 
@@ -700,6 +714,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         if (fp_package == null || fp_package.installation == null) {
             critical ("Could not check installed state of package due to no flatpak installation");
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result = false;
             job.results_ready ();
             return;
@@ -708,6 +723,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         unowned var bundle = package.component.get_bundle (AppStream.BundleKind.FLATPAK);
         if (bundle == null) {
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result = false;
             job.results_ready ();
             return;
@@ -725,6 +741,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
                 var bundle_id = generate_package_list_key (system, installed_ref.origin, installed_ref.format_ref ());
                 if (key == bundle_id) {
                     job.result = Value (typeof (bool));
+                    _fp_mutex.unlock ();
                     job.result = true;
                     job.results_ready ();
                     return;
@@ -732,11 +749,13 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
             }
         } catch (Error e) {
             job.error = e;
+            _fp_mutex.unlock ();
             job.results_ready ();
             return;
         }
 
         job.result = Value (typeof (bool));
+        _fp_mutex.unlock ();
         job.result = false;
         job.results_ready ();
     }
@@ -765,6 +784,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void refresh_cache_internal (Job job) {
+        _fp_mutex.lock ();
         unowned var args = (RefreshCacheArgs)job.args;
         unowned var cancellable = args.cancellable;
 
@@ -799,6 +819,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         BackendAggregator.get_default ().cache_flush_needed ();
 
         job.result = Value (typeof (bool));
+        _fp_mutex.unlock ();
         job.result.set_boolean (true);
         job.results_ready ();
     }
@@ -1204,6 +1225,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void install_package_internal (Job job) {
+        _fp_mutex.lock ();
         unowned var args = (InstallPackageArgs)job.args;
         unowned var package = args.package;
         unowned var fp_package = package as FlatpakPackage;
@@ -1213,6 +1235,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         var bundle = package.component.get_bundle (AppStream.BundleKind.FLATPAK);
         if (bundle == null) {
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.results_ready ();
             return;
@@ -1221,6 +1244,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         if (fp_package == null || fp_package.installation == null) {
             critical ("Error getting flatpak installation");
             job.result = false;
+            _fp_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -1232,6 +1256,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Error creating transaction for flatpak install: %s", e.message);
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.results_ready ();
             return;
@@ -1242,6 +1267,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Error setting up transaction for flatpak install: %s", e.message);
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.error = e;
             job.results_ready ();
@@ -1312,6 +1338,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         }
 
         job.result = Value (typeof (bool));
+        _fp_mutex.unlock ();
         job.result.set_boolean (success);
         job.results_ready ();
     }
@@ -1331,6 +1358,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void remove_package_internal (Job job) {
+        _fp_mutex.lock ();
         unowned var args = (RemovePackageArgs)job.args;
         unowned var package = args.package;
         unowned var fp_package = package as FlatpakPackage;
@@ -1340,6 +1368,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         unowned var bundle = package.component.get_bundle (AppStream.BundleKind.FLATPAK);
         if (bundle == null) {
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.results_ready ();
             return;
@@ -1351,6 +1380,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Error parsing flatpak ref for removal: %s", e.message);
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.results_ready ();
             return;
@@ -1359,6 +1389,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         if (fp_package == null || fp_package.installation == null) {
             critical ("Error getting flatpak installation for removal");
             job.result = false;
+            _fp_mutex.unlock ();
             job.results_ready ();
             return;
         }
@@ -1370,6 +1401,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Error creating transaction for flatpak removal: %s", e.message);
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.results_ready ();
             return;
@@ -1380,6 +1412,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         } catch (Error e) {
             critical ("Error setting up transaction for flatpak removal: %s", e.message);
             job.result = Value (typeof (bool));
+            _fp_mutex.unlock ();
             job.result.set_boolean (false);
             job.error = e;
             job.results_ready ();
@@ -1444,6 +1477,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         }
 
         job.result = Value (typeof (bool));
+        _fp_mutex.unlock ();
         job.result.set_boolean (success);
         job.results_ready ();
     }
@@ -1463,6 +1497,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void update_package_internal (Job job) {
+        _fp_mutex.lock ();
         unowned var args = (UpdatePackageArgs)job.args;
         unowned var package = args.package;
         unowned ChangeInformation change_info = args.change_info;
@@ -1470,6 +1505,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
 
         if (user_installation == null && system_installation == null) {
             critical ("Error getting flatpak installation");
+            _fp_mutex.unlock ();
             job.result = false;
             job.results_ready ();
             return;
@@ -1485,6 +1521,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
             var split_success = get_package_list_key_parts (updatable, out system, null, out bundle_id);
             if (!split_success) {
                 job.result = Value (typeof (bool));
+                _fp_mutex.unlock ();
                 job.result.set_boolean (false);
                 job.results_ready ();
                 return;
@@ -1524,6 +1561,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         }
 
         job.result = Value (typeof (bool));
+        _fp_mutex.unlock ();
         job.result.set_boolean (success);
         job.results_ready ();
     }
@@ -1625,6 +1663,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
     }
 
     private void get_updates_internal (Job job) {
+        _fp_mutex.lock ();
         var args = (GetUpdatesArgs)job.args;
         var cancellable = args.cancellable;
 
@@ -1633,6 +1672,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         if (user_installation == null && system_installation == null) {
             critical ("Unable to get flatpak installation when checking for updates");
             job.result = Value (typeof (Object));
+            _fp_mutex.unlock ();
             job.result.take_object ((owned) updatable_ids);
             job.results_ready ();
             return;
@@ -1650,6 +1690,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
             } catch (Error e) {
                 critical ("Unable to get list of updatable flatpaks: %s", e.message);
                 job.result = Value (typeof (Object));
+                _fp_mutex.unlock ();
                 job.result.take_object ((owned) updatable_ids);
                 job.results_ready ();
                 return;
@@ -1667,6 +1708,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
             } catch (Error e) {
                 critical ("Unable to get list of updatable flatpaks: %s", e.message);
                 job.result = Value (typeof (Object));
+                _fp_mutex.unlock ();
                 job.result.take_object ((owned) updatable_ids);
                 job.results_ready ();
                 return;
@@ -1674,6 +1716,7 @@ public class AppCenterCore.FlatpakBackend : Backend, Object {
         }
 
         job.result = Value (typeof (Object));
+        _fp_mutex.unlock ();
         job.result.take_object ((owned) updatable_ids);
         job.results_ready ();
         return;
