@@ -249,7 +249,7 @@ public class AppCenter.App : Gtk.Application {
 
         var client = AppCenterCore.Client.get_default ();
 
-        if (active_window == null) {
+        if (active_window == null && !silent) {
             var main_window = new MainWindow (this);
             add_window (main_window);
             active_window.present_with_time (Gdk.CURRENT_TIME);
