@@ -607,12 +607,8 @@ namespace AppCenter.Views {
 
             action_button_group.add_widget (uninstall_button);
 
-            var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                halign = Gtk.Align.END,
-                valign = Gtk.Align.END,
-                hexpand = true
-            };
             button_box.add (uninstall_button_revealer);
+            button_box.spacing = 6;
 
             var header_flow = new Gtk.FlowBox () {
                 column_spacing = 12,
