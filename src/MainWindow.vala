@@ -190,11 +190,13 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
         eventbox_badge.add (updates_badge_revealer);
 
+#if !POP_OS
         var updates_overlay = new Gtk.Overlay () {
             tooltip_text = C_("view", "Updates & installed apps")
         };
         updates_overlay.add (updates_button);
         updates_overlay.add_overlay (eventbox_badge);
+#endif
 
         view_mode_revealer = new Gtk.Revealer () {
             reveal_child = true,
@@ -237,6 +239,17 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         menu_popover_box.add (refresh_menuitem);
 
 #if POP_OS
+        var installed_accellabel = new Granite.AccelLabel.from_action_name (
+            _("Installed Software"),
+            "app.show-updates"
+        );
+        var installed_menuitem = new Gtk.ModelButton () {
+            action_name = "app.show-updates"
+        };
+        installed_menuitem.get_child ().destroy ();
+        installed_menuitem.add (installed_accellabel);
+        menu_popover_box.add (installed_menuitem);
+
         var repos_accellabel = new Granite.AccelLabel.from_action_name (
             _("System Software Sources…"),
             "app.repos"
@@ -267,7 +280,9 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         headerbar.set_custom_title (search_clamp);
         headerbar.pack_start (return_button);
         headerbar.pack_end (menu_button);
+#if !POP_OS
         headerbar.pack_end (view_mode_revealer);
+#endif
 
         var homepage = new Homepage ();
         installed_view = new Views.AppListUpdateView ();

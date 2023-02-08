@@ -125,6 +125,7 @@ public class AppCenter.App : Gtk.Application {
 #if POP_OS
         add_action (repos_action);
         set_accels_for_action ("app.repos", {"<Control>s"});
+        set_accels_for_action ("app.show-updates", {"<Control>i"});
 #endif
 
         search_provider = new SearchProvider ();
