@@ -196,13 +196,13 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
         updates_overlay.add (updates_button);
         updates_overlay.add_overlay (eventbox_badge);
-#endif
-
+        
         view_mode_revealer = new Gtk.Revealer () {
             reveal_child = true,
             transition_type = Gtk.RevealerTransitionType.SLIDE_LEFT
         };
         view_mode_revealer.add (updates_overlay);
+#endif
 
         search_entry = new Gtk.SearchEntry () {
             hexpand = true,
@@ -218,7 +218,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
 
         var refresh_accellabel = new Granite.AccelLabel.from_action_name (
+#if POP_OS
+            _("Refresh"),
+#else
             _("Check for Updates"),
+#endif
             "app.refresh"
         );
 
@@ -240,7 +244,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
 
 #if POP_OS
         var installed_accellabel = new Granite.AccelLabel.from_action_name (
-            _("Installed Software"),
+            _("Updates & Installed Software"),
             "app.show-updates"
         );
         var installed_menuitem = new Gtk.ModelButton () {
@@ -279,8 +283,14 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
         headerbar.set_custom_title (search_clamp);
         headerbar.pack_start (return_button);
+
+#if POP_OS
+        var updates_overlay = new Gtk.Overlay () {};
+        updates_overlay.add (menu_button);
+        updates_overlay.add_overlay (eventbox_badge);
+        headerbar.pack_end (updates_overlay);
+#else
         headerbar.pack_end (menu_button);
-#if !POP_OS
         headerbar.pack_end (view_mode_revealer);
 #endif
 
@@ -390,7 +400,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         });
 
         eventbox_badge.button_release_event.connect (() => {
+#if POP_OS
+            menu_button.active = !menu_button.active;
+#else
             go_to_installed ();
+#endif
         });
 
         homepage.show_category.connect ((category) => {
