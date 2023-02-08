@@ -240,8 +240,8 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
 
 #if !POP_OS
         menu_popover_box.add (automatic_updates_button);
-#endif
         menu_popover_box.add (refresh_menuitem);
+#endif
 
 #if POP_OS
         var installed_accellabel = new Granite.AccelLabel.from_action_name (
@@ -255,6 +255,12 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         installed_menuitem.add (installed_accellabel);
         menu_popover_box.add (installed_menuitem);
 
+        unowned var updates_context = installed_menuitem.get_style_context ();
+        updates_context.add_class ("accellabel");
+
+        var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+        menu_popover_box.add (menu_separator);
+
         var repos_accellabel = new Granite.AccelLabel.from_action_name (
             _("System Software Sources…"),
             "app.repos"
@@ -265,6 +271,13 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         repos_menuitem.get_child ().destroy ();
         repos_menuitem.add (repos_accellabel);
         menu_popover_box.add (repos_menuitem);
+        menu_popover_box.add (refresh_menuitem);
+
+        unowned var repos_context = repos_menuitem.get_style_context ();
+        repos_context.add_class ("accellabel");
+
+        unowned var refresh_context = refresh_menuitem.get_style_context ();
+        refresh_context.add_class ("accellabel");
 #endif
 
         menu_popover_box.show_all ();
@@ -481,9 +494,9 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         Idle.add (() => {
             unowned var updates_context = installed_menuitem.get_style_context ();
             if (updates_number > 0) {
-                updates_context.add_class ("updates");
+                updates_context.add_class ("updates-available");
             } else {
-                updates_context.remove_class ("updates");
+                updates_context.remove_class ("updates-available");
             }
             if (updates_number == 0U) {
                 updates_badge_revealer.reveal_child = false;
