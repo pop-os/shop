@@ -94,6 +94,14 @@ popover modelbutton {
     letter-spacing: 0.15em;
 }
 
+.updates label:not(.keycap) {
+    border-radius: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: #EA9090;
+    color: #2B2928;
+}
+
 .badge {
     padding: 0px;
     border-radius: 999px; /* $circular_radius */

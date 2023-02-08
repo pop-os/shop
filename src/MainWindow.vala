@@ -24,6 +24,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     private Gtk.Button return_button;
     private Gtk.Label updates_badge;
     private Gtk.Revealer updates_badge_revealer;
+    private Gtk.ModelButton installed_menuitem;
     private Granite.Widgets.Toast toast;
     private Granite.Widgets.OverlayBar overlaybar;
     private Hdy.Deck deck;
@@ -247,7 +248,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             _("Updates & Installed Software"),
             "app.show-updates"
         );
-        var installed_menuitem = new Gtk.ModelButton () {
+        installed_menuitem = new Gtk.ModelButton () {
             action_name = "app.show-updates"
         };
         installed_menuitem.get_child ().destroy ();
@@ -478,6 +479,12 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
 
     private void show_update_badge (uint updates_number) {
         Idle.add (() => {
+            unowned var updates_context = installed_menuitem.get_style_context ();
+            if (updates_number > 0) {
+                updates_context.add_class ("updates");
+            } else {
+                updates_context.remove_class ("updates");
+            }
             if (updates_number == 0U) {
                 updates_badge_revealer.reveal_child = false;
             } else {
