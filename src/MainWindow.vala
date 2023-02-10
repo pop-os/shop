@@ -23,7 +23,9 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     private Gtk.ModelButton refresh_menuitem;
     private Gtk.Button return_button;
     private Gtk.Label updates_badge;
+    private Gtk.Label updates_menubadge;
     private Gtk.Revealer updates_badge_revealer;
+    private Gtk.Revealer updates_menubadge_revealer;
     private Gtk.ModelButton installed_menuitem;
     private Granite.Widgets.Toast toast;
     private Granite.Widgets.OverlayBar overlaybar;
@@ -174,7 +176,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         badge_provider.load_from_resource ("io/elementary/appcenter/badge.css");
 
         updates_badge = new Gtk.Label ("!");
-
+        
         unowned var badge_context = updates_badge.get_style_context ();
         badge_context.add_class (Granite.STYLE_CLASS_BADGE);
         badge_context.add_provider (badge_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -191,7 +193,21 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
         eventbox_badge.add (updates_badge_revealer);
 
-#if !POP_OS
+#if POP_OS
+        updates_menubadge = new Gtk.Label ("!");
+        unowned var menubadge_context = updates_menubadge.get_style_context ();
+        menubadge_context.add_class (Granite.STYLE_CLASS_BADGE);
+        menubadge_context.add_class ("menubadge");
+        menubadge_context.add_provider (badge_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+        updates_menubadge_revealer = new Gtk.Revealer () {
+            halign = Gtk.Align.END,
+            valign = Gtk.Align.START,
+            transition_type = Gtk.RevealerTransitionType.CROSSFADE
+        };
+        updates_menubadge_revealer.add (updates_menubadge);
+
+#else
         var updates_overlay = new Gtk.Overlay () {
             tooltip_text = C_("view", "Updates & installed apps")
         };
@@ -252,11 +268,15 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
             action_name = "app.show-updates"
         };
         installed_menuitem.get_child ().destroy ();
-        installed_menuitem.add (installed_accellabel);
+        var installed_menubox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+        installed_menuitem.add (installed_menubox);
+        var installed_label = new Gtk.Label (_("Updates & Installed Software"));
+        installed_label.halign = Gtk.Align.START;
+        installed_label.hexpand = true;
+        installed_menubox.add (installed_label);
         menu_popover_box.add (installed_menuitem);
 
-        unowned var updates_context = installed_menuitem.get_style_context ();
-        updates_context.add_class ("accellabel");
+        installed_menubox.add (updates_menubadge_revealer);
 
         var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         menu_popover_box.add (menu_separator);
@@ -272,12 +292,6 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         repos_menuitem.add (repos_accellabel);
         menu_popover_box.add (repos_menuitem);
         menu_popover_box.add (refresh_menuitem);
-
-        unowned var repos_context = repos_menuitem.get_style_context ();
-        repos_context.add_class ("accellabel");
-
-        unowned var refresh_context = refresh_menuitem.get_style_context ();
-        refresh_context.add_class ("accellabel");
 #endif
 
         menu_popover_box.show_all ();
@@ -492,17 +506,14 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
 
     private void show_update_badge (uint updates_number) {
         Idle.add (() => {
-            unowned var updates_context = installed_menuitem.get_style_context ();
-            if (updates_number > 0) {
-                updates_context.add_class ("updates-available");
-            } else {
-                updates_context.remove_class ("updates-available");
-            }
             if (updates_number == 0U) {
                 updates_badge_revealer.reveal_child = false;
+                updates_menubadge_revealer.reveal_child = false;
             } else {
                 updates_badge.label = updates_number.to_string ();
+                updates_menubadge.label = updates_number.to_string ();
                 updates_badge_revealer.reveal_child = true;
+                updates_menubadge_revealer.reveal_child = true;
             }
 
             return GLib.Source.REMOVE;
