@@ -94,17 +94,6 @@ popover modelbutton {
     letter-spacing: 0.15em;
 }
 
-.accellabel label:not(.keycap) {
-    border-radius: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
-}
-
-.accellabel.updates-available label:not(.keycap) {
-    background-color: #90CFB0;
-    color: #000;
-}
-
 .badge {
     padding: 0px;
     border-radius: 999px; /* $circular_radius */
