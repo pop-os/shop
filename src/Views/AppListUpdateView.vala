@@ -189,7 +189,9 @@ namespace AppCenter.Views {
                 add_packages (installed_apps);
             }
 
+#if !POP_OS
             yield client.get_prepared_applications (refresh_cancellable);
+#endif
 
             refresh_cancellable = null;
             refresh_mutex.unlock ();

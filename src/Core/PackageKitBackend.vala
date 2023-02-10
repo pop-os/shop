@@ -532,6 +532,8 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             return;
         }
 
+
+#if !POP_OS
         string[] package_ids = {};
         var downloaded_updates = get_downloaded_updates ();
         results.get_package_array ().foreach ((pk_package) => {
@@ -547,6 +549,20 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             job.results_ready ();
             return;
         }
+#else
+        if (results.get_package_array ().length == 0) {
+            job.result = Value (typeof (Object));
+            job.result.take_object (results);
+            _pk_mutex.unlock ();
+            job.results_ready ();
+            return;
+        }
+
+        string[] package_ids = {};
+        results.get_package_array ().foreach ((pk_package) => {
+            package_ids += pk_package.get_id ();
+        });
+#endif
 
         package_ids += null;
 
@@ -781,9 +797,11 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             });
 
             exit_status = results.get_exit_code ();
+#if !POP_OS
             if (exit_status == Pk.Exit.SUCCESS) {
                 Pk.offline_trigger (Pk.OfflineAction.REBOOT, cancellable);
             }
+#endif
         } catch (Error e) {
             job.error = e;
             _pk_mutex.unlock ();
@@ -1005,6 +1023,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
         unowned var args = (RefreshCacheArgs)job.args;
         unowned var cancellable = args.cancellable;
 
+#if !POP_OS
         // Don't refresh cache if PackageKit prepared updates.
         // Otherwise PackageKit deletes all information related to prepared updates
         if (get_downloaded_updates ().size > 0) {
@@ -1014,6 +1033,7 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             job.results_ready ();
             return;
         }
+#endif
 
         Pk.Results? results = null;
         try {
