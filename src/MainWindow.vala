@@ -25,7 +25,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
     private Gtk.Label updates_badge;
     private Gtk.Label updates_menubadge;
     private Gtk.Revealer updates_badge_revealer;
-    private Gtk.Revealer updates_menubadge_revealer;
+    private Gtk.Stack updates_menubadge_stack;
     private Gtk.ModelButton installed_menuitem;
     private Granite.Widgets.Toast toast;
     private Granite.Widgets.OverlayBar overlaybar;
@@ -194,18 +194,35 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         eventbox_badge.add (updates_badge_revealer);
 
 #if POP_OS
-        updates_menubadge = new Gtk.Label ("!");
+        updates_menubadge_stack = new Gtk.Stack () {
+            halign = Gtk.Align.END,
+            transition_type = Gtk.StackTransitionType.CROSSFADE
+        };
+
+        var installed_shortcut = new Gtk.Grid () {
+            halign = Gtk.Align.END
+        };
+        var ctrl_key = new Gtk.Label ("Ctrl");
+        var i_key = new Gtk.Label ("I");
+        installed_shortcut.attach (ctrl_key, 0, 0);
+        installed_shortcut.attach (i_key, 1, 0);
+
+        unowned var ctrl_context = ctrl_key.get_style_context ();
+        ctrl_context.add_class ("keycap");
+        unowned var i_context = i_key.get_style_context ();
+        i_context.add_class ("keycap");
+        updates_menubadge_stack.add_named (installed_shortcut, "shortcut");
+
+        updates_menubadge = new Gtk.Label ("!") {
+            halign = Gtk.Align.END
+        };
         unowned var menubadge_context = updates_menubadge.get_style_context ();
         menubadge_context.add_class (Granite.STYLE_CLASS_BADGE);
         menubadge_context.add_class ("menubadge");
         menubadge_context.add_provider (badge_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        updates_menubadge_revealer = new Gtk.Revealer () {
-            halign = Gtk.Align.END,
-            valign = Gtk.Align.START,
-            transition_type = Gtk.RevealerTransitionType.CROSSFADE
-        };
-        updates_menubadge_revealer.add (updates_menubadge);
+        updates_menubadge_stack.add_named (updates_menubadge, "updates");
+
 
 #else
         var updates_overlay = new Gtk.Overlay () {
@@ -276,7 +293,7 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         installed_menubox.add (installed_label);
         menu_popover_box.add (installed_menuitem);
 
-        installed_menubox.add (updates_menubadge_revealer);
+        installed_menubox.add (updates_menubadge_stack);
 
         var menu_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
         menu_popover_box.add (menu_separator);
@@ -508,13 +525,18 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         Idle.add (() => {
             if (updates_number == 0U) {
                 updates_badge_revealer.reveal_child = false;
-                updates_menubadge_revealer.reveal_child = false;
             } else {
                 updates_badge.label = updates_number.to_string ();
-                updates_menubadge.label = updates_number.to_string ();
                 updates_badge_revealer.reveal_child = true;
-                updates_menubadge_revealer.reveal_child = true;
             }
+#if POP_OS
+            if (updates_number == 0U) {
+                updates_menubadge_stack.set_visible_child_name ("shortcut");
+            } else {
+                updates_menubadge.label = updates_number.to_string ();
+                updates_menubadge_stack.set_visible_child_name ("updates");
+            }
+#endif
 
             return GLib.Source.REMOVE;
         });
