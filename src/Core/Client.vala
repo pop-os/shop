@@ -169,6 +169,8 @@ public class AppCenterCore.Client : Object {
                     }
                 } finally {
                     refresh_in_progress = false;
+                    updates_number = 0U;
+                    updates_number = yield UpdateManager.get_default ().get_updates (null);
                 }
             }
         } else {
