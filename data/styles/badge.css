@@ -16,5 +16,5 @@
 .menubadge {
     min-width: 2.6em;
     min-height: 2.6em;
-    background-color: @success_color;
+    background-color: @error_color;
 }

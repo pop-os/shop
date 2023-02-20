@@ -97,7 +97,7 @@ popover modelbutton {
 .badge {
     padding: 0px;
     border-radius: 999px; /* $circular_radius */
-    background-color: #90CFB0; /* $green */
+    background-color: #EA9090; /* $red */
     color: #000; /* $black for contrast */
     box-shadow: 
         0 1px 3px rgba(0, 0, 0, 0.12), 
