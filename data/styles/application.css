@@ -39,7 +39,7 @@ popover modelbutton {
 }
 
 /* Search entry grey out when insensitive */
-.search:insensitive {
+.search:disabled {
     background-color: alpha(@bg_color, .3);
 }
 
