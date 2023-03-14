@@ -132,6 +132,7 @@ public class AppCenter.App : Gtk.Application {
     }
 
     public override void open (File[] files, string hint) {
+        show_updates = false;
         activate ();
 
         var file = files[0];
