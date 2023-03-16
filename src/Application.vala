@@ -285,6 +285,7 @@ public class AppCenter.App : Gtk.Application {
         if (show_updates) {
             ((MainWindow) active_window).go_to_installed ();
         }
+        show_updates = false;
 
         active_window.present_with_time (Gdk.CURRENT_TIME);
     }
