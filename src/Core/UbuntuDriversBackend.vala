@@ -80,14 +80,15 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
             }
 
             unowned string package_name = tokens[i];
-            if (package_name.strip () == "") {
+            var name = package_name.strip ();
+            if (name == "") {
                 continue;
             }
 
             // Filter NVIDIA packages from Ubuntu
-            if (package_name.contains ("nvidia")) {
-                var name = package_name.split (",")[0];
-                if (!yield packaged_by_pop(null, name)) {
+            if (name.contains ("nvidia")) {
+                var package = name.split (",")[0];
+                if (package.has_suffix ("open") || !yield packaged_by_pop(null, package)) {
                     continue;
                 }
             }
