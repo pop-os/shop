@@ -24,6 +24,27 @@ public class AppCenter.Homepage : Gtk.Box {
 
     private const int MAX_PACKAGES_IN_BANNER = 5;
     private const int MAX_PACKAGES_IN_CAROUSEL = 12;
+    private const string[] pop_picks = {
+        "com.slack.Slack",
+        "org.telegram",
+        "org.gnome.meld",
+        "com.valvesoftware.Steam",
+        "net.lutris.Lutris",
+        "com.mattermost.Desktop",
+        "com.visualstudio.code",
+        "org.gnome.DejaDup",
+        "com.spotify.Client",
+        "com.gexperts.Tilix",
+        "alacritty",
+        "com.uploadedlobster.peek",
+        "virt-manager",
+        "org.signal.Signal",
+        "org.flameshot.Flameshot",
+        "com.getpostman.Postman",
+        "io.dbeaver.DBeaverCommunity",
+        "org.chromium.Chromium"
+    };
+    
 
     private Gtk.EventControllerMotion banner_motion_controller;
     private Gtk.FlowBox category_flow;
@@ -33,6 +54,11 @@ public class AppCenter.Homepage : Gtk.Box {
     private Gtk.FlowBox recently_updated_carousel;
     private Gtk.Revealer recently_updated_revealer;
     private Widgets.Banner appcenter_banner;
+    
+#if POP_OS
+    private Gtk.FlowBox picks_carousel;
+    private Gtk.Revealer picks_revealer;
+#endif
 
     private uint banner_timeout_id;
 
@@ -52,6 +78,27 @@ public class AppCenter.Homepage : Gtk.Box {
         var banner_dots = new Hdy.CarouselIndicatorDots () {
             carousel = banner_carousel
         };
+        
+#if POP_OS
+        var pop_banner_copy_1 = new Gtk.Label (_("EXPLORE YOUR HORIZONS AND"));
+        pop_banner_copy_1.margin_top = pop_banner_copy_1.margin_start = 38;
+        pop_banner_copy_1.xalign = 0;
+        pop_banner_copy_1.hexpand = true;
+        pop_banner_copy_1.wrap = true;
+
+        var pop_banner_copy_2 = new Gtk.Label (_("UNLEASH YOUR POTENTIAL"));
+        pop_banner_copy_2.margin_start = pop_banner_copy_2.margin_end = 37;
+        pop_banner_copy_2.xalign = 0;
+        pop_banner_copy_2.hexpand = true;
+        pop_banner_copy_2.wrap = true;
+
+        var pop_banner = new Gtk.Grid ();
+        pop_banner.height_request = 300;
+        pop_banner.expand = true;
+        pop_banner.get_style_context ().add_class ("pop-banner");
+        pop_banner.attach (pop_banner_copy_1, 0, 0, 1, 1);
+        pop_banner.attach (pop_banner_copy_2, 0, 1, 1, 1);
+#endif
 
         var recently_updated_label = new Granite.HeaderLabel (_("Recently Updated")) {
             margin_start = 12
@@ -74,7 +121,34 @@ public class AppCenter.Homepage : Gtk.Box {
 
         recently_updated_revealer = new Gtk.Revealer () {
             child = recently_updated_grid
+        
+#if POP_OS
+        var picks_label = new Granite.HeaderLabel (_("Pop!_Picks")) {
+            margin_start = 12,
+            margin_top = 18
         };
+
+        picks_carousel = new Gtk.FlowBox () {
+            activate_on_single_click = true,
+            column_spacing = 12,
+            row_spacing = 12,
+            homogeneous = true,
+            max_children_per_line = 5,
+            selection_mode = Gtk.SelectionMode.NONE
+        };
+
+
+        var picks_grid = new Gtk.Grid () {
+            margin_end = 12,
+            margin_start = 12,
+            row_spacing = 24
+        };
+
+        picks_grid.attach (picks_label, 0, 0);
+        picks_grid.attach (picks_carousel, 0, 1);
+        picks_revealer = new Gtk.Revealer ();
+        picks_revealer.add (picks_grid );
+#endif
 
         var categories_label = new Granite.HeaderLabel (_("Categories")) {
             margin_start = 24,
@@ -202,6 +276,9 @@ public class AppCenter.Homepage : Gtk.Box {
         var box = new Gtk.Box (VERTICAL, 0);
         box.add (banner_carousel);
         box.add (banner_dots);
+#if POP_OS
+        box.add (picks_revealer);
+#endif
         box.add (recently_updated_revealer);
         box.add (categories_label);
         box.add (category_flow);
@@ -232,6 +309,17 @@ public class AppCenter.Homepage : Gtk.Box {
 
             banner_carousel.page_changed.connect (page_changed_handler );
         }
+        
+#if POP_OS
+        banner_carousel.prepend (pop_banner);
+        banner_carousel.interactive = false;
+        banner_dots.visible = false;
+
+        // Show the banner, since it only contains our artwork currently
+        banner_carousel.show_all ();
+        // banner_revealer.reveal_child = true;
+        banner_timeout_start ();
+#endif
 
         load_banners_and_carousels.begin ((obj, res) => {
             load_banners_and_carousels.end (res);
@@ -263,15 +351,25 @@ public class AppCenter.Homepage : Gtk.Box {
             banner_timeout_stop ();
         });
 
-        banner_motion_controller.leave.connect (() => {
+#if !POP_OS
+        banner_event_box.leave_notify_event.connect (() => {
             banner_timeout_start ();
         });
+#endif
 
         recently_updated_carousel.child_activated.connect ((child) => {
             var package_row_grid = (AppCenter.Widgets.ListPackageRowGrid) child.get_child ();
 
             show_package (package_row_grid.package);
         });
+        
+#if POP_OS
+        picks_carousel.child_activated.connect ((child) => {
+            var package_row_grid = (AppCenter.Widgets.ListPackageRowGrid) child.get_child ();
+
+            show_package (package_row_grid.package);
+        });
+#endif
 
         destroy.connect (() => {
             banner_timeout_stop ();
@@ -288,6 +386,45 @@ public class AppCenter.Homepage : Gtk.Box {
         var packages_by_release_date = fp_client.get_featured_packages_by_release_date ();
         var packages_in_banner = new Gee.LinkedList<AppCenterCore.Package> ();
 
+#if POP_OS
+        var randomized_picks = new List<string> ();
+
+        foreach (var item in pop_picks) {
+            randomized_picks.append(item);
+        }
+
+        randomized_picks.sort ((a, b) => {
+            return GLib.Random.int_range (-10000000, 10000000);
+        });
+
+        foreach (var id in randomized_picks) {
+            if (picks_carousel.get_children ().length () > MAX_PACKAGES_IN_BANNER) {
+                break;
+            }
+
+            var package = AppCenterCore.Client.get_default ().get_package_for_component_id (id);
+            var installed = false;
+            foreach (var origin_package in package.origin_packages) {
+                try {
+                    if (yield origin_package.backend.is_package_installed (origin_package)) {
+                        installed = true;
+                        break;
+                    }
+                } catch (Error e) {
+                    continue;
+                }
+            }
+
+            if (!installed) {
+                packages_in_banner.add (package);
+                var package_row = new AppCenter.Widgets.ListPackageRowGrid (package);
+                picks_carousel.add (package_row);
+            }
+        }
+
+        picks_carousel.show_all ();
+        picks_revealer.reveal_child = picks_carousel.get_children ().length () > 0;
+#else
         foreach (var package in packages_by_release_date) {
             if (packages_in_banner.size >= MAX_PACKAGES_IN_BANNER) {
                 break;
@@ -316,6 +453,7 @@ public class AppCenter.Homepage : Gtk.Box {
                 banner_carousel.add (banner);
             }
         }
+#endif
 
         banner_carousel.show_all ();
         banner_carousel.switch_child (1, Granite.TRANSITION_DURATION_OPEN);

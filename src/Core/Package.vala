@@ -347,10 +347,32 @@ public class AppCenterCore.Package : Object {
             return origin_packages.size > 1;
         }
     }
-
     public string origin_description {
         owned get {
             unowned string origin = component.get_origin ();
+#if POP_OS
+            if (backend is PackageKitBackend) {
+                if (origin == APPCENTER_PACKAGE_ORIGIN) {
+                    return _("Pop!_Shop");
+                } else if (origin.has_prefix ("ubuntu-")) {
+                    return _("Ubuntu (deb)");
+                } else if (origin == "pop-artful-extra") {
+                    return _("Pop!_OS (deb)");
+                }
+            } else if (backend is FlatpakBackend) {
+                var fp_package = this as FlatpakPackage;
+                if (fp_package != null && fp_package.installation == FlatpakBackend.system_installation) {
+                    return _("%s (system-wide flatpak)").printf (origin);
+                }
+
+                return _("%s (flatpak)").printf (origin);
+
+            } else if (backend is UbuntuDriversBackend) {
+                return _("Ubuntu Drivers");
+            }
+
+            return _("Other (deb)");
+#else
             if (backend is FlatpakBackend) {
                 var fp_package = this as FlatpakPackage;
                 if (fp_package == null) {
@@ -359,7 +381,6 @@ public class AppCenterCore.Package : Object {
 
                 return fp_package.remote_title;
             }
-#if PACKAGEKIT_BACKEND
             else if (backend is PackageKitBackend) {
                 if (origin == APPCENTER_PACKAGE_ORIGIN) {
                     return _("AppCenter");
@@ -369,17 +390,13 @@ public class AppCenterCore.Package : Object {
                     return _("Ubuntu (non-curated)");
                 }
             }
-#endif
-#if UBUNTU_DRIVERS_BACKEND
             else if (backend is UbuntuDriversBackend) {
                 return _("Ubuntu Drivers");
             }
-#endif
-
             return _("Unknown Origin (non-curated)");
+#endif
         }
     }
-
     public int origin_score {
         get {
             int score = 0;

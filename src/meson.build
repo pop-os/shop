@@ -65,6 +65,10 @@ if get_option('hide_upstream_distro_apps')
     args += '--define=HIDE_UPSTREAM_DISTRO_APPS'
 endif
 
+if get_option('pop_os')
+    args += '--define=POP_OS'
+endif
+
 if appstream.version().version_compare('>=0.15')
     args += '--define=HAS_APPSTREAM_0_15'
 endif

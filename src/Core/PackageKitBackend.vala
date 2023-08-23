@@ -152,7 +152,11 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
 
         loop.run ();
         client = new Task () {
+#if POP_OS
+            only_download = false
+#else
             only_download = true
+#endif
         };
     }
 

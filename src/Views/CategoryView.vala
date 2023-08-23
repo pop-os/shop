@@ -36,8 +36,12 @@ public class AppCenter.CategoryView : Gtk.Box {
 
         paid_flowbox = new SubcategoryFlowbox (_("Paid Apps"));
 
+#if PAYMENTS
         free_flowbox = new SubcategoryFlowbox (_("Free Apps"));
-
+#else
+        free_flowbox = new SubcategoryFlowbox (_("All Apps"));
+#endif
+        
         box = new Gtk.Box (Gtk.Orientation.VERTICAL, 48) {
             margin_top = 12,
             margin_end = 12,

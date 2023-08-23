@@ -19,3 +19,61 @@
     padding-bottom: 0.333rem; /* 3px at 9pt font */
     padding-top: 0.333rem;    /* 3px at 9pt font */
 }
+
+/* Pop!_OS additions
+   ----------------- */
+
+/* Homepage banner: */
+
+.pop-banner {
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image:
+        -gtk-scaled(url("resource:///io/elementary/appcenter/pop-banner.png")),
+        linear-gradient(#003e6c 6%, #f4d3d6 52%, #abdcdc);
+    color: #fff;
+}
+
+.pop-banner label,
+.pop-banner label:backdrop {
+    color: #fff;
+}
+
+.pop-banner label:first-child {
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.15em;
+}
+
+.pop-banner label:last-child {
+    font-size: 32px;
+    font-weight: 200;
+    font-style: italic;
+    letter-spacing: 0.15em;
+}
+
+/* Badge on updates button: */
+
+.badge {
+    padding: 0px;
+    border-radius: 999px; /* $circular_radius */
+    background-color: #EA9090; /* $red */
+    color: #2B2928; /* $dark_ui_900 */
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.12), 
+        0 1px 2px rgba(0, 0, 0, 0.24); /* $shadow_1 */
+    font-size: 11px;
+    font-weight: 700;
+    margin: 2px;
+    min-height: 18px;
+    min-width: 18px;
+}
+
+/* Bottom-right progress spinner */
+
+.overlay-bar label, 
+.overlay-bar spinner{
+    padding: 6px;
+}
