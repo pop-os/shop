@@ -8,10 +8,10 @@
   <project_license>GPL-3.0+</project_license>
   <compulsory_for_desktop>Pantheon</compulsory_for_desktop>
 
-  <name>AppCenter</name>
+  <name>Pop!_Shop</name>
   <summary>Browse and manage apps</summary>
   <description>
-    <p>The open source, pay-what-you-want app store from elementary. Reviewed and curated by elementary to ensure a native, privacy-respecting, and secure experience. Browse by categories or search and discover new apps. AppCenter is also used for updating your system to the latest and greatest version for new features and fixes.</p>
+    <p>A fast and simple software center based on elementary AppCenter.</p>
   </description>
 
   <screenshots>

@@ -1,9 +1,9 @@
-# AppCenter
+# Pop!\_Shop
 [![Translation status](https://l10n.elementary.io/widgets/appcenter/-/svg-badge.svg)](https://l10n.elementary.io/projects/appcenter/?utm_source=widget)
 
-An open, pay-what-you-want app store for indie developers.
+A fast and simple software center based on [elementary AppCenter](https://github.com/elementary/appcenter).
 
-![AppCenter Screenshot](data/screenshot.png?raw=true)
+![Pop!\_Shop Screenshot](data/screenshot.png?raw=true)
 
 ## Building, Testing, and Installation
 
@@ -21,6 +21,7 @@ You'll need the following dependencies:
 * libsoup2.4-dev
 * libxml2-dev
 * libxml2-utils
+* [repoman](https://github.com/pop-os/repoman)
 * meson
 * valac (>= 0.26)
 

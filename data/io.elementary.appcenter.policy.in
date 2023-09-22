@@ -3,8 +3,8 @@
  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
 <policyconfig>
-  <vendor>elementary</vendor>
-  <vendor_url>https://elementary.io/</vendor_url>
+  <vendor>Pop!_OS</vendor>
+  <vendor_url>https://pop.system76.com/</vendor_url>
 
   <action id="io.elementary.appcenter.update">
     <description>Update software</description>
