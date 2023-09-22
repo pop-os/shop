@@ -46,6 +46,27 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
 
         return prepared_packages;
     }
+    
+    
+#if POP_OS
+    // Determine if a package is from the Pop!_OS repository.
+    private async bool packaged_by_pop (Cancellable? cancellable = null, string package) {
+        string? exec = Environment.find_program_in_path ("sh");
+        if (exec == null) {
+            return false;
+        }
+
+        Subprocess command;
+        try {
+            command = new Subprocess (SubprocessFlags.STDOUT_PIPE, exec, "-c", "apt-cache policy %s | grep 'apt.pop-os.org/release'".printf(package));
+            yield command.communicate_utf8_async (null, cancellable, null, null);
+        } catch (Error e) {
+            return false;
+        }
+
+        return command.get_exit_status () == 0;
+    }
+#endif
 
     public async Gee.Collection<Package> get_installed_applications (Cancellable? cancellable = null) {
         if (cached_packages != null) {
@@ -73,6 +94,16 @@ public class AppCenterCore.UbuntuDriversBackend : Backend, Object {
                 continue;
             }
 
+#if POP_OS
+            // Filter non-Pop!_OS NVIDIA drivers and all Open NVIDIA drivers
+            if (package_name.contains ("nvidia")) {
+                var package = package_name.split (",")[0];
+                if (package.has_suffix ("open") || !yield packaged_by_pop(null, package)) {
+                    continue;
+                }
+            }
+#endif
+            
             string[] pkgnames = {};
 
             // ubuntu-drivers returns lines like the following for dkms packages:

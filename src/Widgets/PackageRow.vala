@@ -22,17 +22,25 @@ namespace AppCenter.Widgets {
     public class PackageRow : Gtk.ListBoxRow {
         AbstractPackageRowGrid grid;
 
+        // On the update list page (even if it's not installed):
         public PackageRow.installed (AppCenterCore.Package package, Gtk.SizeGroup? action_size_group) {
             grid = new InstalledPackageRowGrid (package, action_size_group);
             add (grid);
             ((InstalledPackageRowGrid) grid).changed.connect (() => {
                 changed ();
             });
+#if POP_OS
+            selectable = false;
+#endif
         }
 
+        // On the search results page (even if it's installed):
         public PackageRow.list (AppCenterCore.Package package) {
             grid = new ListPackageRowGrid (package);
             add (grid);
+#if POP_OS
+            selectable = false;
+#endif
         }
 
         public AppCenterCore.Package? get_package () {

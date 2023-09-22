@@ -77,3 +77,13 @@
 .overlay-bar spinner{
     padding: 6px;
 }
+
+/* Error message dialogs */
+
+.dialog-vbox {
+    margin: 5px 0px 0px 0px;
+}
+
+.dialog-action-area {
+    margin: 0px 5px 5px 5px;
+}

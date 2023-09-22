@@ -338,6 +338,20 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         };
         network_info_bar.get_content_area ().add (network_info_bar_label);
         network_info_bar.add_button (_("Network Settings…"), Gtk.ResponseType.ACCEPT);
+        
+        network_info_bar.response.connect ((response_id) => {
+            switch (response_id) {
+                case Gtk.ResponseType.ACCEPT:
+                    try {
+                        open_network_settings ();
+                    } catch (GLib.Error e) {
+                        critical (e.message);
+                    }
+                    break;
+                default:
+                    assert_not_reached ();
+            }
+        });
 
         var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         box.add (headerbar);
@@ -616,6 +630,11 @@ public class AppCenter.MainWindow : Hdy.ApplicationWindow {
         }
         installed_view.show_all ();
         deck.visible_child = installed_view;
+    }
+    
+    public void open_network_settings () {
+        AppInfo settings = AppInfo.create_from_commandline ("gnome-control-center network", "Settings", NONE);
+        settings.launch (null, null);
     }
 
     public void search (string term, bool mimetype = false) {

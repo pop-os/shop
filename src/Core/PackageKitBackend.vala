@@ -761,9 +761,11 @@ public class AppCenterCore.PackageKitBackend : Backend, Object {
             });
 
             exit_status = results.get_exit_code ();
+#if !POP_OS
             if (exit_status == Pk.Exit.SUCCESS) {
                 Pk.offline_trigger (Pk.OfflineAction.REBOOT, cancellable);
             }
+#endif
         } catch (Error e) {
             job.error = e;
             job.results_ready ();

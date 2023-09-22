@@ -403,6 +403,25 @@ public class AppCenter.App : Gtk.Application {
 #endif
 
                     var dialog = new InstallFailDialog (package, (owned) error.message);
+                    dialog.response.connect ((response_id) => {
+                        switch (response_id) {
+                            case Gtk.ResponseType.CLOSE:
+                                dialog.destroy ();
+                                break;
+                                case 1:
+                                dialog.destroy ();
+                                ((MainWindow) active_window).go_to_installed ();
+                                break;
+                            case 2:
+                                dialog.destroy ();
+                                ((MainWindow) active_window).open_network_settings ();
+                                break;
+                            case 3:
+                                dialog.destroy ();
+                                AppCenter.App.repair_action.activate (null);
+                                break;
+                        }
+                    });
                     dialog.present ();
                 }
 
