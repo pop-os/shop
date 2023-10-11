@@ -238,6 +238,7 @@ public class AppCenter.App : Gtk.Application {
         add_action (repair_action);
         set_accels_for_action ("app.quit", {"<Control>q"});
         set_accels_for_action ("app.refresh", {"<Control>r"});
+        set_accels_for_action("app.show-updates", {"<Control>i"});
 #if POP_OS
         add_action (auto_action);
         set_accels_for_action ("app.auto", {"<Control>u"}); // "a" for "auto" conflicts with the search box
