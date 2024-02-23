@@ -121,6 +121,7 @@ public class AppCenter.Homepage : Gtk.Box {
 
         recently_updated_revealer = new Gtk.Revealer () {
             child = recently_updated_grid
+        };
         
 #if POP_OS
         var picks_label = new Granite.HeaderLabel (_("Pop!_Picks")) {
