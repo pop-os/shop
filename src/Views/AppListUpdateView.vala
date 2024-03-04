@@ -109,7 +109,8 @@ namespace AppCenter.Views {
                 column_spacing = 24,
                 homogeneous = true,
                 max_children_per_line = 4,
-                row_spacing = 12
+                row_spacing = 12,
+                selection_mode = Gtk.SelectionMode.NONE
             };
             installed_flowbox.bind_model (installed_liststore, create_installed_from_package);
 
@@ -172,6 +173,7 @@ namespace AppCenter.Views {
             get_apps.begin ((obj, res) => {
                 get_apps.end (res);
                 stack.visible_child = main_box;
+                stack.remove (loading_view);
             });
 
             unowned var client = AppCenterCore.Client.get_default ();

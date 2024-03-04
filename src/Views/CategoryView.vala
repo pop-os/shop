@@ -207,7 +207,8 @@ public class AppCenter.CategoryView : Gtk.Box {
                 homogeneous = true,
                 max_children_per_line = 4,
                 row_spacing = 12,
-                valign = Gtk.Align.START
+                valign = Gtk.Align.START,
+                selection_mode = Gtk.SelectionMode.NONE
             };
             flowbox.set_sort_func ((Gtk.FlowBoxSortFunc) package_row_compare);
 
