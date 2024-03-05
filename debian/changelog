@@ -1,3 +1,9 @@
+pop-shop (7.4.0pop0) jammy; urgency=medium
+
+  * Pop!_Shop rebase on upstream 7.4.0
+
+ -- Jacob Kauffmann <jacob@system76.com>  Tue, 05 Mar 2024 16:40:08 -0700
+
 pop-shop (7.3.0pop0) jammy; urgency=medium
 
   * Pop!_Shop rebase
